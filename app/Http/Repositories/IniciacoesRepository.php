@@ -17,7 +17,7 @@ class IniciacoesRepository
                      . self::getFromClause()
                      . SQLBuilderUtils::paginationQuery($page, $limit);
 
-        $data = DB::select($fieldsQuery, [$_ENV['HASH_PEPPER']]);
+        $data = DB::connection('etl')->select($fieldsQuery, [$_ENV['HASH_PEPPER']]);
 
         return new DataQuery(
             $count['totalRecords'],
@@ -32,7 +32,7 @@ class IniciacoesRepository
         $countQuery = SQLBuilderUtils::getRowCount()
                      . self::getFromClause();
 
-        $result = DB::select($countQuery);
+        $result = DB::connection('etl')->select($countQuery);
 
         return ['totalRecords' => $result[0]->count];
     }

@@ -91,6 +91,22 @@ return [
             'prefix_indexes' => true,
         ],
 
+
+        'etl' => [
+            'driver' => 'mysql',
+            'host' => env('ETL_HOST', '127.0.0.1'),
+            'port' => env('ETL_PORT', '3306'),
+            'database' => env('ETL_DATABASE', 'forge'),
+            'username' => env('ETL_USERNAME', 'forge'),
+            'password' => env('ETL_PASSWORD', 'forge'),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
     ],
 
     /*
