@@ -41,17 +41,17 @@ class IniciacoesRepository
     {
         return
             "SELECT
-                i.idProjeto
-                ,UPPER(SHA2(CONCAT(i.numeroUSP, ?), 256)) AS 'idPessoa'
-                ,ag.nomeAluno
-                ,i.statusProjeto
-                ,i.anoProjeto
-                ,i.codigoDepartamento
-                ,i.nomeDepartamento
-                ,i.dataInicioProjeto
-                ,i.dataFimProjeto
-                ,i.tituloProjeto
-                ,i.palavrasChave
+                i.id_projeto
+                ,UPPER(SHA2(CONCAT(i.numero_usp, ?), 256)) AS 'id_pessoa'
+                ,p.nome
+                ,i.status_projeto
+                ,i.ano_projeto
+                ,i.codigo_departamento
+                ,i.nome_departamento
+                ,i.data_inicio_projeto
+                ,i.data_fim_projeto
+                ,i.titulo_projeto
+                ,i.palavras_chave
             ";
     }
 
@@ -59,7 +59,7 @@ class IniciacoesRepository
     {
         return
             "FROM iniciacoes i
-            LEFT JOIN alunos_graduacao ag ON i.numeroUSP = ag.numeroUSP
+                LEFT JOIN pessoas p ON i.numero_usp = p.numero_usp
             ";
     }
 }
