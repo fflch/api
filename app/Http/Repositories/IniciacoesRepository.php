@@ -44,7 +44,7 @@ class IniciacoesRepository
                 i.id_projeto
                 ,UPPER(SHA2(CONCAT(i.numero_usp, ?), 256)) AS 'id_pessoa'
                 ,p.nome
-                ,i.status_projeto
+                ,i.situacao_projeto
                 ,i.ano_projeto
                 ,i.codigo_departamento
                 ,i.nome_departamento
