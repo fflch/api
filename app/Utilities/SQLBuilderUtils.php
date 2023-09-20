@@ -1,19 +1,42 @@
 <?php
 
 namespace App\Utilities;
+use Illuminate\Support\Facades\DB;
 
 class SQLBuilderUtils
 {
-    public static function getRowCount()
+    public static function processFilters($query, $validated, $directColumns, $yearColumns)
     {
-        return
-            "SELECT COUNT(*) AS 'count'";
+        foreach($validated as $column => $value) {
+            if (array_key_exists($column, $directColumns)) {
+                $query->where($directColumns[$column], $value);
+            }
+            elseif (array_key_exists($column, $yearColumns)) {
+                $query->whereYear(
+                    $yearColumns[$column], 
+                    self::getOperator($value), 
+                    substr($value, -4)
+                );
+            }
+        }
     }
 
-    public static function paginationQuery(int $page, int $limit)
+    public static function getOperator($value)
     {
-        $offset = ($page - 1) * $limit;
-        return "LIMIT {$limit} OFFSET {$offset}";
+        $operatorMap = [
+            'gte' => '>=',
+            'lte' => '<=',
+            'gt' => '>',
+            'lt' => '<',
+        ];
+
+        foreach ($operatorMap as $substr => $operator) {
+            if (str_starts_with($value, $substr)) {
+                return $operator;
+            }
+        }
+
+        return '=';
     }
 
     public static function rangeDisplay($page, $limit, $totalRecords)
@@ -29,5 +52,23 @@ class SQLBuilderUtils
                     );
 
         return $display;
+    }
+
+    public static function doubleHashSQL($input, $pepper1, $pepper2, $alias = null)
+    {
+        $add = isset($alias) ? " AS $alias" : null;
+
+        return DB::raw(
+            "LEFT(UPPER(SHA2(CONCAT('$pepper1', SHA2(CONCAT($input, '$pepper2'), 256)), 256)), 40)" . 
+            $add
+        );
+    }
+
+    public static function getPepperHashes()
+    {
+        return [
+            $_ENV['HASH_PEPPER1'],
+            $_ENV['HASH_PEPPER2'],
+        ];
     }
 }

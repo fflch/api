@@ -4,13 +4,13 @@ namespace App\Models;
 
 use App\Utilities\SQLBuilderUtils;
 
-class DataQuery 
+class ResponseModel 
 {
     public function __construct(
         int $totalRecords,
         int $page,
         int $limit,
-        array $data
+        object $data
     )
     {   
         $this->totalRecords = $totalRecords;
