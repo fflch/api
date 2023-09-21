@@ -6,6 +6,10 @@ use App\Http\Requests\ICsRequest;
 use App\Http\Repositories\ICsRepository;
 use App\Http\Requests\PosDocsRequest;
 use App\Http\Repositories\PosDocsRepository;
+use App\Http\Requests\DefesasRequest;
+use App\Http\Repositories\DefesasRepository;
+use App\Http\Requests\PesquisadoresColabRequest;
+use App\Http\Repositories\PesquisadoresColabRepository;
 
 class CountService
 {
@@ -28,6 +32,12 @@ class CountService
             case 'posdocs':
                 $request->validate(PosDocsRequest::rules());
                 break;
+            case 'defesas':
+                $request->validate(DefesasRequest::rules());
+                break;
+            case 'pcs':
+                $request->validate(PesquisadoresColabRequest::rules());
+                break;
             default:
                 abort(response()->json(['message' => "The requested endpoint could not be validated. It likely does not exist."], 404));
         }
@@ -40,6 +50,10 @@ class CountService
                 return (new ICsRepository($validated))->getCount();
             case 'posdocs':
                 return (new PosDocsRepository($validated))->getCount();
+            case 'defesas':
+                return (new DefesasRepository($validated))->getCount();
+            case 'pcs':
+                return (new PesquisadoresColabRepository($validated))->getCount();
             default:
                 abort(response()->json(['message' => "Error"], 500));
         }

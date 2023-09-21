@@ -9,7 +9,12 @@ class SQLBuilderUtils
     {
         foreach($validated as $column => $value) {
             if (array_key_exists($column, $directColumns)) {
-                $query->where($directColumns[$column], $value);
+                if ($value == "") {
+                    $query->whereNull($directColumns[$column]);
+                }
+                else {
+                    $query->where($directColumns[$column], $value);
+                }
             }
             elseif (array_key_exists($column, $yearColumns)) {
                 $query->whereYear(
@@ -54,12 +59,22 @@ class SQLBuilderUtils
         return $display;
     }
 
-    public static function doubleHashSQL($input, $pepper1, $pepper2, $alias = null)
+    public static function singleHashSQL($input, $pepper, $alias = null, $size = 32)
     {
         $add = isset($alias) ? " AS $alias" : null;
 
         return DB::raw(
-            "LEFT(UPPER(SHA2(CONCAT('$pepper1', SHA2(CONCAT($input, '$pepper2'), 256)), 256)), 40)" . 
+            "LEFT(UPPER(SHA2(CONCAT($input, '$pepper'), 256)), $size)" . 
+            $add
+        );
+    }
+
+    public static function doubleHashSQL($input, $pepper1, $pepper2, $alias = null, $size = 32)
+    {
+        $add = isset($alias) ? " AS $alias" : null;
+
+        return DB::raw(
+            "LEFT(UPPER(SHA2(CONCAT('$pepper1', SHA2(CONCAT($input, '$pepper2'), 256)), 256)), $size)" . 
             $add
         );
     }

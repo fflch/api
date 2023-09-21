@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Utilities\ValidationUtils;
 
-class PosDocsRequest extends PaginationRequest
+class PesquisadoresColabRequest extends PaginationRequest
 {
     public function rules()
     {
@@ -14,7 +14,6 @@ class PosDocsRequest extends PaginationRequest
             'situacao_projeto' => ['sometimes', 'in:' . ValidationUtils::getPASituacoesOptions()],
             'codigo_departamento' => ['sometimes', 'integer'],
             'nome_departamento' => ['sometimes', 'in:' . ValidationUtils::getDptoOptions()],
-            'id_supervisor' => ['sometimes', 'regex:/^[0-9a-fA-F]{32}$/'],
             'ano_inicio' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{4}$|\d{4})$/'],
             'ano_fim' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{4}$|\d{4})$/'],
         ]);

@@ -4,7 +4,7 @@ namespace App\Http\Repositories;
 
 use App\Utilities\SQLBuilderUtils;
 
-class PosDocsRepository extends BaseRepository
+class PesquisadoresColabRepository extends BaseRepository
 {
     public function __construct($validated) {
         parent::__construct($validated);
@@ -27,14 +27,6 @@ class PosDocsRepository extends BaseRepository
             ->addSelect('pa.nome_departamento')
             ->addSelect('pa.data_inicio_projeto')
             ->addSelect('pa.data_fim_projeto')
-            ->addSelect(
-                SQLBuilderUtils::doubleHashSQL(
-                    'spa.numero_usp_supervisor',
-                    $this->peppers[0],
-                    $this->peppers[1],
-                    'id_supervisor'
-                ))
-            ->addSelect('p2.nome AS nome_supervisor')
             ->addSelect('pa.titulo_projeto')
             ->addSelect('pa.area_cnpq')
             ->addSelect('pa.palavras_chave');
@@ -46,19 +38,12 @@ class PosDocsRepository extends BaseRepository
             ->from('pesquisas_avancadas AS pa')
             ->leftJoin('pessoas AS p', function ($join) {
                 $join->on('pa.numero_usp', '=', 'p.numero_usp');
-            })
-            ->leftJoin('supervisoes_pesq_avancada AS spa', function ($join) {
-                $join->on('pa.id_projeto', '=', 'spa.id_projeto');
-                $join->on('spa.ultimo_supervisor_resp', '=', DB::raw("'S'"));
-            })
-            ->leftJoin('pessoas AS p2', function ($join) {
-                $join->on('spa.numero_usp_supervisor', '=', 'p2.numero_usp');
             });
     }
 
     protected function buildWhereClause($validated)
     {
-        $this->query->where('modalidade', 'PD');
+        $this->query->where('modalidade', 'PC');
 
         $directColumns = [
             'id_projeto' => 'pa.id_projeto',
@@ -68,9 +53,6 @@ class PosDocsRepository extends BaseRepository
             'situacao_projeto' => 'pa.situacao_projeto',
             'codigo_departamento' => 'pa.codigo_departamento',
             'nome_departamento' => 'pa.nome_departamento',
-            'id_supervisor' => SQLBuilderUtils::doubleHashSQL(
-                'spa.numero_usp_supervisor', $this->peppers[0], $this->peppers[1]
-            ),
         ];
 
         $yearColumns = [

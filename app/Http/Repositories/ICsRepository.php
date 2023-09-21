@@ -2,7 +2,6 @@
 
 namespace App\Http\Repositories;
 
-use Illuminate\Support\Facades\DB;
 use App\Utilities\SQLBuilderUtils;
 
 class ICsRepository extends BaseRepository
