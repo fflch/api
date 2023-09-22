@@ -19,7 +19,7 @@ use App\Http\Repositories\EstagiariosRepository;
 
 class CountService
 {
-    public function getCount($request)
+    public function fetchCount($request)
     {
         $endpoint = explode('/', $request->path())[0];
 
@@ -62,19 +62,19 @@ class CountService
     {
         switch($endpoint) {
             case 'ics':
-                return (new ICsRepository($validated))->getCount();
+                return (new ICsRepository($validated))->fetchCount();
             case 'posdocs':
-                return (new PosDocsRepository($validated))->getCount();
+                return (new PosDocsRepository($validated))->fetchCount();
             case 'defesas':
-                return (new DefesasRepository($validated))->getCount();
+                return (new DefesasRepository($validated))->fetchCount();
             case 'pcs':
-                return (new PesquisadoresColabRepository($validated))->getCount();
+                return (new PesquisadoresColabRepository($validated))->fetchCount();
             case 'docentes':
-                return (new DocentesRepository($validated))->getCount();
+                return (new DocentesRepository($validated))->fetchCount();
             case 'funcionarios':
-                return (new FuncionariosRepository($validated))->getCount();
+                return (new FuncionariosRepository($validated))->fetchCount();
             case 'estagiarios':
-                return (new EstagiariosRepository($validated))->getCount();
+                return (new EstagiariosRepository($validated))->fetchCount();
             default:
                 abort(response()->json(['message' => "Error"], 500));
         }

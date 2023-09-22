@@ -2,95 +2,100 @@
 
 namespace App\Utilities;
 
+use App\Utilities\CommonUtils;
+
 class ValidationUtils
 {
-    /*
-        NO CAPS
-        NO DIACRITICS
-    */
-
     public static function getDptoOptions()
     {
-        return implode(',',
+        return self::normalizeArrays(
             [
-                'geografia',
-                'filosofia',
-                'letras classicas e vernaculas',
-                'letras modernas',
-                'teoria literaria e literatura comparada',
-                'linguistica',
-                'antropologia',
-                'ciencia politica',
-                'letras orientais',
-                'sociologia',
-                'historia',
+                'Antropologia',
+                'Ciência Política',
+                'Filosofia',
+                'Geografia',
+                'História',
+                'Letras Clássicas e Vernáculas',
+                'Letras Modernas',
+                'Letras Orientais',
+                'Lingüística',
+                'Sociologia',
+                'Teoria Literária e Literatura Comparada',
             ]
         );
     }
 
     public static function getICSituacoesOptions()
     {
-        return implode(',',
+        return self::normalizeArrays(
             [
-                'pendente', 
-                'aprovado', 
-                'inscrito pibic',
-                'cancelado',
-                'denegado',
-                'ativo',
-                'inscrito',
-                'reprovado',
+                'Aprovado',
+                'Ativo',
+                'Cancelado',
+                'Denegado',
+                'Inscrito',
+                'Inscrito PIBIC',
+                'Pendente',
+                'Reprovado',
             ]
         );
     }
 
     public static function getPASituacoesOptions()
     {
-        return implode(',',
+        return self::normalizeArrays(
             [
-                'aprovado',
-                'cancelado',
-                'reprovado',
-                'encerrado',
-                'inscrito',
-                'ativo',
-                'incompleto',
-                'recusado',
+                'Aprovado',
+                'Ativo',
+                'Cancelado',
+                'Encerrado',
+                'Incompleto',
+                'Inscrito',
+                'Recusado',
+                'Reprovado',
             ]
         );
     }
 
     public static function getPGMencoes()
     {
-        return implode(',',
+        return self::normalizeArrays(
             [
-                'distincao',
-                'distincao e louvor'
+                'DISTINÇÃO',
+                'DISTINÇÃO E LOUVOR'
             ]
         );
     }
 
     public static function getServidoresSituacoes()
     {
-        return implode(',',
+        return self::normalizeArrays(
             [
-                'desativado',
-                'ativo',
-                'aposentado'
+                'Aposentado',
+                'Ativo',
+                'Desativado',
             ]
         );
     }
 
     public static function getServidoresTiposIngresso()
     {
-        return implode(',',
+        return self::normalizeArrays(
             [
-                'concurso publico',
-                'reintegracao',
                 'anterior a out/2002',
                 'comissionado',
-                'processo seletivo'
+                'concurso público',
+                'processo seletivo',
+                'reintegração',
             ]
         );
+    }
+
+    private static function normalizeArrays($array)
+    {
+        $array = CommonUtils::arrayToLower($array);
+        $array = CommonUtils::removeArrayDiacritics($array);
+
+        return implode(',', $array);
     }
 }

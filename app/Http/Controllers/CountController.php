@@ -17,7 +17,7 @@ class CountController extends Controller
     public function index(Request $request)
     {
         return response()->json(
-            $this->service->getCount($request),
+            $this->service->fetchCount($request),
             200,
             [],
             JSON_UNESCAPED_UNICODE

@@ -14,7 +14,7 @@ abstract class BaseRepository
         $this->buildWhereClause($validated);
     }
 
-    public function getData($page, $limit)
+    public function fetchRecords($page, $limit)
     {
         $this->buildSelectClause();
         $this->query->paginate($limit, 'page', $page);
@@ -22,7 +22,7 @@ abstract class BaseRepository
         return $this->query->get();
     }
     
-    public function getCount()
+    public function fetchCount()
     {
         return $this->query->count();
     }

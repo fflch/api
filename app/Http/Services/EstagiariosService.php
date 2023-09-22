@@ -2,26 +2,23 @@
 
 namespace App\Http\Services;
 
+use App\Utilities\ServicesUtils;
 use App\Http\Repositories\EstagiariosRepository;
-use App\Models\ResponseModel;
 
 class EstagiariosService
 {
     public function getEstagiarios(Array $validated)
     {
-        $page = $validated['page'] ?? 1;
-        $limit = $validated['limit'] ?? 100;
+        $warning = "Esteja ciente de que nossa API apresenta " .
+        "apenas o vínculo mais recente de um estagiário " . 
+        "por situação (por exemplo, se um mesmo indivíduo tem " . 
+        "dois vínculos já desativados, apenas o último será " .
+        "exibido). Isso significa que os vínculos históricos " . 
+        "não estão totalmente representados nos dados.";
 
-        $estagiarios = new EstagiariosRepository($validated);
-
-        $count = $estagiarios->getCount();
-        $data = $estagiarios->getData($page, $limit);
-
-        return new ResponseModel(
-            $count,
-            $page,
-            $limit,
-            $data,
+        return ServicesUtils::buildResponse(
+            $validated, 
+            EstagiariosRepository::class
         );
     }
 }

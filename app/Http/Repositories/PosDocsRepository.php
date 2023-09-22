@@ -3,6 +3,7 @@
 namespace App\Http\Repositories;
 
 use App\Utilities\SQLBuilderUtils;
+use Illuminate\Support\Facades\DB;
 
 class PosDocsRepository extends BaseRepository
 {
