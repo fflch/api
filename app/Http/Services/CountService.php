@@ -10,6 +10,12 @@ use App\Http\Requests\DefesasRequest;
 use App\Http\Repositories\DefesasRepository;
 use App\Http\Requests\PesquisadoresColabRequest;
 use App\Http\Repositories\PesquisadoresColabRepository;
+use App\Http\Requests\DocentesRequest;
+use App\Http\Repositories\DocentesRepository;
+use App\Http\Requests\FuncionariosRequest;
+use App\Http\Repositories\FuncionariosRepository;
+use App\Http\Requests\EstagiariosRequest;
+use App\Http\Repositories\EstagiariosRepository;
 
 class CountService
 {
@@ -38,6 +44,15 @@ class CountService
             case 'pcs':
                 $request->validate(PesquisadoresColabRequest::rules());
                 break;
+            case 'docentes':
+                $request->validate(DocentesRequest::rules());
+                break;
+            case 'funcionarios':
+                $request->validate(FuncionariosRequest::rules());
+                break;
+            case 'estagiarios':
+                $request->validate(EstagiariosRequest::rules());
+                break;
             default:
                 abort(response()->json(['message' => "The requested endpoint could not be validated. It likely does not exist."], 404));
         }
@@ -54,6 +69,12 @@ class CountService
                 return (new DefesasRepository($validated))->getCount();
             case 'pcs':
                 return (new PesquisadoresColabRepository($validated))->getCount();
+            case 'docentes':
+                return (new DocentesRepository($validated))->getCount();
+            case 'funcionarios':
+                return (new FuncionariosRepository($validated))->getCount();
+            case 'estagiarios':
+                return (new EstagiariosRepository($validated))->getCount();
             default:
                 abort(response()->json(['message' => "Error"], 500));
         }

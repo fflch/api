@@ -17,6 +17,7 @@ class DefesasRequest extends PaginationRequest
             'codigo_area' => ['sometimes', 'integer'],
             // 'local_defesa' => // corrigir erros e padronizar dados antes
             'mencao_honrosa' => ['sometimes', 'nullable', 'in:' . ValidationUtils::getPGMencoes()],
+
             'ano_defesa' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{4}$|\d{4})$/'],
         ]);
     }

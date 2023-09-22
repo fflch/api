@@ -14,6 +14,7 @@ class PesquisadoresColabRequest extends PaginationRequest
             'situacao_projeto' => ['sometimes', 'in:' . ValidationUtils::getPASituacoesOptions()],
             'codigo_departamento' => ['sometimes', 'integer'],
             'nome_departamento' => ['sometimes', 'in:' . ValidationUtils::getDptoOptions()],
+
             'ano_inicio' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{4}$|\d{4})$/'],
             'ano_fim' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{4}$|\d{4})$/'],
         ]);

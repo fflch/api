@@ -4,6 +4,11 @@ namespace App\Utilities;
 
 class ValidationUtils
 {
+    /*
+        NO CAPS
+        NO DIACRITICS
+    */
+
     public static function getDptoOptions()
     {
         return implode(',',
@@ -61,6 +66,30 @@ class ValidationUtils
             [
                 'distincao',
                 'distincao e louvor'
+            ]
+        );
+    }
+
+    public static function getServidoresSituacoes()
+    {
+        return implode(',',
+            [
+                'desativado',
+                'ativo',
+                'aposentado'
+            ]
+        );
+    }
+
+    public static function getServidoresTiposIngresso()
+    {
+        return implode(',',
+            [
+                'concurso publico',
+                'reintegracao',
+                'anterior a out/2002',
+                'comissionado',
+                'processo seletivo'
             ]
         );
     }

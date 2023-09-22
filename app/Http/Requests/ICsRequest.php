@@ -15,6 +15,7 @@ class ICsRequest extends PaginationRequest
             'codigo_departamento' => ['sometimes', 'integer'],
             'nome_departamento' => ['sometimes', 'in:' . ValidationUtils::getDptoOptions()],
             'id_orientador' => ['sometimes', 'regex:/^[0-9a-fA-F]{32}$/'],
+
             'ano_inicio' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{4}$|\d{4})$/'],
             'ano_fim' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{4}$|\d{4})$/'],
         ]);
