@@ -3,31 +3,32 @@
 namespace App\Http\Repositories;
 
 use Illuminate\Support\Facades\DB;
-use App\Utilities\SQLBuilderUtils;
 
 abstract class BaseRepository
 {
-    public function __construct($validated) {
-        $this->peppers = SQLBuilderUtils::getPepperHashes();
-        $this->query = DB::table('');
+    protected $query;
+
+    public function __construct($validated)
+    {
+        $this->query = DB::connection('etl')->table('');
         $this->buildFromClause();
         $this->buildWhereClause($validated);
     }
 
-    public function fetchRecords($page, $limit)
+    public function fetchRecords($page, $limit, $columnsToHide)
     {
-        $this->buildSelectClause();
+        $this->buildSelectClause($columnsToHide);
         $this->query->paginate($limit, 'page', $page);
 
         return $this->query->get();
     }
-    
+
     public function fetchCount()
     {
         return $this->query->count();
     }
 
-    abstract protected function buildSelectClause();
+    abstract protected function buildSelectClause($columnsToHide);
 
     abstract protected function buildFromClause();
 

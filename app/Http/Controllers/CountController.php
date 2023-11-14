@@ -14,10 +14,20 @@ class CountController extends Controller
         $this->service = new CountService();
     }
 
-    public function index(Request $request)
+    public function public(Request $request)
     {
         return response()->json(
-            $this->service->fetchCount($request),
+            $this->service->fetchCount($request, 'public'),
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    public function private(Request $request)
+    {
+        return response()->json(
+            $this->service->fetchCount($request, 'private'),
             200,
             [],
             JSON_UNESCAPED_UNICODE

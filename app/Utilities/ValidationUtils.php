@@ -6,6 +6,23 @@ use App\Utilities\CommonUtils;
 
 class ValidationUtils
 {
+    public static function getRoles($type = 'string')
+    {
+        $roles = [
+            'externo',
+            'comissão',
+            'outro',
+        ];
+
+        if ($type == 'array') {
+            return $roles;
+        }
+
+        return implode(
+            ',', $roles
+        );
+    }
+
     public static function getDptoOptions()
     {
         return self::normalizeArrays(

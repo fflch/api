@@ -6,41 +6,39 @@ use App\Utilities\SQLBuilderUtils;
 
 class FuncionariosRepository extends BaseRepository
 {
-    public function __construct($validated) {
+    private $funcionariosColumns;
+
+    public function __construct($validated)
+    {
+        $this->funcionariosColumns = [
+            'vs.id_vinculo' => 'id_vinculo',
+            'vs.numero_usp' => 'numero_usp',
+            'p.nome' => 'nome',
+            'vs.situacao_atual' => 'situacao_atual',
+            'vs.data_inicio_vinculo' => 'data_inicio_vinculo',
+            'vs.data_fim_vinculo' => 'data_fim_vinculo',
+            'vs.cod_ultimo_setor' => 'codigo_ultimo_setor',
+            'vs.nome_ultimo_setor' => 'nome_ultimo_setor',
+            'vs.ambito_funcao' => 'ambito_funcao',
+            'vs.classe' => 'classe',
+            'vs.referencia' => 'referencia',
+            'vs.tipo_jornada' => 'tipo_jornada',
+            'vs.tipo_ingresso' => 'tipo_ingresso',
+            'vs.data_ultima_alteracao_funcional' => 'data_ultima_alteracao_funcional',
+            'vs.ultima_ocorrencia' => 'ultima_ocorrencia',
+            'vs.data_inicio_ultima_ocorrencia' => 'data_ultima_ocorrencia',
+        ];
+
         parent::__construct($validated);
     }
 
-    protected function buildSelectClause()
+    protected function buildSelectClause($columnsToHide)
     {
-        return $this->query
-            ->addSelect(
-                SQLBuilderUtils::singleHashSQL(
-                    'vs.id_vinculo',
-                    $this->peppers[0],
-                    'id_vinculo',
-                    $size = 8
-                ))
-            ->addSelect(
-                SQLBuilderUtils::doubleHashSQL(
-                    'vs.numero_usp',
-                    $this->peppers[0],
-                    $this->peppers[1],
-                    'id_estagiario'
-                ))
-            ->addSelect('p.nome AS nome_aluno')
-            ->addSelect('vs.situacao_atual')
-            ->addSelect('vs.data_inicio_vinculo')
-            ->addSelect('vs.data_fim_vinculo')
-            ->addSelect('vs.cod_ultimo_setor AS codigo_ultimo_setor')
-            ->addSelect('vs.nome_ultimo_setor')
-            ->addSelect('vs.ambito_funcao')
-            ->addSelect('vs.classe')
-            ->addSelect('vs.referencia')
-            ->addSelect('vs.tipo_jornada')
-            ->addSelect('vs.tipo_ingresso')
-            ->addSelect('vs.data_ultima_alteracao_funcional')
-            ->addSelect('vs.ultima_ocorrencia')
-            ->addSelect('vs.data_inicio_ultima_ocorrencia AS data_ultima_ocorrencia');
+        return SQLBuilderUtils::SelectBuildHelper(
+            $this->query,
+            $this->funcionariosColumns,
+            $columnsToHide
+        );
     }
 
     protected function buildFromClause()
@@ -56,35 +54,41 @@ class FuncionariosRepository extends BaseRepository
     {
         $this->query->where('vinculo', 'Funcionário');
 
-        $directColumns = [
-            'id_vinculo' => SQLBuilderUtils::singleHashSQL(
-                'vs.id_vinculo', $this->peppers[0], null, $size = 8
-            ),
-            'id_estagiario' => SQLBuilderUtils::doubleHashSQL(
-                'vs.numero_usp', $this->peppers[0], $this->peppers[1],
-            ),
-            'situacao_atual' => 'vs.situacao_atual',
-            'codigo_ultimo_setor' => 'vs.cod_ultimo_setor',
-            'nome_ultimo_setor' => 'vs.nome_ultimo_setor',
-            'ambito_funcao' => 'vs.ambito_funcao',
-            'classe' => 'vs.classe',
-            'referencia' => 'vs.referencia',
-            'tipo_jornada' => 'vs.tipo_jornada',
-            'tipo_ingresso' => 'vs.tipo_ingresso',
-            'ultima_ocorrencia' => 'vs.ultima_ocorrencia',
-        ];
+        $directColumns = SQLBuilderUtils::findColumnsTableAlias(
+            $this->funcionariosColumns,
+            [
+                // public
+                'id_vinculo',
+                'situacao_atual',
+                'codigo_ultimo_setor',
+                'nome_ultimo_setor',
+                'ambito_funcao',
+                'classe',
+                'referencia',
+                'tipo_jornada',
+                'tipo_ingresso',
+                // private
+                'numero_usp',
+                'ultima_ocorrencia',
+            ]
+        );
 
-        $yearColumns = [
-            'ano_inicio_vinculo' => 'vs.data_inicio_vinculo',
-            'ano_fim_vinculo' => 'vs.data_fim_vinculo',
-            'ano_ultima_ocorrencia' => 'vs.data_inicio_ultima_ocorrencia',
-            'ano_ultima_alteracao_funcional' => 'vs.data_ultima_alteracao_funcional',
-        ];
+        $yearColumns = SQLBuilderUtils::findColumnsTableAlias(
+            $this->funcionariosColumns,
+            [
+                // public
+                'ano_fim_vinculo',
+                'ano_ultima_ocorrencia',
+                'ano_ultima_alteracao_funcional',
+                // private
+                'ano_inicio_vinculo',
+            ]
+        );
 
         SQLBuilderUtils::processFilters(
-            $this->query, 
-            $validated, 
-            $directColumns, 
+            $this->query,
+            $validated,
+            $directColumns,
             $yearColumns
         );
     }

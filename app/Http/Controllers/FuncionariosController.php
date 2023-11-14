@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\FuncionariosService;
-use App\Http\Requests\FuncionariosRequest;
+use App\Http\Requests\PublicRequests\PublicFuncionariosRequest;
+use App\Http\Requests\PrivateRequests\PrivateFuncionariosRequest;
 
 class FuncionariosController extends Controller
 {
@@ -14,10 +15,27 @@ class FuncionariosController extends Controller
         $this->service = new FuncionariosService();
     }
 
-    public function index(FuncionariosRequest $request)
+    public function public(PublicFuncionariosRequest $request)
     {
         return response()->json(
-            $this->service->getFuncionarios($request->validated()),
+            $this->service->publicGetFuncionarios(
+                $request->validated()
+            ),
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    public function private(PrivateFuncionariosRequest $request)
+    {
+        $userRole = $request->user()->role;
+
+        return response()->json(
+            $this->service->privateGetFuncionarios(
+                $request->validated(),
+                $userRole
+            ),
             200,
             [],
             JSON_UNESCAPED_UNICODE

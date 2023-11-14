@@ -4,14 +4,26 @@ namespace App\Http\Services;
 
 use App\Utilities\ServicesUtils;
 use App\Http\Repositories\PosDocsRepository;
+use App\Utilities\RestrictedColumns\RestrictedPosDocs;
 
 class PosDocsService
 {
-    public function getPosDocs(Array $validated)
+    public function publicGetPosDocs(Array $validated)
     {
-        return ServicesUtils::buildResponse(
+        return (new ServicesUtils)->buildResponse(
             $validated, 
-            PosDocsRepository::class
+            PosDocsRepository::class,
+            RestrictedPosDocs::publicAccess
+        );
+    }
+
+    public function privateGetPosDocs(Array $validated, string $userRole)
+    {
+        return (new ServicesUtils)->buildResponse(
+            $validated, 
+            PosDocsRepository::class,
+            RestrictedPosDocs::privateAccess[$userRole] 
+                ?? RestrictedPosDocs::publicAccess
         );
     }
 }

@@ -7,38 +7,36 @@ use Illuminate\Support\Facades\DB;
 
 class PosDocsRepository extends BaseRepository
 {
-    public function __construct($validated) {
+    private $posdocColumns;
+
+    public function __construct($validated)
+    {
+        $this->posdocColumns = [
+            'pa.id_projeto' => 'id_projeto',
+            'pa.numero_usp' => 'numero_usp',
+            'p.nome' => 'nome_pesquisador',
+            'pa.situacao_projeto' => 'situacao_projeto',
+            'pa.codigo_departamento' => 'codigo_departamento',
+            'pa.nome_departamento' => 'nome_departamento',
+            'pa.data_inicio_projeto' => 'data_inicio_projeto',
+            'pa.data_fim_projeto' => 'data_fim_projeto',
+            'spa.numero_usp_supervisor' => 'numero_usp_supervisor',
+            'p2.nome' => 'nome_supervisor',
+            'pa.titulo_projeto' => 'titulo_projeto',
+            'pa.area_cnpq' => 'area_cnpq',
+            'pa.palavras_chave' => 'palavras_chave'
+        ];
+
         parent::__construct($validated);
     }
 
-    protected function buildSelectClause()
+    protected function buildSelectClause($columnsToHide)
     {
-        return $this->query
-            ->addSelect('pa.id_projeto')
-            ->addSelect(
-                SQLBuilderUtils::doubleHashSQL(
-                    'pa.numero_usp',
-                    $this->peppers[0], 
-                    $this->peppers[1], 
-                    'id_pesquisador'
-                ))
-            ->addSelect('p.nome AS nome_pesquisador')
-            ->addSelect('pa.situacao_projeto')
-            ->addSelect('pa.codigo_departamento')
-            ->addSelect('pa.nome_departamento')
-            ->addSelect('pa.data_inicio_projeto')
-            ->addSelect('pa.data_fim_projeto')
-            ->addSelect(
-                SQLBuilderUtils::doubleHashSQL(
-                    'spa.numero_usp_supervisor',
-                    $this->peppers[0],
-                    $this->peppers[1],
-                    'id_supervisor'
-                ))
-            ->addSelect('p2.nome AS nome_supervisor')
-            ->addSelect('pa.titulo_projeto')
-            ->addSelect('pa.area_cnpq')
-            ->addSelect('pa.palavras_chave');
+        return SQLBuilderUtils::SelectBuildHelper(
+            $this->query,
+            $this->posdocColumns,
+            $columnsToHide
+        );
     }
 
     protected function buildFromClause()
@@ -50,7 +48,7 @@ class PosDocsRepository extends BaseRepository
             })
             ->leftJoin('supervisoes_pesq_avancada AS spa', function ($join) {
                 $join->on('pa.id_projeto', '=', 'spa.id_projeto');
-                $join->on('spa.ultimo_supervisor_resp', '=', DB::raw("'S'"));
+                $join->on('spa.ultimo_supervisor_resp', '=', DB::connection('etl')->raw("'S'"));
             })
             ->leftJoin('pessoas AS p2', function ($join) {
                 $join->on('spa.numero_usp_supervisor', '=', 'p2.numero_usp');
@@ -61,28 +59,33 @@ class PosDocsRepository extends BaseRepository
     {
         $this->query->where('modalidade', 'PD');
 
-        $directColumns = [
-            'id_projeto' => 'pa.id_projeto',
-            'id_pesquisador' => SQLBuilderUtils::doubleHashSQL(
-                'pa.numero_usp', $this->peppers[0], $this->peppers[1]
-            ),
-            'situacao_projeto' => 'pa.situacao_projeto',
-            'codigo_departamento' => 'pa.codigo_departamento',
-            'nome_departamento' => 'pa.nome_departamento',
-            'id_supervisor' => SQLBuilderUtils::doubleHashSQL(
-                'spa.numero_usp_supervisor', $this->peppers[0], $this->peppers[1]
-            ),
-        ];
+        $directColumns = SQLBuilderUtils::findColumnsTableAlias(
+            $this->posdocColumns,
+            [
+                // public
+                'id_projeto',
+                'situacao_projeto',
+                'codigo_departamento',
+                'nome_departamento',
+                // private
+                'numero_usp',
+                'numero_usp_supervisor',
+            ]
+        );
 
-        $yearColumns = [
-            'ano_inicio' => 'pa.data_inicio_projeto',
-            'ano_fim' => 'pa.data_fim_projeto'
-        ];
+        $yearColumns = SQLBuilderUtils::findColumnsTableAlias(
+            $this->posdocColumns,
+            [
+                // public
+                'ano_inicio',
+                'ano_fim',
+            ]
+        );
 
         SQLBuilderUtils::processFilters(
-            $this->query, 
-            $validated, 
-            $directColumns, 
+            $this->query,
+            $validated,
+            $directColumns,
             $yearColumns
         );
     }

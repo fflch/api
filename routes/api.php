@@ -10,13 +10,25 @@ use App\Http\Controllers\FuncionariosController;
 use App\Http\Controllers\EstagiariosController;
 use App\Http\Controllers\CountController;
 
-Route::get('ics', [ICsController::class, 'index']);
-Route::get('posdocs', [PosDocsController::class, 'index']);
-Route::get('pcs', [PesquisadoresColabController::class, 'index']);
-Route::get('defesas', [DefesasController::class, 'index']);
+$controllers = [
+    'ics' => ICsController::class,
+    'posdocs' => PosDocsController::class,
+    'pcs' => PesquisadoresColabController::class,
+    'defesas' => DefesasController::class,
+    'vinculos/docentes' => DocentesController::class,
+    'vinculos/funcionarios' => FuncionariosController::class,
+    'vinculos/estagiarios' => EstagiariosController::class,
+];
 
-Route::get('vinculos/docentes', [DocentesController::class, 'index']);
-Route::get('vinculos/funcionarios', [FuncionariosController::class, 'index']);
-Route::get('vinculos/estagiarios', [EstagiariosController::class, 'index']);
+foreach ($controllers as $route => $controller) {
+    Route::prefix('public')->get($route, [$controller, 'public']);
+    Route::middleware('auth:sanctum')->prefix('private')->get($route, [$controller, 'private']);
+}
 
-Route::get('/{endpoint}/count', [CountController::class, 'index'])->where('endpoint', '.*');
+Route::prefix('public')->group(function () {
+    Route::get('/{endpoint}/count', [CountController::class, 'public'])->where('endpoint', '.*');
+});
+
+Route::middleware('auth:sanctum')->prefix('private')->group(function () {
+    Route::get('/{endpoint}/count', [CountController::class, 'private'])->where('endpoint', '.*');
+});

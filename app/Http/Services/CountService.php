@@ -2,65 +2,106 @@
 
 namespace App\Http\Services;
 
-use App\Http\Requests\ICsRequest;
+use App\Http\Requests\PublicRequests\PublicICsRequest;
+use App\Http\Requests\PrivateRequests\PrivateICsRequest;
 use App\Http\Repositories\ICsRepository;
-use App\Http\Requests\PosDocsRequest;
+use App\Http\Requests\PublicRequests\PublicPosDocsRequest;
+use App\Http\Requests\PrivateRequests\PrivatePosDocsRequest;
 use App\Http\Repositories\PosDocsRepository;
-use App\Http\Requests\DefesasRequest;
+use App\Http\Requests\PublicRequests\PublicDefesasRequest;
+use App\Http\Requests\PrivateRequests\PrivateDefesasRequest;
 use App\Http\Repositories\DefesasRepository;
-use App\Http\Requests\PesquisadoresColabRequest;
+use App\Http\Requests\PublicRequests\PublicPesquisadoresColabRequest;
+use App\Http\Requests\PrivateRequests\PrivatePesquisadoresColabRequest;
 use App\Http\Repositories\PesquisadoresColabRepository;
-use App\Http\Requests\DocentesRequest;
+use App\Http\Requests\PublicRequests\PublicDocentesRequest;
+use App\Http\Requests\PrivateRequests\PrivateDocentesRequest;
 use App\Http\Repositories\DocentesRepository;
-use App\Http\Requests\FuncionariosRequest;
+use App\Http\Requests\PublicRequests\PublicFuncionariosRequest;
+use App\Http\Requests\PrivateRequests\PrivateFuncionariosRequest;
 use App\Http\Repositories\FuncionariosRepository;
-use App\Http\Requests\EstagiariosRequest;
+use App\Http\Requests\PublicRequests\PublicEstagiariosRequest;
+use App\Http\Requests\PrivateRequests\PrivateEstagiariosRequest;
 use App\Http\Repositories\EstagiariosRepository;
 
 class CountService
 {
-    public function fetchCount($request)
+    public function fetchCount($request, $access)
     {
-        $endpoint = explode('/', $request->path())[0];
+        $pathSections = explode('/', $request->path());
+        $endpoint = $pathSections[count($pathSections)-2];
 
-        self::validateRequest($endpoint, $request);
+        self::validateRequest($endpoint, $request, $access);
         $validated = $request->query->all();
 
         return ['total records' => self::countRecords($endpoint, $validated)];
     }
 
-    private function validateRequest($endpoint, $request)
+    private function validateRequest($endpoint, $request, $access)
     {
-        switch($endpoint) {
-            case 'ics':
-                $request->validate(ICsRequest::rules());
+        switch ($access) {
+            case 'public':
+                switch ($endpoint) {
+                    case 'ics':
+                        $request->validate((new PublicICsRequest)->rules());
+                        break;
+                    case 'posdocs':
+                        $request->validate((new PublicPosDocsRequest)->rules());
+                        break;
+                    case 'defesas':
+                        $request->validate((new PublicDefesasRequest)->rules());
+                        break;
+                    case 'pcs':
+                        $request->validate((new PublicPesquisadoresColabRequest)->rules());
+                        break;
+                    case 'docentes':
+                        $request->validate((new PublicDocentesRequest)->rules());
+                        break;
+                    case 'funcionarios':
+                        $request->validate((new PublicFuncionariosRequest)->rules());
+                        break;
+                    case 'estagiarios':
+                        $request->validate((new PublicEstagiariosRequest)->rules());
+                        break;
+                    default:
+                        abort(response()->json(['message' => "The requested endpoint could not be validated. It likely does not exist."], 404));
+                }
                 break;
-            case 'posdocs':
-                $request->validate(PosDocsRequest::rules());
-                break;
-            case 'defesas':
-                $request->validate(DefesasRequest::rules());
-                break;
-            case 'pcs':
-                $request->validate(PesquisadoresColabRequest::rules());
-                break;
-            case 'docentes':
-                $request->validate(DocentesRequest::rules());
-                break;
-            case 'funcionarios':
-                $request->validate(FuncionariosRequest::rules());
-                break;
-            case 'estagiarios':
-                $request->validate(EstagiariosRequest::rules());
+            case 'private':
+                switch ($endpoint) {
+                    case 'ics':
+                        $request->validate((new PrivateICsRequest)->rules());
+                        break;
+                    case 'posdocs':
+                        $request->validate((new PrivatePosDocsRequest)->rules());
+                        break;
+                    case 'defesas':
+                        $request->validate((new PrivateDefesasRequest)->rules());
+                        break;
+                    case 'pcs':
+                        $request->validate((new PrivatePesquisadoresColabRequest)->rules());
+                        break;
+                    case 'docentes':
+                        $request->validate((new PrivateDocentesRequest)->rules());
+                        break;
+                    case 'funcionarios':
+                        $request->validate((new PrivateFuncionariosRequest)->rules());
+                        break;
+                    case 'estagiarios':
+                        $request->validate((new PrivateEstagiariosRequest)->rules());
+                        break;
+                    default:
+                        abort(response()->json(['message' => "The requested endpoint could not be validated. It likely does not exist."], 404));
+                }
                 break;
             default:
-                abort(response()->json(['message' => "The requested endpoint could not be validated. It likely does not exist."], 404));
+            abort(response()->json(['message' => "The requested endpoint could not be validated. It likely does not exist."], 404));
         }
     }
 
     private function countRecords($endpoint, $validated)
     {
-        switch($endpoint) {
+        switch ($endpoint) {
             case 'ics':
                 return (new ICsRepository($validated))->fetchCount();
             case 'posdocs':

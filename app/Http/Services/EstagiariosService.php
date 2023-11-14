@@ -3,22 +3,37 @@
 namespace App\Http\Services;
 
 use App\Utilities\ServicesUtils;
+use App\Utilities\WarningUtils;
 use App\Http\Repositories\EstagiariosRepository;
+use App\Utilities\RestrictedColumns\RestrictedEstagiarios;
 
 class EstagiariosService
 {
-    public function getEstagiarios(Array $validated)
-    {
-        $warning = "Esteja ciente de que nossa API apresenta " .
-        "apenas o vínculo mais recente de um estagiário " . 
-        "por situação (por exemplo, se um mesmo indivíduo tem " . 
-        "dois vínculos já desativados, apenas o último será " .
-        "exibido). Isso significa que os vínculos históricos " . 
-        "não estão totalmente representados nos dados.";
+    protected $warning;
 
-        return ServicesUtils::buildResponse(
-            $validated, 
-            EstagiariosRepository::class
+    public function __construct()
+    {
+        $this->warning = WarningUtils::vinculos;
+    }
+
+    public function publicGetEstagiarios(array $validated)
+    {
+        return (new ServicesUtils)->buildResponse(
+            $validated,
+            EstagiariosRepository::class,
+            RestrictedEstagiarios::publicAccess,
+            $this->warning
+        );
+    }
+
+    public function privateGetEstagiarios(array $validated, string $userRole)
+    {
+        return (new ServicesUtils)->buildResponse(
+            $validated,
+            EstagiariosRepository::class,
+            RestrictedEstagiarios::privateAccess[$userRole]
+                ?? RestrictedEstagiarios::publicAccess,
+            $this->warning
         );
     }
 }

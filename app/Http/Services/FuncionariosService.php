@@ -3,26 +3,37 @@
 namespace App\Http\Services;
 
 use App\Utilities\ServicesUtils;
+use App\Utilities\WarningUtils;
 use App\Http\Repositories\FuncionariosRepository;
+use App\Utilities\RestrictedColumns\RestrictedFuncionarios;
 
 class FuncionariosService
 {
-    public function getFuncionarios(Array $validated)
+    protected $warning;
+
+    public function __construct()
     {
-        $warning = "Esteja ciente de que nossa API apresenta " .
-        "apenas o vínculo mais recente de um funcionário " . 
-        "por situação (por exemplo, se um mesmo indivíduo tem " . 
-        "dois vínculos já desativados, apenas o último será " .
-        "exibido). Isso significa que os vínculos históricos " . 
-        "não estão totalmente representados nos dados. " .
-        "Além disso, registros muito antigos podem conter " . 
-        "imprecisões quanto às datas.";
+        $this->warning = WarningUtils::vinculos;
+    }
 
-
-        return ServicesUtils::buildResponse(
+    public function publicGetFuncionarios(Array $validated)
+    {
+        return (new ServicesUtils)->buildResponse(
             $validated, 
             FuncionariosRepository::class,
-            $warning
+            RestrictedFuncionarios::publicAccess,
+            $this->warning
+        );
+    }
+
+    public function privateGetFuncionarios(Array $validated, string $userRole)
+    {
+        return (new ServicesUtils)->buildResponse(
+            $validated, 
+            FuncionariosRepository::class,
+            RestrictedFuncionarios::privateAccess[$userRole]
+                ?? RestrictedFuncionarios::publicAccess,
+            $this->warning
         );
     }
 }

@@ -1,25 +1,24 @@
 <?php
 
 namespace App\Utilities;
+
 use Illuminate\Support\Facades\DB;
 
 class SQLBuilderUtils
 {
     public static function processFilters($query, $validated, $directColumns, $yearColumns)
     {
-        foreach($validated as $column => $value) {
+        foreach ($validated as $column => $value) {
             if (array_key_exists($column, $directColumns)) {
                 if ($value == "") {
                     $query->whereNull($directColumns[$column]);
-                }
-                else {
+                } else {
                     $query->where($directColumns[$column], $value);
                 }
-            }
-            elseif (array_key_exists($column, $yearColumns)) {
+            } elseif (array_key_exists($column, $yearColumns)) {
                 $query->whereYear(
-                    $yearColumns[$column], 
-                    self::getOperator($value), 
+                    $yearColumns[$column],
+                    self::getOperator($value),
                     substr($value, -4)
                 );
             }
@@ -50,40 +49,40 @@ class SQLBuilderUtils
         $limiteSuperior = ($limit * $page);
 
         $display = $limiteInferior > $totalRecords
-                    ? "No records in this page"
-                    : ($totalRecords > $limiteSuperior
-                        ? $limiteInferior . "-" . $limiteSuperior
-                        : $limiteInferior . "-" . $totalRecords
-                    );
+            ? "No records in this page"
+            : ($totalRecords > $limiteSuperior
+                ? $limiteInferior . "-" . $limiteSuperior
+                : $limiteInferior . "-" . $totalRecords
+            );
 
         return $display;
     }
 
-    public static function singleHashSQL($input, $pepper, $alias = null, $size = 32)
+    public static function SelectBuildHelper($query, $columns, $columnsToHide)
     {
-        $add = isset($alias) ? " AS $alias" : null;
+        if (!is_null($columnsToHide)) {
+            $columns = array_filter($columns, function ($value) use ($columnsToHide) {
+                return !in_array($value, $columnsToHide);
+            });
+        }
 
-        return DB::raw(
-            "LEFT(UPPER(SHA2(CONCAT($input, '$pepper'), 256)), $size)" . 
-            $add
-        );
+        foreach ($columns as $key => $alias) {
+            $query->addSelect("{$key} AS {$alias}");
+        }
+
+        return $query;
     }
 
-    public static function doubleHashSQL($input, $pepper1, $pepper2, $alias = null, $size = 32)
+    public static function findColumnsTableAlias($allcolumns, $filter)
     {
-        $add = isset($alias) ? " AS $alias" : null;
+        $result = [];
 
-        return DB::raw(
-            "LEFT(UPPER(SHA2(CONCAT('$pepper1', SHA2(CONCAT($input, '$pepper2'), 256)), 256)), $size)" . 
-            $add
-        );
-    }
+        foreach ($allcolumns as $column => $alias) {
+            if (in_array($alias, $filter)) {
+                $result[$alias] = $column;
+            }
+        }
 
-    public static function getPepperHashes()
-    {
-        return [
-            $_ENV['HASH_PEPPER1'],
-            $_ENV['HASH_PEPPER2'],
-        ];
+        return $result;
     }
 }

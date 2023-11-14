@@ -2,6 +2,8 @@
 
 namespace App\Utilities;
 
+use Illuminate\Support\Str;
+
 class CommonUtils
 {
     public static function arrayToLower($array)
@@ -52,5 +54,38 @@ class CommonUtils
         }
 
         return $cleanedArray;
+    }
+
+    public static function generateRandomToken(int $size = 32)
+    {
+        $combinedString = Str::random(32) . now()->timestamp;
+        $token = hash('sha256', $combinedString);
+
+        return substr($token, 0, $size);
+    }
+
+    public static function hashValue($value, $len)
+    {
+        $pepper = strrev($_ENV['API_HASH_PEPPER']);
+        $stringValue = strrev((string)$value);
+
+        $valueLen = strlen($stringValue);
+        $pepperLen = strlen($pepper);
+        $maxLen = max($valueLen, $pepperLen);
+
+        $combinedString = "";
+
+        for($i = 0; $i < $maxLen; $i++) {
+            if ($i < $valueLen) {
+                $combinedString .= $stringValue[$i] . "-";
+            }
+            if ($i < $pepperLen) {
+                $combinedString .= $pepper[$i] . "-";
+            }
+        }
+
+        $hash = (hash('sha256', $combinedString));
+
+        return strtoupper(substr($hash, 0, $len));
     }
 }

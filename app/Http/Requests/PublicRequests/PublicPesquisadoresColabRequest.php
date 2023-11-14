@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\PublicRequests;
 
 use App\Utilities\ValidationUtils;
 
-class PesquisadoresColabRequest extends PaginationRequest
+class PublicPesquisadoresColabRequest extends PaginationRequest
 {
     public function rules()
     {
         return array_merge(parent::rules(), [
             'id_projeto' => ['sometimes', 'regex:/^\d{4}-\d+$/'],
-            'id_pesquisador' => ['sometimes', 'regex:/^[0-9a-fA-F]{32}$/'],
             'situacao_projeto' => ['sometimes', 'in:' . ValidationUtils::getPASituacoesOptions()],
             'codigo_departamento' => ['sometimes', 'integer'],
             'nome_departamento' => ['sometimes', 'in:' . ValidationUtils::getDptoOptions()],

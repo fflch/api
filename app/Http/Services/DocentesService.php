@@ -3,26 +3,37 @@
 namespace App\Http\Services;
 
 use App\Utilities\ServicesUtils;
+use App\Utilities\WarningUtils;
 use App\Http\Repositories\DocentesRepository;
+use App\Utilities\RestrictedColumns\RestrictedDocentes;
 
 class DocentesService
 {
-    public function getDocentes(Array $validated)
+    protected $warning;
+
+    public function __construct()
     {
-        $warning = "Esteja ciente de que nossa API apresenta " .
-        "apenas o vínculo mais recente de um docente " . 
-        "por situação (por exemplo, se um mesmo indivíduo tem " . 
-        "dois vínculos já desativados, apenas o último será " .
-        "exibido). Isso significa que os vínculos históricos " . 
-        "não estão totalmente representados nos dados. " . 
-        "Além disso, registros muito antigos podem conter " . 
-        "imprecisões quanto às datas.";
+        $this->warning = WarningUtils::vinculos;
+    }
 
-
-        return ServicesUtils::buildResponse(
+    public function publicGetDocentes(Array $validated)
+    {
+        return (new ServicesUtils)->buildResponse(
             $validated, 
             DocentesRepository::class,
-            $warning
+            RestrictedDocentes::publicAccess,
+            $this->warning
+        );
+    }
+
+    public function privateGetDocentes(Array $validated, string $userRole)
+    {
+        return (new ServicesUtils)->buildResponse(
+            $validated, 
+            DocentesRepository::class,
+            RestrictedDocentes::privateAccess[$userRole]
+                ?? RestrictedDocentes::publicAccess,
+            $this->warning
         );
     }
 }

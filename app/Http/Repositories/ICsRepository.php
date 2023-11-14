@@ -6,38 +6,36 @@ use App\Utilities\SQLBuilderUtils;
 
 class ICsRepository extends BaseRepository
 {
-    public function __construct($validated) {
+    private $icColumns;
+
+    public function __construct($validated)
+    {
+        $this->icColumns = [
+            'i.id_projeto' => 'id_projeto',
+            'i.numero_usp' => 'numero_usp',
+            'p.nome' => 'nome',
+            'i.situacao_projeto' => 'situacao_projeto',
+            'i.ano_projeto' => 'ano_projeto',
+            'i.codigo_departamento' => 'codigo_departamento',
+            'i.nome_departamento' => 'nome_departamento',
+            'i.numero_usp_orientador' => 'numero_usp_orientador',
+            'p2.nome' => 'nome_orientador',
+            'i.data_inicio_projeto' => 'data_inicio_projeto',
+            'i.data_fim_projeto' => 'data_fim_projeto',
+            'i.titulo_projeto' => 'titulo_projeto',
+            'i.palavras_chave' => 'palavras_chave',
+        ];
+
         parent::__construct($validated);
     }
 
-    protected function buildSelectClause()
+    protected function buildSelectClause($columnsToHide)
     {
-        return $this->query
-            ->addSelect('i.id_projeto')
-            ->addSelect(
-                SQLBuilderUtils::doubleHashSQL(
-                    'i.numero_usp',
-                    $this->peppers[0],
-                    $this->peppers[1],
-                    'id_aluno'
-                ))
-            ->addSelect('p.nome')
-            ->addSelect('i.situacao_projeto')
-            ->addSelect('i.ano_projeto')
-            ->addSelect('i.codigo_departamento')
-            ->addSelect('i.nome_departamento')
-            ->addSelect(
-                SQLBuilderUtils::doubleHashSQL(
-                    'i.numero_usp_orientador',
-                    $this->peppers[0],
-                    $this->peppers[1],
-                    'id_orientador'
-                ))
-            ->addSelect('p2.nome AS nome_orientador')
-            ->addSelect('i.data_inicio_projeto')
-            ->addSelect('i.data_fim_projeto')
-            ->addSelect('i.titulo_projeto')
-            ->addSelect('i.palavras_chave');
+        return SQLBuilderUtils::SelectBuildHelper(
+            $this->query,
+            $this->icColumns,
+            $columnsToHide
+        );
     }
 
     protected function buildFromClause()
@@ -54,28 +52,33 @@ class ICsRepository extends BaseRepository
 
     protected function buildWhereClause($validated)
     {
-        $directColumns = [
-            'id_projeto' => 'i.id_projeto',
-            'id_aluno' => SQLBuilderUtils::doubleHashSQL(
-                'i.numero_usp', $this->peppers[0], $this->peppers[1]
-            ),
-            'situacao_projeto' => 'i.situacao_projeto',
-            'codigo_departamento' => 'i.codigo_departamento',
-            'nome_departamento' => 'i.nome_departamento',
-            'id_orientador' => SQLBuilderUtils::doubleHashSQL(
-                'i.numero_usp_orientador', $this->peppers[0], $this->peppers[1]
-            ),
-        ];
+        $directColumns = SQLBuilderUtils::findColumnsTableAlias(
+            $this->icColumns,
+            [
+                // public
+                'id_projeto',
+                'situacao_projeto',
+                'codigo_departamento',
+                'nome_departamento',
+                // private
+                'numero_usp',
+                'numero_usp_orientador',
+            ]
+        );
 
-        $yearColumns = [
-            'ano_inicio' => 'i.data_inicio_projeto',
-            'ano_fim' => 'i.data_fim_projeto'
-        ];
+        $yearColumns = SQLBuilderUtils::findColumnsTableAlias(
+            $this->icColumns,
+            [
+                // public
+                'ano_inicio',
+                'ano_fim',
+            ]
+        );
 
         SQLBuilderUtils::processFilters(
-            $this->query, 
-            $validated, 
-            $directColumns, 
+            $this->query,
+            $validated,
+            $directColumns,
             $yearColumns
         );
     }

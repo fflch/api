@@ -6,43 +6,36 @@ use App\Utilities\SQLBuilderUtils;
 
 class DefesasRepository extends BaseRepository
 {
-    public function __construct($validated) {
+    private $defesasColumns;
+
+    public function __construct($validated)
+    {
+        $this->defesasColumns = [
+            'dp.id_defesa' => 'id_defesa',
+            'pg.numero_usp' => 'numero_usp',
+            'p.nome' => 'nome',
+            'dp.id_posgraduacao' => 'id_posgraduacao',
+            'pg.nivel_programa' => 'nivel_programa',
+            'pg.codigo_area' => 'codigo_area',
+            'pg.nome_area' => 'nome_area',
+            'pg.codigo_programa' => 'codigo_programa',
+            'pg.nome_programa' => 'nome_programa',
+            'dp.data_defesa' => 'data_defesa',
+            'dp.local_defesa' => 'local_defesa',
+            'dp.mencao_honrosa' => 'mencao_honrosa',
+            'dp.titulo_trabalho' => 'titulo_trabalho',
+        ];
+
         parent::__construct($validated);
     }
 
-    protected function buildSelectClause()
+    protected function buildSelectClause($columnsToHide)
     {
-        return $this->query
-            ->addSelect(
-                SQLBuilderUtils::singleHashSQL(
-                    'dp.id_defesa',
-                    $this->peppers[0],
-                    'id_defesa',
-                    $size = 8
-                ))
-            ->addSelect(
-                SQLBuilderUtils::doubleHashSQL(
-                    'pg.numero_usp',
-                    $this->peppers[0],
-                    $this->peppers[1],
-                    'id_aluno'
-                ))
-            ->addSelect('p.nome AS nome_aluno')
-            ->addSelect(
-                SQLBuilderUtils::singleHashSQL(
-                    'dp.id_posgraduacao',
-                    $this->peppers[0],
-                    'id_posgraduacao'
-                ))
-            ->addSelect('pg.nivel_programa')
-            ->addSelect('pg.codigo_area')
-            ->addSelect('pg.nome_area')
-            ->addSelect('pg.codigo_programa')
-            ->addSelect('pg.nome_programa')
-            ->addSelect('dp.data_defesa')
-            ->addSelect('dp.local_defesa')
-            ->addSelect('dp.mencao_honrosa')
-            ->addSelect('dp.titulo_trabalho');
+        return SQLBuilderUtils::SelectBuildHelper(
+            $this->query,
+            $this->defesasColumns,
+            $columnsToHide
+        );
     }
 
     protected function buildFromClause()
@@ -59,30 +52,33 @@ class DefesasRepository extends BaseRepository
 
     protected function buildWhereClause($validated)
     {
-        $directColumns = [
-            'id_defesa' => SQLBuilderUtils::singleHashSQL(
-                'dp.id_defesa', $this->peppers[0], null, $size = 8
-            ),
-            'id_aluno' => SQLBuilderUtils::doubleHashSQL(
-                'pg.numero_usp', $this->peppers[0], $this->peppers[1]
-            ),
-            'id_posgraduacao' => SQLBuilderUtils::singleHashSQL(
-                'dp.id_posgraduacao', $this->peppers[0]
-            ),
-            'nivel_programa' => 'pg.nivel_programa',
-            'codigo_area' => 'pg.codigo_area',
-            'codigo_programa' => 'pg.codigo_programa',
-            'mencao_honrosa' => 'dp.mencao_honrosa',
-        ];
+        $directColumns = SQLBuilderUtils::findColumnsTableAlias(
+            $this->defesasColumns,
+            [
+                // public
+                'id_defesa',
+                'id_posgraduacao',
+                'nivel_programa',
+                'codigo_area',
+                'codigo_programa',
+                'mencao_honrosa',
+                // private
+                'numero_usp',
+            ]
+        );
 
-        $yearColumns = [
-            'ano_defesa' => 'dp.data_defesa',
-        ];
+        $yearColumns = SQLBuilderUtils::findColumnsTableAlias(
+            $this->defesasColumns,
+            [
+                // public
+                'ano_defesa',
+            ]
+        );
 
         SQLBuilderUtils::processFilters(
-            $this->query, 
-            $validated, 
-            $directColumns, 
+            $this->query,
+            $validated,
+            $directColumns,
             $yearColumns
         );
     }

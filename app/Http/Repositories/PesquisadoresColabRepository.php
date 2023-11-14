@@ -6,30 +6,34 @@ use App\Utilities\SQLBuilderUtils;
 
 class PesquisadoresColabRepository extends BaseRepository
 {
-    public function __construct($validated) {
+    private $pcColumns;
+
+    public function __construct($validated)
+    {
+        $this->pcColumns = [
+            'pa.id_projeto' => 'id_projeto',
+            'pa.numero_usp' => 'numero_usp',
+            'p.nome' => 'nome_pesquisador',
+            'pa.situacao_projeto' => 'situacao_projeto',
+            'pa.codigo_departamento' => 'codigo_departamento',
+            'pa.nome_departamento' => 'nome_departamento',
+            'pa.data_inicio_projeto' => 'data_inicio_projeto',
+            'pa.data_fim_projeto' => 'data_fim_projeto',
+            'pa.titulo_projeto' => 'titulo_projeto',
+            'pa.area_cnpq' => 'area_cnpq',
+            'pa.palavras_chave' => 'palavras_chave',
+        ];
+
         parent::__construct($validated);
     }
 
-    protected function buildSelectClause()
+    protected function buildSelectClause($columnsToHide)
     {
-        return $this->query
-            ->addSelect('pa.id_projeto')
-            ->addSelect(
-                SQLBuilderUtils::doubleHashSQL(
-                    'pa.numero_usp',
-                    $this->peppers[0], 
-                    $this->peppers[1], 
-                    'id_pesquisador'
-                ))
-            ->addSelect('p.nome AS nome_pesquisador')
-            ->addSelect('pa.situacao_projeto')
-            ->addSelect('pa.codigo_departamento')
-            ->addSelect('pa.nome_departamento')
-            ->addSelect('pa.data_inicio_projeto')
-            ->addSelect('pa.data_fim_projeto')
-            ->addSelect('pa.titulo_projeto')
-            ->addSelect('pa.area_cnpq')
-            ->addSelect('pa.palavras_chave');
+        return SQLBuilderUtils::SelectBuildHelper(
+            $this->query,
+            $this->pcColumns,
+            $columnsToHide
+        );
     }
 
     protected function buildFromClause()
@@ -45,25 +49,32 @@ class PesquisadoresColabRepository extends BaseRepository
     {
         $this->query->where('modalidade', 'PC');
 
-        $directColumns = [
-            'id_projeto' => 'pa.id_projeto',
-            'id_pesquisador' => SQLBuilderUtils::doubleHashSQL(
-                'pa.numero_usp', $this->peppers[0], $this->peppers[1]
-            ),
-            'situacao_projeto' => 'pa.situacao_projeto',
-            'codigo_departamento' => 'pa.codigo_departamento',
-            'nome_departamento' => 'pa.nome_departamento',
-        ];
+        $directColumns = SQLBuilderUtils::findColumnsTableAlias(
+            $this->pcColumns,
+            [
+                // public
+                'id_projeto',
+                'situacao_projeto',
+                'codigo_departamento',
+                'nome_departamento',
+                // private
+                'numero_usp',
+            ]
+        );
 
-        $yearColumns = [
-            'ano_inicio' => 'pa.data_inicio_projeto',
-            'ano_fim' => 'pa.data_fim_projeto'
-        ];
+        $yearColumns = SQLBuilderUtils::findColumnsTableAlias(
+            $this->pcColumns,
+            [
+                // public
+                'ano_inicio',
+                'ano_fim',
+            ]
+        );
 
         SQLBuilderUtils::processFilters(
-            $this->query, 
-            $validated, 
-            $directColumns, 
+            $this->query,
+            $validated,
+            $directColumns,
             $yearColumns
         );
     }

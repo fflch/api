@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\PublicRequests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class PaginationRequest extends FormRequest
+class PaginationRequest extends ApiBaseRequest
 {
     public function rules()
     {
