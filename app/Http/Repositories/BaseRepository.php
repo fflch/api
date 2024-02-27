@@ -18,7 +18,7 @@ abstract class BaseRepository
     public function fetchRecords($page, $limit, $columnsToHide)
     {
         $this->buildSelectClause($columnsToHide);
-        $this->query->paginate($limit, 'page', $page);
+        $this->query->paginate($limit, ['*'], 'page', $page);
 
         return $this->query->get();
     }
