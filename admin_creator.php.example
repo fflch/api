@@ -11,12 +11,12 @@ $response = $kernel->handle(
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-$admin = new User();
-$admin->name = 'Admin';
-$admin->email = 'admin@example.com';
-$admin->username = 'admin';
-$admin->password = Hash::make('admin');
-$admin->role = 'admin';
+$admin = new User(); // modify
+$admin->name = 'Admin'; // modify
+$admin->email = 'admin@example.com'; // modify
+$admin->username = 'admin'; // modify
+$admin->password = Hash::make('admin'); // modify
+$admin->role = 'admin'; // do not modify
 $admin->save();
 
 echo "\nAdmin user created successfully!\n\n";

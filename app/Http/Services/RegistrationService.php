@@ -12,9 +12,9 @@ class RegistrationService
     public function findInvitee($request)
     {
         $invitation = Invitation::query()
-        ->where('invited_email', $request->email)
-        ->orderBy('id', 'desc')
-        ->first();
+            ->where('invited_email', $request->email)
+            ->orderBy('id', 'desc')
+            ->first();
 
         if ($invitation && Hash::check($request->invitation, $invitation->invitation_token)) {
             return $invitation;
