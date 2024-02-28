@@ -67,13 +67,11 @@ class DefesasRepository extends BaseRepository
             ]
         );
 
-        $yearColumns = SQLBuilderUtils::findColumnsTableAlias(
-            $this->defesasColumns,
-            [
-                // public
-                'ano_defesa',
-            ]
-        );
+        $yearColumns = [
+            // manually find column table alias (as these columns do not exist)
+            // public
+            'ano_defesa' => 'dp.data_defesa',
+        ];
 
         SQLBuilderUtils::processFilters(
             $this->query,

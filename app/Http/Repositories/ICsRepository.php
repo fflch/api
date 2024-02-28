@@ -66,14 +66,12 @@ class ICsRepository extends BaseRepository
             ]
         );
 
-        $yearColumns = SQLBuilderUtils::findColumnsTableAlias(
-            $this->icColumns,
-            [
-                // public
-                'ano_inicio',
-                'ano_fim',
-            ]
-        );
+        $yearColumns = [
+            // manually find column table alias (as these columns do not exist)
+            // public
+            'ano_inicio' => 'i.data_inicio_projeto',
+            'ano_fim' => 'i.data_fim_projeto',
+        ];
 
         SQLBuilderUtils::processFilters(
             $this->query,

@@ -6,8 +6,12 @@ use Illuminate\Support\Facades\DB;
 
 class SQLBuilderUtils
 {
-    public static function processFilters($query, $validated, $directColumns, $yearColumns)
-    {
+    public static function processFilters(
+        $query,
+        $validated,
+        $directColumns,
+        $yearColumns
+    ) {
         foreach ($validated as $column => $value) {
             if (array_key_exists($column, $directColumns)) {
                 if ($value == "") {

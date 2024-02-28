@@ -66,15 +66,13 @@ class EstagiariosRepository extends BaseRepository
             ]
         );
 
-        $yearColumns = SQLBuilderUtils::findColumnsTableAlias(
-            $this->estagiariosColumns,
-            [
-                // public
-                'ano_inicio_vinculo',
-                'ano_fim_vinculo',
-                'ano_ultima_ocorrencia',
-            ]
-        );
+        $yearColumns = [
+            // manually find column table alias (as these columns do not exist)
+            // public
+            'ano_inicio_vinculo' => 'vs.data_inicio_vinculo',
+            'ano_fim_vinculo' => 'vs.data_fim_vinculo',
+            'ano_ultima_ocorrencia' => 'vs.data_inicio_ultima_ocorrencia',
+        ];
 
         SQLBuilderUtils::processFilters(
             $this->query,

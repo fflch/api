@@ -70,17 +70,15 @@ class DocentesRepository extends BaseRepository
             ]
         );
 
-        $yearColumns = SQLBuilderUtils::findColumnsTableAlias(
-            $this->docentesColumns,
-            [
-                // public
-                'ano_fim_vinculo',
-                'ano_ultima_ocorrencia',
-                'ano_ultima_alteracao_funcional',
-                // private
-                'ano_inicio_vinculo',
-            ]
-        );
+        $yearColumns = [
+            // manually find column table alias (as these columns do not exist)
+            // public
+            'ano_fim_vinculo' => 'vs.data_fim_vinculo',
+            'ano_ultima_ocorrencia' => 'vs.data_inicio_ultima_ocorrencia',
+            'ano_ultima_alteracao_funcional' => 'vs.data_ultima_alteracao_funcional',
+            // private
+            'ano_inicio_vinculo' => 'vs.data_inicio_vinculo',
+        ];
 
         SQLBuilderUtils::processFilters(
             $this->query,
