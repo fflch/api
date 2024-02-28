@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>API FFLCH – Documentação</title>
+    <link rel="icon" type="image/x-icon" href="/img/06_fflch_simbolo.jpg">
+    <link rel="stylesheet" href="/css/docs.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var h3Elements = document.querySelectorAll("h3");
+
+            h3Elements.forEach(function (h3) {
+                h3.addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    var sibling = this.nextElementSibling;
+
+                    while (sibling && sibling.tagName !== "H3") {
+                        if (sibling.style.display === "block") {
+                            sibling.style.display = "none";
+                        } else {
+                            sibling.style.display = "block";
+                        }
+                        sibling = sibling.nextElementSibling;
+                    }
+                });
+
+                // Collapse content initially
+                var sibling = h3.nextElementSibling;
+                while (sibling && sibling.tagName !== "H3") {
+                    sibling.style.display = "none";
+                    sibling = sibling.nextElementSibling;
+                }
+            });
+        });
+    </script>

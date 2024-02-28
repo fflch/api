@@ -5,6 +5,10 @@ use App\Http\Controllers\InvitationsController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\AuthController;
 
+Route::get('/', function () {
+    return response()->file(public_path('docs/docs.html'));
+});
+
 Route::get('invite', [InvitationsController::class, 'index']);
 Route::post('invite', [InvitationsController::class, 'generateInvitation']);
 
