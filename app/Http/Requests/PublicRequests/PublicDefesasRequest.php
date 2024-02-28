@@ -11,7 +11,7 @@ class PublicDefesasRequest extends PaginationRequest
         return array_merge(parent::rules(), [
             'id_defesa' => ['sometimes', 'regex:/^[0-9a-fA-F]{8}$/'],
             'id_posgraduacao' => ['sometimes', 'regex:/^[0-9a-fA-F]{32}$/'],
-            'nivel_programa' => ['sometimes', 'in:ME,DO,DD'],
+            'nivel_programa' => ['sometimes', 'in:' . ValidationUtils::getNiveisPrograma()],
             'codigo_area' => ['sometimes', 'integer'],
             'codigo_programa' => ['sometimes', 'integer'],
             // 'local_defesa' => // ver - corrigir erros e padronizar dados antes

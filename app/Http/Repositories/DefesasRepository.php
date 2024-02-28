@@ -2,6 +2,7 @@
 
 namespace App\Http\Repositories;
 
+use App\Utilities\Deparas;
 use App\Utilities\SQLBuilderUtils;
 
 class DefesasRepository extends BaseRepository
@@ -10,6 +11,12 @@ class DefesasRepository extends BaseRepository
 
     public function __construct($validated)
     {
+        if (isset($validated['nivel_programa'])) {
+            $validated['nivel_programa'] = 
+                Deparas::nivelPg[$validated['nivel_programa']]
+                    ?? $validated['nivel_programa'];
+        }
+
         $this->defesasColumns = [
             'dp.id_defesa' => 'id_defesa',
             'pg.numero_usp' => 'numero_usp',
