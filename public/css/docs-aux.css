@@ -1,0 +1,162 @@
+.markdown-body pre code em {
+    color: #fbfca8;
+
+}
+
+.markdown-body pre code strong {
+    font-weight: 100;
+    font-style: italic;
+    color: #FFA07A;
+}
+
+.markdown-body h3 code {
+    color: lightcoral;
+    background-color: transparent;
+}
+
+h3::before {
+    content: "⮞";
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.active::before,
+.markdown-body .h3:active::before {
+    content: "⮟";
+}
+
+h3:hover {
+    background-color: #262c35;
+}
+
+.active,
+.markdown-body .h3:active {
+    background-color: #262c35;
+}
+
+.markdown-body li code,
+.markdown-body p code {
+    color: lightcoral;
+    padding: .2em .4em;
+    margin: 0;
+    font-size: 85%;
+    white-space: break-spaces;
+    background-color: #161b22;
+    border-radius: 6px
+}
+
+.markdown-body pre code,
+.markdown-body tt {
+    padding: .2em .4em;
+    margin: 0;
+    font-size: 85%;
+    white-space: break-spaces;
+    border-radius: 6px;
+    background-color: transparent;
+}
+
+.markdown-body h3 {
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+
+
+    font-weight: 600;
+    font-size: 1.25em
+}
+
+.markdown-body h2 {
+    font-weight: 600;
+    padding-bottom: .3em;
+    padding-top: 0.5em;
+    font-size: 2em;
+    border-bottom: 1px solid #21262d
+}
+
+.markdown-body h3 {
+    margin-top: 6px;
+    margin-bottom: 4px;
+    /* font-weight: 500; */
+    line-height: 1.25
+}
+
+.markdown-body h1 {
+    margin: 0;
+    font-weight: 600;
+    padding-bottom: 0;
+    font-size: 3em;
+    border-bottom: 0;
+}
+
+.markdown-body h4 {
+    font-size: 1.25em;
+}
+
+.markdown-body {
+    color-scheme: dark;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    margin: 0;
+    color: #e6edf3;
+    background-color: #0d1117;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    font-size: 16px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.markdown-body pre code {
+    font-size: 1.125em;
+    padding: 0;
+}
+
+.markdown-body .pl-ent {
+    color: #b98eff;
+}
+
+.markdown-body .pl-c1,
+.markdown-body .pl-s .pl-v {
+    color: #ff7de9
+}
+
+.markdown-body .pl-pds,
+.markdown-body .pl-s,
+.markdown-body .pl-s .pl-pse .pl-s1,
+.markdown-body .pl-sr,
+.markdown-body .pl-sr .pl-cce,
+.markdown-body .pl-sr .pl-sra,
+.markdown-body .pl-sr .pl-sre {
+    color: #75bfff
+}
+
+.markdown-body .pl-ii {
+    background-color: transparent;
+}
+
+body {
+    margin: 0;
+}
+
+.markdown-body-content {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+}
+
+@media (max-width: 767px) {
+    .markdown-body-content {
+        padding: 15px;
+    }
+}
+
+.markdown-body {
+    --base-size-8: 8px;
+    --base-size-16: 16px;
+}

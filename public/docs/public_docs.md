@@ -2,12 +2,58 @@
 # API FFLCH – Documentação
 ----
 
-## Endpoints
-    
-    
-### `[GET /public/ics]` Lista de iniciações científicas
+## API Base URL
 
-<br>Retorna uma lista com todas os projetos de iniciação científica da FFLCH cadastrados no sistema Atena.
+#### Client API: https://api.fflch.usp.br/
+
+## Count
+
+### `[GET /public/{endpoint}/count]` Número total de registros
+
+<br> ◾ Retorna apenas o número de registros do endpoint.
+
+<br>
+
+#### Parâmetros
+
+Todos aqueles do endpoint buscado, exceto `page` e `limit`.
+
+-------
+
+#### Resposta
+
+Retorna um objeto JSON com a seguinte propriedade:
+
+- `totalRecords`: Número total de registros encontrados.
+
+------
+
+#### Exemplo
+
+- Request:
+
+<pre>
+<code>GET /public/ics/count?<em>nome_departamento</em>=<strong>filosofia</strong>&<em>ano_inicio</em>=<strong>2019</strong>&<em>situacao_projeto</em>=<strong>aprovado</strong></code>
+</pre>
+
+- Response:
+
+```json
+{
+    "total records": 35
+}
+```
+
+
+[---------------------------------------------------------------]: #
+
+## Endpoints    
+    
+### `[GET /public/ics]` Registros de iniciações científicas
+
+<br> ◾ Retorna uma relação com todos os projetos de iniciação científica da FFLCH cadastrados no sistema Atena.
+
+<br>
 
 #### Parâmetros
 
@@ -49,9 +95,9 @@ Retorna um objeto JSON com as seguintes propriedades:
 
 - Request:
 
-```
-GET /public/ics?limit=5&page=4&situacao_projeto=ativo
-```
+<pre>
+<code>GET /public/ics?<em>limit</em>=<strong>5</strong>&<em>page</em>=<strong>4</strong>&<em>situacao_projeto</em>=<strong>ativo</strong></code>
+</pre>
 
 - Response:
 
@@ -82,9 +128,13 @@ GET /public/ics?limit=5&page=4&situacao_projeto=ativo
 
 <br><br>
 
-### `[GET /public/posdocs]` Lista de projetos de pós-doutorado
+[---------------------------------------------------------------]: # 
 
-<br>Retorna uma lista com todas os projetos de pós-doutorado da FFLCH cadastrados no sistema Atena.
+### `[GET /public/posdocs]` Registros de projetos de pós-doutorado
+
+<br> ◾ Retorna uma relação com todos os projetos de pós-doutorado da FFLCH cadastrados no sistema Atena.
+
+<br>
 
 #### Parâmetros
 
@@ -126,9 +176,9 @@ Retorna um objeto JSON com as seguintes propriedades:
 
 - Request:
 
-```
-GET /public/posdocs?id_projeto=2008-131
-```
+<pre>
+<code>GET /public/posdocs?<em>id_projeto</em>=<strong>2008-131</strong></code>
+</pre>
 
 - Response:
 
@@ -158,9 +208,13 @@ GET /public/posdocs?id_projeto=2008-131
 
 <br><br>
 
-### `[GET /public/pcs]` Lista de projetos de pesquisadores colaboradores
+[---------------------------------------------------------------]: # 
 
-<br>Retorna uma lista com todas os projetos de pesquisadores colaboradores da FFLCH cadastrados no sistema Atena.
+### `[GET /public/pcs]` Registros de projetos de pesquisadores colaboradores
+
+<br> ◾ Retorna uma relação com todos os projetos de pesquisadores colaboradores da FFLCH cadastrados no sistema Atena.
+
+<br>
 
 #### Parâmetros
 
@@ -201,9 +255,9 @@ Retorna um objeto JSON com as seguintes propriedades:
 
 - Request:
 
-```
-GET /public/pcs?ano_fim=2019&limit=10
-```
+<pre>
+<code>GET /public/pcs?<em>ano_fim</em>=<strong>2019</strong>&<em>limit</em>=<strong>10</strong></code>
+</pre>
 
 - Response:
 
@@ -233,9 +287,13 @@ GET /public/pcs?ano_fim=2019&limit=10
 
 <br><br>
 
-### `[GET /public/defesas]` Lista de defesas de pós-graduação
+[---------------------------------------------------------------]: # 
 
-<br>Retorna uma lista com todas as defesas de pós-graduação de alunos da FFLCH cadastradas no sistema Janus.
+### `[GET /public/defesas]` Registros de defesas de pós-graduação
+
+<br> ◾ Retorna uma relação com todas as defesas de pós-graduação de alunos da FFLCH cadastradas no sistema Janus.
+
+<br>
 
 #### Parâmetros
 
@@ -279,9 +337,9 @@ Retorna um objeto JSON com as seguintes propriedades:
 
 - Request:
 
-```
-GET /public/defesas?nivel_programa=dd&codigo_area=8137&ano_defesa=gte2019
-```
+<pre>
+<code>GET /public/defesas?<em>nivel_programa</em>=<strong>dd</strong>&<em>codigo_area</em>=<strong>8137</strong>&<em>ano_defesa</em>=<strong>gte2019</strong></code>
+</pre>
 
 - Response:
 
@@ -313,9 +371,13 @@ GET /public/defesas?nivel_programa=dd&codigo_area=8137&ano_defesa=gte2019
 
 <br><br>
 
-### `[GET /public/vinculos/docentes]` Lista de vínculos de docentes
+[---------------------------------------------------------------]: # 
 
-<br>Retorna uma lista com todos os docentes da FFLCH.
+### `[GET /public/vinculos/docentes]` Registros de vínculos de docentes
+
+<br> ◾ Retorna uma relação com todos os docentes da FFLCH.
+
+<br>
 
 #### Parâmetros
 
@@ -361,9 +423,9 @@ Retorna um objeto JSON com as seguintes propriedades:
 
 - Request:
 
-```
-GET /public/vinculos/docentes?referencia=MS-6&nome_ultimo_setor=filosofia
-```
+<pre>
+<code>GET /public/vinculos/docentes?<em>referencia</em>=<strong>MS-6</strong>&<em>nome_ultimo_setor</em>=<strong>filosofia</strong></code>
+</pre>
 
 - Response:
 
@@ -395,9 +457,13 @@ GET /public/vinculos/docentes?referencia=MS-6&nome_ultimo_setor=filosofia
 
 <br><br>
 
-### `[GET /public/vinculos/funcionarios]` Lista de vínculos de funcionários
+[---------------------------------------------------------------]: # 
 
-<br>Retorna uma lista com todos os funcionários da FFLCH.
+### `[GET /public/vinculos/funcionarios]` Registros de vínculos de funcionários
+
+<br> ◾ Retorna uma relação com todos os funcionários da FFLCH.
+
+<br>
 
 #### Parâmetros
 
@@ -448,9 +514,9 @@ Retorna um objeto JSON com as seguintes propriedades:
 
 - Request:
 
-```
-GET /public/vinculos/funcionarios?situacao_atual=ativo&codigo_ultimo_setor=564
-```
+<pre>
+<code>GET /public/vinculos/funcionarios?<em>situacao_atual</em>=<strong>ativo</strong>&<em>codigo_ultimo_setor</em>=<strong>564</strong></code>
+</pre>
 
 - Response:
 
@@ -484,9 +550,13 @@ GET /public/vinculos/funcionarios?situacao_atual=ativo&codigo_ultimo_setor=564
 
 <br><br>
 
-### `[GET /public/vinculos/estagiarios]` Lista de vínculos de estagiários
+[---------------------------------------------------------------]: # 
 
-<br>Retorna uma lista com todos os estagiários da FFLCH.
+### `[GET /public/vinculos/estagiarios]` Registros de vínculos de estagiários
+
+<br> ◾ Retorna uma relação com todos os estagiários da FFLCH.
+
+<br>
 
 #### Parâmetros
 
@@ -533,9 +603,9 @@ Retorna um objeto JSON com as seguintes propriedades:
 
 - Request:
 
-```
-GET /public/vinculos/estagiarios?ano_inicio_vinculo=2021
-```
+<pre>
+<code>GET /public/vinculos/estagiarios?<em>ano_inicio_vinculo</em>=<strong>2021</strong></code>
+</pre>
 
 - Response:
 
@@ -564,4 +634,7 @@ GET /public/vinculos/estagiarios?ano_inicio_vinculo=2021
     ]
 }
 ```
+
 <br><br>
+
+[---------------------------------------------------------------]: # 

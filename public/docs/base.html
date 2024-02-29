@@ -6,17 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>API FFLCH – Documentação</title>
     <link rel="icon" type="image/x-icon" href="/img/06_fflch_simbolo.jpg">
-    <link rel="stylesheet" href="/css/docs.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/docs-aux.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var h3Elements = document.querySelectorAll("h3");
+            var headings = document.querySelectorAll("h3");
 
-            h3Elements.forEach(function (h3) {
-                h3.addEventListener("click", function () {
+            headings.forEach(function (heading) {
+                heading.addEventListener("click", function () {
                     this.classList.toggle("active");
                     var sibling = this.nextElementSibling;
 
-                    while (sibling && sibling.tagName !== "H3") {
+                    while (sibling && !isHeading(sibling)) {
                         if (sibling.style.display === "block") {
                             sibling.style.display = "none";
                         } else {
@@ -27,11 +30,18 @@
                 });
 
                 // Collapse content initially
-                var sibling = h3.nextElementSibling;
-                while (sibling && sibling.tagName !== "H3") {
+                var sibling = heading.nextElementSibling;
+                while (sibling && !isHeading(sibling)) {
                     sibling.style.display = "none";
                     sibling = sibling.nextElementSibling;
                 }
             });
+
+            function isHeading(element) {
+                return element.tagName === "H2" || element.tagName === "H3";
+            }
         });
     </script>
+    <style>
+    </style>
+</head>

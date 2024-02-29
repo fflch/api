@@ -6,7 +6,11 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
-    return response()->file(public_path('docs/docs.html'));
+    return response()->file(public_path('docs/public_docs.html'));
+});
+
+Route::get('/public', function () {
+    return redirect('/');
 });
 
 Route::get('invite', [InvitationsController::class, 'index']);
