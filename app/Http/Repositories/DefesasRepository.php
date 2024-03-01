@@ -2,6 +2,7 @@
 
 namespace App\Http\Repositories;
 
+use App\Utilities\Deparas;
 use App\Utilities\SQLBuilderUtils;
 
 class DefesasRepository extends BaseRepository
@@ -10,6 +11,12 @@ class DefesasRepository extends BaseRepository
 
     public function __construct($validated)
     {
+        if (isset($validated['nivel_programa'])) {
+            $validated['nivel_programa'] = 
+                Deparas::nivelPg[$validated['nivel_programa']]
+                    ?? $validated['nivel_programa'];
+        }
+
         $this->defesasColumns = [
             'dp.id_defesa' => 'id_defesa',
             'pg.numero_usp' => 'numero_usp',
@@ -67,13 +74,11 @@ class DefesasRepository extends BaseRepository
             ]
         );
 
-        $yearColumns = SQLBuilderUtils::findColumnsTableAlias(
-            $this->defesasColumns,
-            [
-                // public
-                'ano_defesa',
-            ]
-        );
+        $yearColumns = [
+            // manually find column table alias (as these columns do not exist)
+            // public
+            'ano_defesa' => 'dp.data_defesa',
+        ];
 
         SQLBuilderUtils::processFilters(
             $this->query,

@@ -19,7 +19,8 @@ class ValidationUtils
         }
 
         return implode(
-            ',', $roles
+            ',',
+            $roles
         );
     }
 
@@ -104,6 +105,20 @@ class ValidationUtils
                 'concurso público',
                 'processo seletivo',
                 'reintegração',
+            ]
+        );
+    }
+
+    public static function getNiveisPrograma()
+    {
+        return self::normalizeArrays(
+            [
+                'ME',
+                'DO',
+                'DD',
+                'Mestrado',
+                'Doutorado',
+                'Doutorado Direto',
             ]
         );
     }

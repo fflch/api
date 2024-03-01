@@ -1,64 +1,114 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# API FFLCH
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+The FFLCH API is a Laravel-based application designed to provide access to comprehensive college data.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requirements
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP 7.4 or higher
+- Composer for dependency management
+- MySQL or any other compatible database
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Deployment instructions
 
-## Learning Laravel
+**1.** First, ensure you have a FFLCH ETL database loaded using the application available at [github.com/fflch/etl](https://github.com/fflch/etl). The API data will come from there.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**2.** Next, have all project dependencies installed:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```sh
+composer install
+```
 
-## Laravel Sponsors
+**3.** Make a copy of *.env.example* and configure your *.env*, providing the necessary database information for both the loaded ETL database [see step 1] and the empty database intended for the API usage.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```sh
+cp .env.example .env
+```
 
-### Premium Partners
+**4.** In order to set up the API database schema, run migrations:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+```sh
+php artisan migrate
+```
 
-## Contributing
+**5.** Make a copy of *admin_creator.php.example* and provide required information if you wish to create an admin account (this is essential for generating API tokens and creating accounts with corresponding privileges).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```sh
+cp admin_creator.php.example admin_creator.php
+```
 
-## Code of Conduct
+After configuring admin info, you can create its account by running:
+```sh
+php admin_creator.php
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**6.** Set up your app with a secure key for deployment:
 
-## Security Vulnerabilities
+```sh
+php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**7.** Finally, to start the Laravel server, run:
 
-## License
+```sh
+php artisan serve
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## API Endpoints
+
+At the moment, FFLCH API provides the following endpoints:
+
+#### **Public access**
+
+- `GET /public/defesas`: Retrieve a list of all FFLCH theses/dissertations defenses (public info only).
+- `GET /public/ics`: Retrieve a list of all FFLCH undergrad research (public info only).
+- `GET /public/posdocs`: Retrieve a list of all FFLCH postdoc students (public info only).
+- `GET /public/pcs`: Retrieve a list of all FFLCH collaborating reseachers (public info only).
+- `GET /public/vinculos/docentes`: Retrieve a list of all FFLCH professors (public info only).
+- `GET /public/vinculos/estagiarios`: Retrieve a list of all FFLCH interns (public info only).
+- `GET /public/vinculos/funcionarios`: Retrieve a list of all FFLCH staff (public info only).
+
+#### **Restricted access**
+
+- `GET /private/defesas`: Retrieve a list (with restricted info) of all FFLCH theses/dissertations defenses.
+- `GET /private/ics`: Retrieve a list (with restricted info) of all FFLCH undergrad research.
+- `GET /private/posdocs`: Retrieve a list (with restricted info) of all FFLCH postdoc students.
+- `GET /private/pcs`: Retrieve a list (with restricted info) of all FFLCH collaborating reseachers.
+- `GET /private/vinculos/docentes`: Retrieve a list (with restricted info) of all FFLCH professors.
+- `GET /private/vinculos/estagiarios`: Retrieve a list (with restricted info) of all FFLCH interns.
+- `GET /private/vinculos/funcionarios`: Retrieve a list (with restricted info) of all FFLCH staff.
+
+## Pagination and filters
+
+### Pagination
+
+By default, the API returns 100 records per page. If you want to adjust this, you can use the `limit` parameter. Additionally, to navigate to different pages of results, you can specify the desired page using the `page` parameter.
+
+- **Example**:
+```
+GET /public/ics?limit=200&page=2
+```
+
+This will fetch records starting from the 201st record up to the 400th record.
+
+### Filters
+
+Moreover, each API endpoint offers some filters that you can use to refine queries and access specific data with ease. Each one will be detailed in the documentation.
+
+- **Example**:
+```
+GET /public/posdocs?ano_inicio=gt2015
+```
+
+This will fetch postdocs records whose start date is later than 2015 (>= 2016).
+
+
+## Authentication
+
+In order to access `/private/*` API endpoints, one must receive an invitation created by someone with corresponding privileges via `/invite` and then register using that invitation at `/register` to obtain an API key. Once registered, one may authenticate their requests by including the key in the request headers:
+
+```
+Authorization: Bearer API_KEY
+```
+New API tokens can be retrieved by registered users at `/login`. **Generating a new token, however, will void all other tokens from user.**

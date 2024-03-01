@@ -62,14 +62,12 @@ class PesquisadoresColabRepository extends BaseRepository
             ]
         );
 
-        $yearColumns = SQLBuilderUtils::findColumnsTableAlias(
-            $this->pcColumns,
-            [
-                // public
-                'ano_inicio',
-                'ano_fim',
-            ]
-        );
+        $yearColumns = [
+            // manually find column table alias (as these columns do not exist)
+            // public
+            'ano_inicio' => 'pa.data_inicio_projeto',
+            'ano_fim' => 'pa.data_fim_projeto',
+        ];
 
         SQLBuilderUtils::processFilters(
             $this->query,
