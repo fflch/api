@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Http\Requests\PublicRequests\InvitationsRequest;
-use App\Http\Services\InvitationsService;
+use App\Http\Requests\PublicRequests\InvitationRequest;
+use App\Http\Services\InvitationService;
 use App\Utilities\ErrorUtils;
 use App\Utilities\ValidationUtils;
 
-class InvitationsController extends Controller
+class InvitationController extends Controller
 {
     private $service;
 
     public function __construct()
     {
-        $this->service = new InvitationsService();
+        $this->service = new InvitationService();
     }
 
     public function index()
@@ -26,10 +26,19 @@ class InvitationsController extends Controller
 
     public function generateInvitation(Request $request)
     {
-        $validator = validator($request->all(), (new InvitationsRequest)->rules());
+        $validationClass = new InvitationRequest;
+
+        $validator = validator(
+            $request->all(),
+            $validationClass->rules(),
+            $validationClass->messages()
+        );
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         if (Auth::attempt($request->only("username", "password"))) {
@@ -42,7 +51,8 @@ class InvitationsController extends Controller
                     ->with(
                         "error",
                         ErrorUtils::invitationPermission
-                    );
+                    )
+                    ->withInput();
             }
         } else {
             return redirect()
@@ -50,7 +60,8 @@ class InvitationsController extends Controller
                 ->with(
                     "error",
                     ErrorUtils::invitationCredentials
-                );
+                )
+                ->withInput();
         }
     }
 }

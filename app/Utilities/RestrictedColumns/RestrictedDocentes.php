@@ -37,10 +37,6 @@ class RestrictedDocentes
             'hide' => [],
             'hash' => []
         ],
-        'comissão' => [
-            'hide' => ['ultima_ocorrencia'],
-            'hash' => []
-        ],
         'externo' => [
             'hide' => [
                 'data_inicio_vinculo',

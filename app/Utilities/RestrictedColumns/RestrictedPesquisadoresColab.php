@@ -28,10 +28,6 @@ class RestrictedPesquisadoresColab
             'hide' => [],
             'hash' => []
         ],
-        'comissão' => [
-            'hide' => ['nome_pesquisador', 'nome_supervisor'],
-            'hash' => []
-        ],
         'externo' => [
             'hide' => ['nome_pesquisador', 'nome_supervisor'],
             'hash' => ['numero_usp', 'numero_usp_supervisor'],

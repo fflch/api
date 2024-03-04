@@ -37,10 +37,6 @@ class RestrictedFuncionarios
             'hide' => [],
             'hash' => []
         ],
-        'comissão' => [
-            'hide' => ['nome'],
-            'hash' => ['numero_usp'],
-        ],
         'externo' => [
             'hide' => ['nome', 'ultima_ocorrencia'],
             'hash' => ['numero_usp'],

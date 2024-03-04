@@ -24,10 +24,19 @@ class RegistrationController extends Controller
 
     public function register(Request $request)
     {
-        $validator = validator($request->all(), (new RegistrationRequest)->rules());
+        $validationClass = new RegistrationRequest;
+
+        $validator = validator(
+            $request->all(),
+            $validationClass->rules(),
+            $validationClass->messages()
+        );
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         // Check invitation info
@@ -39,7 +48,8 @@ class RegistrationController extends Controller
                 ->with(
                     "error",
                     ErrorUtils::registrationCredentials
-                );
+                )
+                ->withInput();
         }
 
         // Check if invitation has expired or was already used
@@ -53,7 +63,8 @@ class RegistrationController extends Controller
                 ->with(
                     "error",
                     ErrorUtils::invalidatedInvitation
-                );
+                )
+                ->withInput();
         }
 
         // Check if username is already in use
@@ -63,7 +74,8 @@ class RegistrationController extends Controller
                 ->with(
                     "error",
                     ErrorUtils::usernameInUse
-                );
+                )
+                ->withInput();
         }
 
         // Create user account

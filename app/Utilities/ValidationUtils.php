@@ -6,15 +6,14 @@ use App\Utilities\CommonUtils;
 
 class ValidationUtils
 {
-    public static function getRoles($type = 'string')
+    public static function getRoles($returnType = 'string')
     {
         $roles = [
             'externo',
-            'comissão',
-            'outro',
+            'comissão de pesquisa',
         ];
 
-        if ($type == 'array') {
+        if ($returnType == 'array') {
             return $roles;
         }
 

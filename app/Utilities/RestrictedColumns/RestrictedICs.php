@@ -30,10 +30,6 @@ class RestrictedICs
             'hide' => [],
             'hash' => []
         ],
-        'comissão' => [
-            'hide' => ['nome', 'nome_orientador'],
-            'hash' => []
-        ],
         'externo' => [
             'hide' => ['nome', 'nome_orientador'],
             'hash' => ['numero_usp', 'numero_usp_orientador'],

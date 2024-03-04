@@ -12,25 +12,6 @@
 </div>
 @endif
 
-<!-- error -->
-@if (session('error'))
-<div class="alert alert-danger text-center">
-    {{ session('error') }}
-</div>
-@endif
-
-<!-- validation errors -->
-@if ($errors->any())
-<div class="alert alert-danger text-center">
-    <ul>
-        @foreach ($errors->all() as $error)
-        {{ $error }}
-        <br>
-        @endforeach
-    </ul>
-</div>
-@endif
-
 <div class="container d-flex align-items-center justify-content-center custom-container">
     <div class="card bg-light">
         <article class="card-body mx-auto" style="max-width: 550px;">

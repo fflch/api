@@ -6,13 +6,21 @@
 
 #### Client API: https://api.fflch.usp.br/
 
+## Autenticação
+
+Para acessar os endpoints `/private/*` da API, é necessário receber um convite criado via [`/convidar`](/convidar) por alguém com os privilégios adequados. Em seguida, o usuário deve se cadastrar em [`/cadastrar`](/cadastrar) utilizando esse convite para obter um primeiro token. Uma vez registrado, é possível autenticar as consultas incluindo esse token no header do request:
+
+```
+Authorization: Bearer TOKEN_API
+```
+
+Novos tokens da API podem ser obtidos pelos usuários registrados em [`/token`](/token). **Ao gerar um novo token, no entanto, todos os tokens anteriores do usuário serão invalidados.**
+
 ## Count
 
 ### `[GET /public/{endpoint}/count]` Número total de registros
 
 <br> ◾ Retorna apenas o número de registros do endpoint.
-
-<br>
 
 #### Parâmetros
 
@@ -52,8 +60,6 @@ Retorna um objeto JSON com a seguinte propriedade:
 ### `[GET /public/ics]` Registros de iniciações científicas
 
 <br> ◾ Retorna uma relação com todos os projetos de iniciação científica da FFLCH cadastrados no sistema Atena.
-
-<br>
 
 #### Parâmetros
 
@@ -134,8 +140,6 @@ Retorna um objeto JSON com as seguintes propriedades:
 
 <br> ◾ Retorna uma relação com todos os projetos de pós-doutorado da FFLCH cadastrados no sistema Atena.
 
-<br>
-
 #### Parâmetros
 
 - `limit` (opcional): Número máximo de registros a ser retornado. Padrão é 100. *[integer]*
@@ -214,8 +218,6 @@ Retorna um objeto JSON com as seguintes propriedades:
 
 <br> ◾ Retorna uma relação com todos os projetos de pesquisadores colaboradores da FFLCH cadastrados no sistema Atena.
 
-<br>
-
 #### Parâmetros
 
 - `limit` (opcional): Número máximo de registros a ser retornado. Padrão é 100. *[integer]*
@@ -292,8 +294,6 @@ Retorna um objeto JSON com as seguintes propriedades:
 ### `[GET /public/defesas]` Registros de defesas de pós-graduação
 
 <br> ◾ Retorna uma relação com todas as defesas de pós-graduação de alunos da FFLCH cadastradas no sistema Janus.
-
-<br>
 
 #### Parâmetros
 
@@ -376,8 +376,6 @@ Retorna um objeto JSON com as seguintes propriedades:
 ### `[GET /public/vinculos/docentes]` Registros de vínculos de docentes
 
 <br> ◾ Retorna uma relação com todos os docentes da FFLCH.
-
-<br>
 
 #### Parâmetros
 
@@ -462,8 +460,6 @@ Retorna um objeto JSON com as seguintes propriedades:
 ### `[GET /public/vinculos/funcionarios]` Registros de vínculos de funcionários
 
 <br> ◾ Retorna uma relação com todos os funcionários da FFLCH.
-
-<br>
 
 #### Parâmetros
 
@@ -555,8 +551,6 @@ Retorna um objeto JSON com as seguintes propriedades:
 ### `[GET /public/vinculos/estagiarios]` Registros de vínculos de estagiários
 
 <br> ◾ Retorna uma relação com todos os estagiários da FFLCH.
-
-<br>
 
 #### Parâmetros
 

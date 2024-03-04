@@ -16,7 +16,7 @@
 <br>
 <p class="text-center">
     Para obter um novo token, acesse
-    <a href="https://api.fflch.usp.br/login">
-        api.fflch.usp.br/login</a>.
+    <a href="https://api.fflch.usp.br/token">
+        api.fflch.usp.br/token</a>.
 </p>
 @endsection

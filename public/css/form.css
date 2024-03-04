@@ -37,7 +37,7 @@
 }
 
 body {
-    background-color: #122859;
+    background-color: #0d1117;
 }
 
 .card-title {
@@ -45,4 +45,18 @@ body {
     border-bottom: 1px solid #999;
     padding-bottom: 5px;
     margin-bottom: 24px;
+}
+
+.validation-error {
+    color: red;
+    font-size: 0.8em;
+    margin-top: -1em;
+    margin-bottom: 1.5em;
+}
+
+.session-error {
+    color: red;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    font-size: 0.8em;
 }
