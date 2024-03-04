@@ -10,7 +10,6 @@ class ValidationUtils
     {
         $roles = [
             'externo',
-            'comissão de pesquisa',
         ];
 
         if ($returnType == 'array') {

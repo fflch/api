@@ -14,8 +14,11 @@ class CreateInvitationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('invitations', function (Blueprint $table) {
-            $roles = ValidationUtils::getRoles('array');
+        $roles = [
+            'externo',
+        ];
+
+        Schema::create('invitations', function (Blueprint $table) use ($roles) {
             $table->id();
             $table->string('invited_email');
             $table->string('invitation_token')->unique();
