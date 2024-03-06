@@ -28,10 +28,19 @@ class AuthController extends Controller
 
     public function auth(Request $request)
     {
-        $validator = validator($request->all(), (new AuthRequest)->rules());
+        $validationClass = new AuthRequest;
+
+        $validator = validator(
+            $request->all(),
+            $validationClass->rules(),
+            $validationClass->messages()
+        );
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         if (Auth::attempt($request->only('username', 'password'))) {
@@ -52,7 +61,8 @@ class AuthController extends Controller
                     ->with(
                         "error",
                         ErrorUtils::deactivatedUser($user_validity)
-                    );
+                    )
+                    ->withInput();
             }
         } else {
             return redirect()
@@ -60,7 +70,8 @@ class AuthController extends Controller
                 ->with(
                     "error",
                     ErrorUtils::authCredentials
-                );
+                )
+                ->withInput();
         }
     }
 }

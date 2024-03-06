@@ -106,9 +106,9 @@ This will fetch postdocs records whose start date is later than 2015 (>= 2016).
 
 ## Authentication
 
-In order to access `/private/*` API endpoints, one must receive an invitation created by someone with corresponding privileges via `/invite` and then register using that invitation at `/register` to obtain an API key. Once registered, one may authenticate their requests by including the key in the request headers:
+In order to access `/private/*` API endpoints, one must receive an invitation created by someone with corresponding privileges via `/convidar` and then register using that invitation at `/cadastrar` to obtain an API key. Once registered, one may authenticate their requests by including the key in the request headers:
 
 ```
 Authorization: Bearer API_KEY
 ```
-New API tokens can be retrieved by registered users at `/login`. **Generating a new token, however, will void all other tokens from user.**
+New API tokens can be retrieved by registered users at `/token`. **Generating a new token, however, will void all other tokens from user.**

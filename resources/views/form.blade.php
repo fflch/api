@@ -1,7 +1,9 @@
 @extends('layout')
 
 @section('custom-styles')
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/form.css') }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 @endsection
 
 @section('content')
@@ -12,32 +14,22 @@
 </div>
 @endif
 
-<!-- error -->
-@if (session('error'))
-<div class="alert alert-danger text-center">
-    {{ session('error') }}
-</div>
-@endif
-
-<!-- validation errors -->
-@if ($errors->any())
-<div class="alert alert-danger text-center">
-    <ul>
-        @foreach ($errors->all() as $error)
-        {{ $error }}
-        <br>
-        @endforeach
-    </ul>
-</div>
-@endif
-
-<div class="container d-flex align-items-center justify-content-center custom-container">
-    <div class="card bg-light">
-        <article class="card-body mx-auto" style="max-width: 550px;">
-            <h4 class="card-title mt-3 text-center">@yield('card-title')</h4>
-            <p class="text-center">API FFLCH</p>
-            @yield('form-content')
-        </article>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-primary" style="max-width: 440px; margin: 0 auto;">
+                <div class="card-body">
+                    <h4 class="card-title text-center mt-2">
+                        @yield('card-title')
+                    </h4>
+                    <p class="card-subtitle text-muted text-center mb-4">API FFLCH</p>
+                    <div class="content-wrapper">
+                        @yield('form-content')
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4"></div>
+        </div>
     </div>
 </div>
 @endsection

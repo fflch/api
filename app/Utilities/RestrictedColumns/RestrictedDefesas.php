@@ -30,10 +30,6 @@ class RestrictedDefesas
             'hide' => [],
             'hash' => []
         ],
-        'comissão' => [
-            'hide' => ['nome'],
-            'hash' => []
-        ],
         'externo' => [
             'hide' => ['nome'],
             'hash' => ['numero_usp'],

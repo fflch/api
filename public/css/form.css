@@ -23,9 +23,9 @@
 }
 
 .card-body {
-    padding-left: 4rem;
-    padding-right: 4rem;
-    padding-top: 1.5rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    padding-top: 2rem;
     padding-bottom: 2.5rem;
 }
 
@@ -37,12 +37,27 @@
 }
 
 body {
-    background-color: #122859;
+    background-color: #0d1117;
 }
 
 .card-title {
     font-weight: bold;
-    border-bottom: 1px solid #999;
-    padding-bottom: 5px;
-    margin-bottom: 24px;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.validation-error {
+    color: red;
+    font-size: 0.8em;
+    margin-top: -1em;
+    margin-bottom: 1.5em;
+}
+
+.session-error {
+    color: red;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    font-size: 0.8em;
 }

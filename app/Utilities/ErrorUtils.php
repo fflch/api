@@ -5,33 +5,34 @@ namespace App\Utilities;
 class ErrorUtils
 {
     const invitationPermission =
-    "Sorry, it looks like you do not have " .
-        "permission to create an invitation.";
+    "Desculpe, parece que você não tem" .
+        "permissão para criar um convite.";
 
     const invitationCredentials =
-    "Invalid credentials";
+    "Credenciais inválidas";
 
     const registrationCredentials =
-    "Invalid credentials. Please check your " .
-        "email and invitation token and try again.";
+    "Credenciais inválidas. Por favor, verifique seu " .
+        "e-mail e token de convite e tente novamente.";
 
     const invalidatedInvitation =
-    "Sorry, your invitation token has expired or " .
-        "was already used to create an account. " .
-        "Please reach out to our IT department.";
+    "Desculpe, seu convite expirou ou " .
+        "já foi utilizado para criar uma conta. " .
+        "Por favor, entre em contato com " .
+        "nosso departamento de TI.";
 
     const usernameInUse =
-    "Username already exists. Please choose a different one.";
+    "Nome de usuário já existe. Por favor, escolha outro.";
 
     const authCredentials =
-    "Invalid credentials. Check your email " .
-        "and password and try again.";
+    "Credenciais inválidas. Verifique seu e-mail " .
+        "e senha e tente novamente.";
 
     public static function deactivatedUser($user_validity)
     {
-        return "Your account was deactivated on $user_validity, " .
-            "resulting in the loss of access to our API. " .
-            "Feel free to contact our IT department if you " .
-            "need to request renewed access";
+        return "Sua conta foi desativada em $user_validity, " .
+            "resultando na perda de acesso à nossa API. " .
+            "Caso precise solicitar novo acesso, entre em contato " .
+            "com nosso departamento de TI.";
     }
 }

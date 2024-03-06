@@ -15,10 +15,12 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $roles = ValidationUtils::getRoles('array');
-            $roles[] = 'admin';
+        $roles = [
+            'admin',
+            'externo',
+        ];
 
+        Schema::create('users', function (Blueprint $table) use ($roles) {
             $table->id();
             $table->string('name');
             $table->string('invitation_token')->unique()->nullable();

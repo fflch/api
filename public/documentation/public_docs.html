@@ -50,10 +50,14 @@
 <hr>
 <h2>API Base URL</h2>
 <h4>Client API: <a href="https://api.fflch.usp.br/" rel="nofollow">https://api.fflch.usp.br/</a></h4>
+<h2>Autenticação</h2>
+<p>Para acessar os endpoints <code class="notranslate">/private/*</code> da API, é necessário receber um convite criado via <a href="/convidar"><code class="notranslate">/convidar</code></a> por alguém com os privilégios adequados. Em seguida, o usuário deve se cadastrar em <a href="/cadastrar"><code class="notranslate">/cadastrar</code></a> utilizando esse convite para obter um primeiro token. Uma vez registrado, é possível autenticar as consultas incluindo esse token no header do request:</p>
+<pre class="notranslate"><code class="notranslate">Authorization: Bearer TOKEN_API
+</code></pre>
+<p>Novos tokens da API podem ser obtidos pelos usuários registrados em <a href="/token"><code class="notranslate">/token</code></a>. <strong>Ao gerar um novo token, no entanto, todos os tokens anteriores do usuário serão invalidados.</strong></p>
 <h2>Count</h2>
 <h3><code class="notranslate">[GET /public/{endpoint}/count]</code> Número total de registros</h3>
 <p><br> ◾ Retorna apenas o número de registros do endpoint.</p>
-<br>
 <h4>Parâmetros</h4>
 <p>Todos aqueles do endpoint buscado, exceto <code class="notranslate">page</code> e <code class="notranslate">limit</code>.</p>
 <hr>
@@ -78,7 +82,6 @@
 <h2>Endpoints</h2>
 <h3><code class="notranslate">[GET /public/ics]</code> Registros de iniciações científicas</h3>
 <p><br> ◾ Retorna uma relação com todos os projetos de iniciação científica da FFLCH cadastrados no sistema Atena.</p>
-<br>
 <h4>Parâmetros</h4>
 <ul>
 <li><code class="notranslate">limit</code> (opcional): Número máximo de registros a ser retornado. Padrão é 100. <em>[integer]</em></li>
@@ -149,7 +152,6 @@
 <p><br><br></p>
 <h3><code class="notranslate">[GET /public/posdocs]</code> Registros de projetos de pós-doutorado</h3>
 <p><br> ◾ Retorna uma relação com todos os projetos de pós-doutorado da FFLCH cadastrados no sistema Atena.</p>
-<br>
 <h4>Parâmetros</h4>
 <ul>
 <li><code class="notranslate">limit</code> (opcional): Número máximo de registros a ser retornado. Padrão é 100. <em>[integer]</em></li>
@@ -219,7 +221,6 @@
 <p><br><br></p>
 <h3><code class="notranslate">[GET /public/pcs]</code> Registros de projetos de pesquisadores colaboradores</h3>
 <p><br> ◾ Retorna uma relação com todos os projetos de pesquisadores colaboradores da FFLCH cadastrados no sistema Atena.</p>
-<br>
 <h4>Parâmetros</h4>
 <ul>
 <li><code class="notranslate">limit</code> (opcional): Número máximo de registros a ser retornado. Padrão é 100. <em>[integer]</em></li>
@@ -288,7 +289,6 @@
 <p><br><br></p>
 <h3><code class="notranslate">[GET /public/defesas]</code> Registros de defesas de pós-graduação</h3>
 <p><br> ◾ Retorna uma relação com todas as defesas de pós-graduação de alunos da FFLCH cadastradas no sistema Janus.</p>
-<br>
 <h4>Parâmetros</h4>
 <ul>
 <li><code class="notranslate">limit</code> (opcional): Número máximo de registros a ser retornado. Padrão é 100. <em>[integer]</em></li>
@@ -362,7 +362,6 @@
 <p><br><br></p>
 <h3><code class="notranslate">[GET /public/vinculos/docentes]</code> Registros de vínculos de docentes</h3>
 <p><br> ◾ Retorna uma relação com todos os docentes da FFLCH.</p>
-<br>
 <h4>Parâmetros</h4>
 <ul>
 <li><code class="notranslate">limit</code> (opcional): Número máximo de registros a ser retornado. Padrão é 100. <em>[integer]</em></li>
@@ -438,7 +437,6 @@
 <p><br><br></p>
 <h3><code class="notranslate">[GET /public/vinculos/funcionarios]</code> Registros de vínculos de funcionários</h3>
 <p><br> ◾ Retorna uma relação com todos os funcionários da FFLCH.</p>
-<br>
 <h4>Parâmetros</h4>
 <ul>
 <li><code class="notranslate">limit</code> (opcional): Número máximo de registros a ser retornado. Padrão é 100. <em>[integer]</em></li>
@@ -521,7 +519,6 @@
 <p><br><br></p>
 <h3><code class="notranslate">[GET /public/vinculos/estagiarios]</code> Registros de vínculos de estagiários</h3>
 <p><br> ◾ Retorna uma relação com todos os estagiários da FFLCH.</p>
-<br>
 <h4>Parâmetros</h4>
 <ul>
 <li><code class="notranslate">limit</code> (opcional): Número máximo de registros a ser retornado. Padrão é 100. <em>[integer]</em></li>

@@ -7,7 +7,7 @@ use Illuminate\Support\Carbon;
 use App\Utilities\CommonUtils;
 use Illuminate\Support\Facades\Hash;
 
-class InvitationsService
+class InvitationService
 {
     public function getInvitation($request)
     {
