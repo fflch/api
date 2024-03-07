@@ -14,11 +14,15 @@ class RecordsResponse
         ?string $warning
     )
     {
+        $displayRange = 
+            SQLBuilderUtils::displayRange($page, $limit, $totalRecords);
+
         isset($warning) ? $this->warning = $warning : null;
         $this->totalRecords = $totalRecords;
         $this->page = $page;
         $this->limit = $limit;
-        $this->displayingRecords = SQLBuilderUtils::rangeDisplay($page, $limit, $totalRecords);
+        $this->topRecord = $displayRange['lowerLimit'];
+        $this->bottomRecord = $displayRange['upperLimit'];
         $this->records = $records;
     }
 }

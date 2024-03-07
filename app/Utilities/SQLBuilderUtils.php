@@ -47,19 +47,26 @@ class SQLBuilderUtils
         return '=';
     }
 
-    public static function rangeDisplay($page, $limit, $totalRecords)
+    public static function displayRange($page, $limit, $totalRecords)
     {
-        $limiteInferior = (($limit * ($page - 1)) + 1);
-        $limiteSuperior = ($limit * $page);
+        $lowerLimit = (($limit * ($page - 1)) + 1);
+        $upperLimit = ($limit * $page);
 
-        $display = $limiteInferior > $totalRecords
-            ? "No records in this page"
-            : ($totalRecords > $limiteSuperior
-                ? $limiteInferior . "-" . $limiteSuperior
-                : $limiteInferior . "-" . $totalRecords
-            );
+        if ($lowerLimit > $totalRecords) {
+            return [
+                'lowerLimit' => "No records in this page",
+                'upperLimit' => "No records in this page"
+            ];
+        }
 
-        return $display;
+        if ($upperLimit > $totalRecords) {
+            $upperLimit = $totalRecords;
+        }
+
+        return [
+            'lowerLimit' => $lowerLimit,
+            'upperLimit' => $upperLimit
+        ];
     }
 
     public static function SelectBuildHelper($query, $columns, $columnsToHide)
