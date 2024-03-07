@@ -14,7 +14,7 @@ class PrivateDocentesRequest extends PublicDocentesRequest
             'situacao_atual' => ['sometimes', 'in:' . ValidationUtils::getServidoresSituacoes()],
             'tipo_ingresso' => ['sometimes', 'in:' . ValidationUtils::getServidoresTiposIngresso()],
             'ultima_ocorrencia' => ['sometimes', 'regex:/^[\p{L}0-9\-()]*$/u'],
-            'ano_inicio_vinculo' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{4}$|\d{4})$/'],
+            'ano_inicio_vinculo' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{1,4}$|\d{1,4})$/'],
         ]);
     }
 }

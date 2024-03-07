@@ -14,9 +14,9 @@ class PublicDocentesRequest extends PaginationRequest
             'referencia' => ['sometimes', 'regex:/^[\p{L}0-9\-]*$/u'],
             'tipo_jornada' => ['sometimes', 'regex:/^[\p{L}0-9]*$/u'],
 
-            'ano_fim_vinculo' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{4}$|\d{4})$/'],
-            'ano_ultima_ocorrencia' =>['sometimes', 'regex:/^((gt|lt|gte|lte)\d{4}$|\d{4})$/'],
-            'ano_ultima_alteracao_funcional' =>['sometimes', 'regex:/^((gt|lt|gte|lte)\d{4}$|\d{4})$/'],
+            'ano_fim_vinculo' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{1,4}$|\d{1,4})$/'],
+            'ano_ultima_ocorrencia' =>['sometimes', 'regex:/^((gt|lt|gte|lte)\d{1,4}$|\d{1,4})$/'],
+            'ano_ultima_alteracao_funcional' =>['sometimes', 'regex:/^((gt|lt|gte|lte)\d{1,4}$|\d{1,4})$/'],
         ]);
     }
 }

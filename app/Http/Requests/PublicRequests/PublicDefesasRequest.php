@@ -17,7 +17,7 @@ class PublicDefesasRequest extends PaginationRequest
             // 'local_defesa' => // ver - corrigir erros e padronizar dados antes
             'mencao_honrosa' => ['sometimes', 'nullable', 'in:' . ValidationUtils::getPGMencoes()],
 
-            'ano_defesa' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{4}$|\d{4})$/'],
+            'ano_defesa' => ['sometimes', 'regex:/^((gt|lt|gte|lte)\d{1,4}$|\d{1,4})$/'],
         ]);
     }
 }

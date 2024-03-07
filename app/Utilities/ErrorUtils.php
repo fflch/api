@@ -5,7 +5,7 @@ namespace App\Utilities;
 class ErrorUtils
 {
     const invitationPermission =
-    "Desculpe, parece que você não tem" .
+    "Desculpe, parece que você não tem " .
         "permissão para criar um convite.";
 
     const invitationCredentials =
