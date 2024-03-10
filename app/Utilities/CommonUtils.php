@@ -11,18 +11,40 @@ class CommonUtils
         $lowercasedArray = [];
 
         foreach ($array as $key => $value) {
-            if ($value === null) {
-                $lowercasedArray[mb_strtolower($key, 'UTF-8')] = null;
+            $lowercasedKey = mb_strtolower($key);
+
+            if (is_array($value)) {
+                $lowercasedValue = self::arrayToLower($value);
+            } else {
+                $lowercasedValue = mb_strtolower($value);
             }
-            else {
-                $lowercasedArray[mb_strtolower($key, 'UTF-8')] = mb_strtolower($value, 'UTF-8');
-            }
+
+            $lowercasedArray[$lowercasedKey] = $lowercasedValue;
         }
 
         return $lowercasedArray;
     }
 
     public static function removeArrayDiacritics($array)
+    {
+        $cleanArray = [];
+
+        foreach ($array as $key => $value) {
+            $cleanKey = self::removeStringDiacritics($key);
+
+            if (is_array($value)) {
+                $cleanValue = self::removeArrayDiacritics($value);
+            } else {
+                $cleanValue = self::removeStringDiacritics($value);
+            }
+
+            $cleanArray[$cleanKey] = $cleanValue;
+        }
+
+        return $cleanArray;
+    }
+
+    private static function removeStringDiacritics($value)
     {
         $diacritics = [
             'á' => 'a',
@@ -40,22 +62,8 @@ class CommonUtils
             'ç' => 'c',
         ];
 
-        $cleanedArray = [];
-
-        foreach ($array as $key => $value) {
-            $cleanedKey = strtr($key, $diacritics);
-            if ($value === null) {
-                $cleanedArray[$cleanedKey] = null;
-            } 
-            else {
-                $cleanedValue = strtr($value, $diacritics);
-                $cleanedArray[$cleanedKey] = $cleanedValue;
-            }
-        }
-
-        return $cleanedArray;
+        return strtr($value, $diacritics);
     }
-
     public static function generateRandomToken(int $size = 32)
     {
         $combinedString = Str::random(32) . now()->timestamp;
@@ -75,7 +83,7 @@ class CommonUtils
 
         $combinedString = "";
 
-        for($i = 0; $i < $maxLen; $i++) {
+        for ($i = 0; $i < $maxLen; $i++) {
             if ($i < $valueLen) {
                 $combinedString .= $stringValue[$i] . "-";
             }
