@@ -14,8 +14,11 @@ class AuthService
         // $user->tokens()->delete();
 
         $token = $user->createToken('new-token');
+        
+        $tokenParts = explode('|', $token->plainTextToken);
+        $cleanPlainTextToken = end($tokenParts);
 
-        return $token->plainTextToken;
+        return $cleanPlainTextToken;
     }
 
     private function nullifyEveryOtherApiTokenFromUser($user_id)

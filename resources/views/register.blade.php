@@ -58,6 +58,6 @@
 
     @include('components.sessionError')
 
-    <p class="text-center">Já possui uma conta? <a href="https://api.fflch.usp.br/token">Resgate um novo token</a>!</p> 
+    <p class="text-center">Já possui uma conta? <a href="/token">Resgate um novo token</a>!</p> 
 </form>
 @endsection

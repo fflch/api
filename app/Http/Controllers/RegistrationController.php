@@ -89,9 +89,12 @@ class RegistrationController extends Controller
 
         $deactivation_date = date("d/m/Y \à\s H\hm", strtotime($newUser->deactivation_date));
 
+        $tokenParts = explode('|', $token->plainTextToken);
+        $cleanPlainTextToken = end($tokenParts);
+
         return view(
             'account_created',
-            ['info' => [$token->plainTextToken, $deactivation_date]]
+            ['info' => [$cleanPlainTextToken, $deactivation_date]]
         );
     }
 }
