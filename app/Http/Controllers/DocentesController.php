@@ -2,43 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Services\DocentesService;
-use App\Http\Requests\PublicRequests\PublicDocentesRequest;
-use App\Http\Requests\PrivateRequests\PrivateDocentesRequest;
+use App\Http\Requests\DocentesRequest;
+use App\Http\Resources\DocenteCollection;
+use App\Http\Services\DataService;
 
 class DocentesController extends Controller
 {
-    private $service;
-
-    public function __construct()
+    public function index(DocentesRequest $request)
     {
-        $this->service = new DocentesService();
-    }
+        $validatedRequest = $request->validated();
+        $primary = 'docentes';
+        $joined = ['pessoa' => 'pessoas'];
 
-    public function public(PublicDocentesRequest $request)
-    {
-        return response()->json(
-            $this->service->publicGetDocentes(
-                $request->validated()
-            ),
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
+        $results = (new DataService)->getFilteredData(
+            $primary,
+            $joined,
+            $validatedRequest
         );
-    }
 
-    public function private(PrivateDocentesRequest $request)
-    {
-        $userRole = $request->user()->role;
-
-        return response()->json(
-            $this->service->privateGetDocentes(
-                $request->validated(),
-                $userRole
-            ),
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+        return new DocenteCollection($results, $primary, $joined);
     }
 }

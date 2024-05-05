@@ -27,10 +27,10 @@ class ValidateAllowedColumns implements Rule
      */
     public function passes($attribute, $value)
     {
-        foreach ($value as $column => $boolOrArray) {
+        foreach ($value as $column => $trueOrArray) {
             if (
                 !$this->isColumnAllowed($column) &&
-                $this->isFetchingColumn($boolOrArray)
+                $this->isFetchingColumn($trueOrArray)
             ) {
                 $this->unallowedColumn = $column;
                 return false;

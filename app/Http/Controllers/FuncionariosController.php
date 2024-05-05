@@ -2,43 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Services\FuncionariosService;
-use App\Http\Requests\PublicRequests\PublicFuncionariosRequest;
-use App\Http\Requests\PrivateRequests\PrivateFuncionariosRequest;
+use App\Http\Requests\FuncionariosRequest;
+use App\Http\Resources\FuncionarioCollection;
+use App\Http\Services\DataService;
 
 class FuncionariosController extends Controller
 {
-    private $service;
-
-    public function __construct()
+    public function index(FuncionariosRequest $request)
     {
-        $this->service = new FuncionariosService();
-    }
+        $validatedRequest = $request->validated();
 
-    public function public(PublicFuncionariosRequest $request)
-    {
-        return response()->json(
-            $this->service->publicGetFuncionarios(
-                $request->validated()
-            ),
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
+        $primary = 'funcionarios';
+        $joined = ['pessoa' => 'pessoas'];
+
+        $results = (new DataService)->getFilteredData(
+            $primary,
+            $joined,
+            $validatedRequest
         );
-    }
 
-    public function private(PrivateFuncionariosRequest $request)
-    {
-        $userRole = $request->user()->role;
-
-        return response()->json(
-            $this->service->privateGetFuncionarios(
-                $request->validated(),
-                $userRole
-            ),
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+        return new FuncionarioCollection($results, $primary, $joined);
     }
 }

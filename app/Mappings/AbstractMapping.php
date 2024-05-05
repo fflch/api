@@ -4,7 +4,7 @@ namespace App\Mappings;
 
 abstract class AbstractMapping
 {
-    protected $allowedColumnsAndFilters;
+    protected $allowedColumnsAndFilters, $fullyAllowedColumnsAndFilters, $toHide, $toHash;
 
     public function __construct()
     {
@@ -13,16 +13,24 @@ abstract class AbstractMapping
         $accessLevels = $this->getAccessLevels();
         $columnsAndFilters = $this->getColumnsAndFilters();
 
+        $this->toHide = $accessLevels[$userRole]['HIDE'];
+        $this->toHash = $accessLevels[$userRole]['HASH'];
+
+        $this->allowedColumnsAndFilters = $this->filterColumnsAndFilters(
+            $columnsAndFilters,
+            $this->toHide
+        );
+    }
+
+    private function filterColumnsAndFilters($columnsAndFilters, $filters)
+    {
         foreach ($columnsAndFilters as $key => $value) {
-            if (
-                in_array($key, $accessLevels[$userRole]['HIDE']) ||
-                in_array($key, $accessLevels[$userRole]['HASH'])
-            ) {
+            if (in_array($key, $filters)) {
                 unset($columnsAndFilters[$key]);
             }
         }
 
-        $this->allowedColumnsAndFilters = $columnsAndFilters;
+        return $columnsAndFilters;
     }
 
     abstract public static function getAccessLevels();
@@ -36,8 +44,14 @@ abstract class AbstractMapping
 
     public function getAllowedFilters()
     {
+        // also filter out those columns that will be hashed
+        $fullyAllowedColumnsAndFilters = $this->filterColumnsAndFilters(
+            $this->allowedColumnsAndFilters,
+            $this->toHash
+        );
+
         $allowedFilters = [];
-        foreach ($this->allowedColumnsAndFilters as $column) {
+        foreach ($fullyAllowedColumnsAndFilters as $column) {
             foreach ($column['filters'] as $filter) {
                 $filterName = $filter['name'];
                 unset($filter['name']);
@@ -47,5 +61,15 @@ abstract class AbstractMapping
         }
 
         return $allowedFilters;
+    }
+
+    public function getColumnsToBeHashed()
+    {
+        return $this->toHash;
+    }
+
+    public function getColumnsToBeHidden()
+    {
+        return $this->toHide;
     }
 }

@@ -8,12 +8,11 @@ trait ProcessFiltersTrait
         $query,
         $mappingClass,
         $requestedFilters
-    )
-    {
+    ) {
         $this->processFilters(
             $query,
             $mappingClass,
-            $requestedFilters 
+            $requestedFilters
         );
     }
 
@@ -21,12 +20,10 @@ trait ProcessFiltersTrait
         $query,
         $mappingClass,
         $requestedFilters,
-        $table,
         $prefix
-    )
-    {
+    ) {
         $query->whereHas(
-            $table,
+            $prefix,
             function ($query)
             use ($prefix, $mappingClass, $requestedFilters) {
                 $this->processFilters(

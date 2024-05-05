@@ -72,7 +72,7 @@ class CommonUtils
         return substr($token, 0, $size);
     }
 
-    public static function hashValue($value, $len)
+    public static function hashValue($value, int $len = 24)
     {
         $pepper = strrev($_ENV['API_HASH_PEPPER']);
         $stringValue = strrev((string)$value);
@@ -92,8 +92,13 @@ class CommonUtils
             }
         }
 
-        $hash = (hash('sha256', $combinedString));
+        $hash = hash('sha256', $combinedString);
 
         return strtoupper(substr($hash, 0, $len));
+    }
+
+    public static function isMultidimensional(array $array)
+    {
+        return count($array) !== count($array, COUNT_RECURSIVE);
     }
 }

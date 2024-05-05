@@ -4,16 +4,57 @@ namespace App\Utilities;
 
 class ResourcesUtils
 {
+    public static function getRestrictedColumns($primaryTable, $joinedTables)
+    {
+        $restrictedColumns = [
+            'hide' => [],
+            'hash' => [],
+        ];
+
+        $tableMap = include(__DIR__ . '/../../config/tablemap.php');
+
+        self::getPrimaryTableRestrictedCols(
+            $tableMap[$primaryTable]['mapping'],
+            $restrictedColumns
+        );
+
+        foreach ($joinedTables as $prefix => $joinedTable) {
+            self::getJoinedTableRestrictedCols(
+                $tableMap[$joinedTable]['mapping'],
+                $prefix,
+                $restrictedColumns
+            );
+        }
+
+        return $restrictedColumns;
+    }
+
+    private static function getPrimaryTableRestrictedCols($mapping, &$restrictedColumns)
+    {
+        $tableHiddenColumns = (new $mapping)->getColumnsToBeHidden();
+        $tableHashedColumns = (new $mapping)->getColumnsToBeHashed();
+
+        array_push($restrictedColumns['hide'], ...$tableHiddenColumns);
+        array_push($restrictedColumns['hash'], ...$tableHashedColumns);
+    }
+
+    private static function getJoinedTableRestrictedCols($mapping, $prefix, &$restrictedColumns)
+    {
+        $tableHiddenColumns = (new $mapping)->getColumnsToBeHidden();
+        $tableHashedColumns = (new $mapping)->getColumnsToBeHashed();
+
+        $restrictedColumns['hide'][$prefix] = $tableHiddenColumns;
+        $restrictedColumns['hash'][$prefix] = $tableHashedColumns;
+    }
+
     public static function filterColumnsByRequestAndPermission(
         $responseData,
-        $accessLevels,
-        $userRole,
+        $restrictedColumns,
         $request
     ) {
         $responseData = self::hideAndHashRestrictedColumns(
             $responseData,
-            $accessLevels,
-            $userRole
+            $restrictedColumns,
         );
 
         return self::filterColumnsByRequest($responseData, $request);
@@ -25,91 +66,97 @@ class ResourcesUtils
     ) {
         if (isset($request->all()['columns'])) {
             $requestedColumns = $request->all()['columns'];
+
             foreach ($data as &$record) {
-                $record = self::getRequestedColumns($record, $requestedColumns);
+                $record = self::applyMask($record, $requestedColumns);
             }
         }
 
         return $data;
     }
 
-    private static function hideAndHashRestrictedColumns($data, $accessLevels, $userRole)
+    private static function applyMask($record, $mask)
     {
-        if (
-            !isset($accessLevels[$userRole]['HIDE']) ||
-            !isset($accessLevels[$userRole]['HASH'])
-        ) {
-            return ErrorUtils::generateJsonErrorResponse(
-                500,
-                'Internal Server Error'
-            );
+        $result = [];
+
+        foreach ($mask as $key => $value) {
+            if (is_array($value)) {
+                if (isset($record[$key]) && is_array($record[$key])) {
+                    $result[$key] = self::applyMask($record[$key], $value);
+                }
+            } else {
+                if (isset($record[$key])) {
+                    $result[$key] = $record[$key];
+                } elseif (is_array($record)) {
+                    foreach ($record as $r) {
+                        $result[][$key] = $r[$key];
+                    }
+                }
+            }
         }
 
+        return $result;
+    }
+
+    private static function hideAndHashRestrictedColumns($data, $restrictedColumns)
+    {
         foreach ($data as &$record) {
-            CommonUtils::recursiveUnset($record, $accessLevels[$userRole]['HIDE']);
-            CommonUtils::recursiveHash($record, $accessLevels[$userRole]['HASH']);
+            self::hashRestrictedColumns($record, $restrictedColumns['hash']);
+            self::unsetRestrictedColumns($record, $restrictedColumns['hide']);
         }
 
         return $data;
     }
 
-    private static function getRequestedColumns($record, $filter)
+    private static function unsetRestrictedColumns(array &$record, array $unsetKeys)
     {
-        if (empty($filter)) return $record;
-
-        $filtered = array_intersect_key($filter, $record);
-
-        if (in_array("1", $filtered)) {
-            return self::selectColumnsByRequest($record, $filtered);
-        }
-
-        if (in_array("0", $filtered)) {
-            return self::hideColumnsByRequest($record, $filtered);
-        }
-
-        return $record;
-    }
-
-    private static function hideColumnsByRequest($record, $filtered)
-    {
-        foreach ($filtered as $k => $v) {
-            if ($v === "0") {
-                $record = array_diff_key($record, array_flip([$k]));
-            }
-            if (is_array($v)) {
-                if (isset($record[$k])) {
-                    $record[$k] = self::getRequestedColumns(
-                        $record[$k],
-                        $filtered[$k]
-                    );
+        self::manipulateColumns($record, $unsetKeys, function (&$array, $keys) {
+            foreach ($keys as $v) {
+                if (array_key_exists($v, $array)) {
+                    unset($array[$v]);
                 }
             }
-        }
-
-        return $record;
+        });
     }
 
-    private static function selectColumnsByRequest($record, $filtered)
+    private static function hashRestrictedColumns(array &$record, array $hashKeys)
     {
-        $selected = [];
-
-        foreach ($filtered as $k => $v) {
-            if ($v === "1") {
-                $selected = array_merge(
-                    $selected,
-                    array_intersect_key($record, array_flip([$k]))
-                );
-            }
-            if (is_array($v)) {
-                if (isset($record[$k])) {
-                    $selected[$k] = self::getRequestedColumns(
-                        $record[$k],
-                        $filtered[$k]
-                    );
+        self::manipulateColumns($record, $hashKeys, function (&$array, $keys) {
+            foreach ($keys as $v) {
+                if (array_key_exists($v, $array)) {
+                    $array[$v] = CommonUtils::hashValue($array[$v]);
                 }
             }
+        });
+    }
+
+    private static function manipulateColumns(
+        array &$record,
+        array $keys,
+        callable $manipulateFn
+    ) {
+        foreach ($keys as $key => $value) {
+            if (is_array($value)) {
+                $record[$key] = self::manipulateNestedColumns($record[$key] ?? null, $value, $manipulateFn);
+            } else {
+                $manipulateFn($record, [$value]);
+            }
+        }
+    }
+
+    private static function manipulateNestedColumns(
+        $property,
+        array $keys,
+        callable $manipulateFn
+    ) {
+        if (CommonUtils::isMultidimensional($property)) {
+            foreach ($property as &$item) {
+                $manipulateFn($item, $keys);
+            }
+        } else {
+            $manipulateFn($property, $keys);
         }
 
-        return $selected;
+        return $property;
     }
 }

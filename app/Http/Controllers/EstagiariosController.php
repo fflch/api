@@ -2,43 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Services\EstagiariosService;
-use App\Http\Requests\PublicRequests\PublicEstagiariosRequest;
-use App\Http\Requests\PrivateRequests\PrivateEstagiariosRequest;
+use App\Http\Requests\EstagiariosRequest;
+use App\Http\Resources\EstagiarioCollection;
+use App\Http\Services\DataService;
 
 class EstagiariosController extends Controller
 {
-    private $service;
-
-    public function __construct()
+    public function index(EstagiariosRequest $request)
     {
-        $this->service = new EstagiariosService();
-    }
+        $validatedRequest = $request->validated();
+        $primary = 'estagiarios';
+        $joined = ['pessoa' => 'pessoas'];
 
-    public function public(PublicEstagiariosRequest $request)
-    {
-        return response()->json(
-            $this->service->publicGetEstagiarios(
-                $request->validated()
-            ),
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
+        $results = (new DataService)->getFilteredData(
+            $primary,
+            $joined,
+            $validatedRequest
         );
-    }
 
-    public function private(PrivateEstagiariosRequest $request)
-    {
-        $userRole = $request->user()->role;
-
-        return response()->json(
-            $this->service->privateGetEstagiarios(
-                $request->validated(),
-                $userRole
-            ),
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+        return new EstagiarioCollection($results, $primary, $joined);
     }
 }
