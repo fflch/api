@@ -25,11 +25,13 @@ class DataService
             );
 
             foreach ($joined as $prefix => $joinedTable) {
-                $query->processJoinedTableFilters(
-                    $tableMap[$joinedTable]['mapping'],
-                    $requestedFilters,
-                    $prefix,
-                );
+                if (array_key_exists($prefix, $requestedFilters)) {
+                    $query->processJoinedTableFilters(
+                        $tableMap[$joinedTable]['mapping'],
+                        $requestedFilters,
+                        $prefix,
+                    );
+                }
             }
         }
 

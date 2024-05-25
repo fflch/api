@@ -34,8 +34,8 @@ class ResourcesUtils
         $tableHiddenColumns = (new $mapping)->getColumnsToBeHidden();
         $tableHashedColumns = (new $mapping)->getColumnsToBeHashed();
 
-        array_push($restrictedColumns['hide'], ...$tableHiddenColumns);
-        array_push($restrictedColumns['hash'], ...$tableHashedColumns);
+        $restrictedColumns['hide'] += array_fill_keys($tableHiddenColumns, null);
+        $restrictedColumns['hash'] += array_fill_keys($tableHashedColumns, null);
     }
 
     private static function getJoinedTableRestrictedCols($mapping, $prefix, &$restrictedColumns)
@@ -81,13 +81,13 @@ class ResourcesUtils
 
         foreach ($mask as $key => $value) {
             if (is_array($value)) {
-                if (isset($record[$key]) && is_array($record[$key])) {
+                if (isset($record[$key]) && CommonUtils::isArrayOrObject($record[$key])) {
                     $result[$key] = self::applyMask($record[$key], $value);
                 }
             } else {
-                if (isset($record[$key])) {
+                if (array_key_exists($key, $record)) {
                     $result[$key] = $record[$key];
-                } elseif (is_array($record)) {
+                } elseif (CommonUtils::isArrayOrObject($record)) {
                     foreach ($record as $r) {
                         $result[][$key] = $r[$key];
                     }
@@ -136,10 +136,12 @@ class ResourcesUtils
         callable $manipulateFn
     ) {
         foreach ($keys as $key => $value) {
-            if (is_array($value)) {
-                $record[$key] = self::manipulateNestedColumns($record[$key] ?? null, $value, $manipulateFn);
-            } else {
-                $manipulateFn($record, [$value]);
+            if (array_key_exists($key, $record)) {
+                if (is_array($value)) {
+                    $record[$key] = self::manipulateNestedColumns($record[$key] ?? null, $value, $manipulateFn);
+                } else {
+                    $manipulateFn($record, [$key]);
+                }
             }
         }
     }

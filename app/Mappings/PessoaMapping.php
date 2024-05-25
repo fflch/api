@@ -13,6 +13,13 @@ class PessoaMapping extends AbstractMapping
                 'HIDE' => [
                     'nome',
                     'email',
+                    'data_nascimento',
+                    'data_falecimento',
+                    'cidade_nascimento',
+                    'orientacao_sexual',
+                    'situacao_vacinal_covid',
+                    'identidade_genero',
+                    'cpf',
                 ],
                 'HASH' => [
                     'numero_usp'

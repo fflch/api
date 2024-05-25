@@ -2,43 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Services\PosDocsService;
-use App\Http\Requests\PublicRequests\PublicPosDocsRequest;
-use App\Http\Requests\PrivateRequests\PrivatePosDocsRequest;
+use App\Http\Requests\PosDocsRequest;
+use App\Http\Resources\PosDocCollection;
+use App\Http\Services\DataService;
 
 class PosDocsController extends Controller
 {
-    private $service;
-
-    public function __construct()
+    public function index(PosDocsRequest $request)
     {
-        $this->service = new PosDocsService();
-    }
+        $validatedRequest = $request->validated();
 
-    public function public(PublicPosDocsRequest $request)
-    {
-        return response()->json(
-            $this->service->publicGetPosDocs(
-                $request->validated()
-            ),
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
+        $primary = 'posdocs';
+        $joined = [
+            'pesquisador' => 'pessoas',
+            'supervisoes' => 'supervisoes_posdoc',
+            'periodos' => 'periodos_pesquisa_avancada',
+            'bolsas' => 'bolsas_pesq_avancada',
+            'afastamentosEmpresa' => 'afastamentos_empresa_pesquisa_avancada',
+        ];
+
+        $results = (new DataService)->getFilteredData(
+            $primary,
+            $joined,
+            $validatedRequest
         );
-    }
 
-    public function private(PrivatePosDocsRequest $request)
-    {
-        $userRole = $request->user()->role;
-
-        return response()->json(
-            $this->service->privateGetPosDocs(
-                $request->validated(),
-                $userRole
-            ),
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+        return new PosDocCollection($results, $primary, $joined);
     }
 }

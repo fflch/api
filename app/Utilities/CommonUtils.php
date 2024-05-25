@@ -97,8 +97,24 @@ class CommonUtils
         return strtoupper(substr($hash, 0, $len));
     }
 
-    public static function isMultidimensional(array $array)
+    public static function isArrayOrObject($input)
     {
-        return count($array) !== count($array, COUNT_RECURSIVE);
+        return is_array($input) || is_object($input);
+    }
+
+    public static function isMultidimensional($input)
+    {
+        if (is_array($input)) {
+            return count($input) !== count($input, COUNT_RECURSIVE);
+        } elseif (is_object($input)) {
+            foreach ($input as $property) {
+                if (is_array($property) || is_object($property)) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
     }
 }

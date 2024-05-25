@@ -22,6 +22,8 @@ trait ProcessFiltersTrait
         $requestedFilters,
         $prefix
     ) {
+        if (empty($requestedFilters)) return;
+
         $query->whereHas(
             $prefix,
             function ($query)
