@@ -45,4 +45,8 @@ return [
         'model' => \App\Models\AfastamentoEmpresaPesquisaAvancada::class,
         'mapping' => \App\Mappings\AfastamentoEmpresaPesquisaAvancadaMapping::class,
     ],
+    'pesquisadores_colab' => [
+        'model' => \App\Models\PesquisadorColab::class,
+        'mapping' => \App\Mappings\PesquisadorColabMapping::class,
+    ],
 ];

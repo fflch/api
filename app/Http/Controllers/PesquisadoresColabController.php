@@ -2,43 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Services\PesquisadoresColabService;
-use App\Http\Requests\PublicRequests\PublicPesquisadoresColabRequest;
-use App\Http\Requests\PrivateRequests\PrivatePesquisadoresColabRequest;
+use App\Http\Requests\PesquisadoresColabRequest;
+use App\Http\Resources\PesquisadorColabCollection;
+use App\Http\Services\DataService;
 
 class PesquisadoresColabController extends Controller
 {
-    private $service;
-
-    public function __construct()
+    public function index(PesquisadoresColabRequest $request)
     {
-        $this->service = new PesquisadoresColabService();
-    }
+        $validatedRequest = $request->validated();
 
-    public function public(PublicPesquisadoresColabRequest $request)
-    {
-        return response()->json(
-            $this->service->publicGetPesquisadoresColab(
-                $request->validated()
-            ),
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
+        $primary = 'pesquisadores_colab';
+        $joined = [
+            'pesquisador' => 'pessoas',
+            'periodos' => 'periodos_pesquisa_avancada',
+            'bolsas' => 'bolsas_pesq_avancada',
+            'afastamentosEmpresa' => 'afastamentos_empresa_pesquisa_avancada',
+        ];
+
+        $results = (new DataService)->getFilteredData(
+            $primary,
+            $joined,
+            $validatedRequest
         );
-    }
 
-    public function private(PrivatePesquisadoresColabRequest $request)
-    {
-        $userRole = $request->user()->role;
-
-        return response()->json(
-            $this->service->privateGetPesquisadoresColab(
-                $request->validated(),
-                $userRole
-            ),
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+        return new PesquisadorColabCollection($results, $primary, $joined);
     }
 }

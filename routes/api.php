@@ -6,15 +6,15 @@ use App\Http\Controllers\FuncionariosController;
 use App\Http\Controllers\EstagiariosController;
 use App\Http\Controllers\IcsController;
 use App\Http\Controllers\PosDocsController;
+use App\Http\Controllers\PesquisadoresColabController;
 
 $controllers = [
     'vinculos/docentes' => DocentesController::class,
     'vinculos/funcionarios' => FuncionariosController::class,
     'vinculos/estagiarios' => EstagiariosController::class,
     'ics' => IcsController::class,
-    'posdocs' => PosDocsController::class,
-    // 'pcs' => PesquisadoresColabController::class,
-    // 'defesas' => DefesasController::class,
+    'pesquisas-avancadas/posdocs' => PosDocsController::class,
+    'pesquisas-avancadas/pesquisadores-colaboradores' => PesquisadoresColabController::class,
 ];
 
 Route::prefix('v1')->group(function () use ($controllers) {
