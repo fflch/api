@@ -89,7 +89,7 @@ trait ProcessFiltersTrait
 
     private static function applyYearFilters($query, $column, $values)
     {
-        $query->orWhere(function ($query) use ($column, $values) {
+        $query->where(function ($query) use ($column, $values) {
             foreach ($values as $value) {
                 $query->orWhereYear(
                     $column,
