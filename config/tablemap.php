@@ -49,4 +49,36 @@ return [
         'model' => \App\Models\PesquisadorColab::class,
         'mapping' => \App\Mappings\PesquisadorColabMapping::class,
     ],
+    'posgraduacoes' => [
+        'model' => \App\Models\PosGraduacao::class,
+        'mapping' => \App\Mappings\PosGraduacaoMapping::class,
+    ],
+    'orientacoes_posgraduacao' => [
+        'model' => \App\Models\OrientacaoPosGraduacao::class,
+        'mapping' => \App\Mappings\OrientacaoPosGraduacaoMapping::class,
+    ],
+    'convenios_posgraduacoes' => [
+        'model' => \App\Models\ConvenioPosGraduacao::class,
+        'mapping' => \App\Mappings\ConvenioPosGraduacaoMapping::class,
+    ],
+    'proficiencia_idiomas_pg' => [
+        'model' => \App\Models\ProficienciaPosGraduacao::class,
+        'mapping' => \App\Mappings\ProficienciaPosGraduacaoMapping::class,
+    ],
+    'bolsas_posgraduacao' => [
+        'model' => \App\Models\BolsaPosGraduacao::class,
+        'mapping' => \App\Mappings\BolsaPosGraduacaoMapping::class,
+    ],
+    'ocorrencias_posgraduacao' => [
+        'model' => \App\Models\OcorrenciaPosGraduacao::class,
+        'mapping' => \App\Mappings\OcorrenciaPosGraduacaoMapping::class,
+    ],
+    'defesas_posgraduacao' => [
+        'model' => \App\Models\DefesaPosGraduacao::class,
+        'mapping' => \App\Mappings\DefesaPosGraduacaoMapping::class,
+    ],
+    'membros_banca_posgraduacao' => [
+        'model' => \App\Models\MembroBancaPG::class,
+        'mapping' => \App\Mappings\MembroBancaPGMapping::class,
+    ],
 ];

@@ -17,4 +17,9 @@ class Pessoa extends Model
     {
         return $this->hasMany(Ic::class, 'numero_usp', 'numero_usp');
     }
+
+    public function posgraduacoes()
+    {
+        return $this->hasMany(PosGraduacao::class, 'numero_usp', 'numero_usp');
+    }
 }
