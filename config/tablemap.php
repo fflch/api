@@ -105,4 +105,32 @@ return [
         'model' => \App\Models\ParticipanteSiicusp::class,
         'mapping' => \App\Mappings\ParticipanteSiicuspMapping::class,
     ],
+    'disciplinas_graduacao' => [
+        'model' => \App\Models\DisciplinaGraduacao::class,
+        'mapping' => \App\Mappings\DisciplinaGraduacaoMapping::class,
+    ],
+    'turmas_graduacao' => [
+        'model' => \App\Models\TurmaGraduacao::class,
+        'mapping' => \App\Mappings\TurmaGraduacaoMapping::class,
+    ],
+    'ministrantes_graduacao' => [
+        'model' => \App\Models\MinistranteGraduacao::class,
+        'mapping' => \App\Mappings\MinistranteGraduacaoMapping::class,
+    ],
+    'demanda_turmas_graduacao' => [
+        'model' => \App\Models\DemandaTurmaGraduacao::class,
+        'mapping' => \App\Mappings\DemandaTurmaGraduacaoMapping::class,
+    ],
+    'disciplinas_posgraduacao' => [
+        'model' => \App\Models\DisciplinaPosGraduacao::class,
+        'mapping' => \App\Mappings\DisciplinaPosGraduacaoMapping::class,
+    ],
+    'turmas_posgraduacao' => [
+        'model' => \App\Models\TurmaPosGraduacao::class,
+        'mapping' => \App\Mappings\TurmaPosGraduacaoMapping::class,
+    ],
+    'ministrantes_posgraduacao' => [
+        'model' => \App\Models\MinistrantePosGraduacao::class,
+        'mapping' => \App\Mappings\MinistrantePosGraduacaoMapping::class,
+    ],
 ];

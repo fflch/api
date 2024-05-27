@@ -10,6 +10,8 @@ use App\Http\Controllers\PesquisadoresColabController;
 use App\Http\Controllers\PosDocsController;
 use App\Http\Controllers\PosGraduacoesController;
 use App\Http\Controllers\SiicuspController;
+use App\Http\Controllers\DisciplinasPosGraduacaoController;
+use App\Http\Controllers\DisciplinasGraduacaoController;
 
 $controllers = [
     'vinculos/docentes' => DocentesController::class,
@@ -21,6 +23,8 @@ $controllers = [
     'posgraduacoes' => PosGraduacoesController::class,
     'graduacoes' => GraduacoesController::class,
     'siicusp' => SiicuspController::class,
+    'disciplinas-posgraduacao' => DisciplinasPosGraduacaoController::class,
+    'disciplinas-graduacao' => DisciplinasGraduacaoController::class,
 ];
 
 Route::prefix('v1')->group(function () use ($controllers) {
