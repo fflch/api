@@ -13,7 +13,10 @@ class FuncionariosController extends Controller
         $validatedRequest = $request->validated();
 
         $primary = 'funcionarios';
-        $joined = ['pessoa' => 'pessoas'];
+        $joined = [
+            'pessoa' => 'pessoas',
+            'designacoes' => 'designacoes_servidores'
+        ];
 
         $results = (new DataService)->getFilteredData(
             $primary,

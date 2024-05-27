@@ -17,6 +17,10 @@ return [
         'model' => \App\Models\Funcionario::class,
         'mapping' => \App\Mappings\FuncionarioMapping::class,
     ],
+    'designacoes_servidores' => [
+        'model' => \App\Models\DesignacaoServidor::class,
+        'mapping' => \App\Mappings\DesignacaoServidorMapping::class,
+    ],
     'ics' => [
         'model' => \App\Models\Ic::class,
         'mapping' => \App\Mappings\IcMapping::class,

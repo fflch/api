@@ -12,7 +12,10 @@ class DocentesController extends Controller
     {
         $validatedRequest = $request->validated();
         $primary = 'docentes';
-        $joined = ['pessoa' => 'pessoas'];
+        $joined = [
+            'pessoa' => 'pessoas',
+            'designacoes' => 'designacoes_servidores'
+        ];
 
         $results = (new DataService)->getFilteredData(
             $primary,

@@ -11,7 +11,6 @@ class DocenteMapping extends AbstractMapping
         return [
             'public' => [
                 'HIDE' => [
-                    'id_vinculo',
                     'data_inicio_vinculo',
                     'ultima_ocorrencia',
                     'tipo_ingresso'
@@ -37,7 +36,7 @@ class DocenteMapping extends AbstractMapping
                         'name' => 'id_vinculo',
                         'with_table_alias' => 'vinculos_servidores.id_vinculo',
                         'type' => 'normal',
-                        'validation' => ValidationUtils::hashValidation(8),
+                        'validation' => ValidationUtils::stringValidation(),
                     ],
                 ]
             ],
