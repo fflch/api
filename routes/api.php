@@ -9,6 +9,7 @@ use App\Http\Controllers\IcsController;
 use App\Http\Controllers\PesquisadoresColabController;
 use App\Http\Controllers\PosDocsController;
 use App\Http\Controllers\PosGraduacoesController;
+use App\Http\Controllers\SiicuspController;
 
 $controllers = [
     'vinculos/docentes' => DocentesController::class,
@@ -19,6 +20,7 @@ $controllers = [
     'pesquisas-avancadas/pesquisadores-colaboradores' => PesquisadoresColabController::class,
     'posgraduacoes' => PosGraduacoesController::class,
     'graduacoes' => GraduacoesController::class,
+    'siicusp' => SiicuspController::class,
 ];
 
 Route::prefix('v1')->group(function () use ($controllers) {

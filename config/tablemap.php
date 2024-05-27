@@ -97,4 +97,12 @@ return [
         'model' => \App\Models\TrancamentoGraduacao::class,
         'mapping' => \App\Mappings\TrancamentoGraduacaoMapping::class,
     ],
+    'trabalhos_siicusp' => [
+        'model' => \App\Models\TrabalhoSiicusp::class,
+        'mapping' => \App\Mappings\TrabalhoSiicuspMapping::class,
+    ],
+    'participantes_siicusp' => [
+        'model' => \App\Models\ParticipanteSiicusp::class,
+        'mapping' => \App\Mappings\ParticipanteSiicuspMapping::class,
+    ],
 ];
