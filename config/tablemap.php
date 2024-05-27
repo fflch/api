@@ -81,4 +81,20 @@ return [
         'model' => \App\Models\MembroBancaPG::class,
         'mapping' => \App\Mappings\MembroBancaPGMapping::class,
     ],
+    'graduacoes' => [
+        'model' => \App\Models\Graduacao::class,
+        'mapping' => \App\Mappings\GraduacaoMapping::class,
+    ],
+    'habilitacoes' => [
+        'model' => \App\Models\Habilitacao::class,
+        'mapping' => \App\Mappings\HabilitacaoMapping::class,
+    ],
+    'notas_ingresso_graduacao' => [
+        'model' => \App\Models\NotaIngressoGraduacao::class,
+        'mapping' => \App\Mappings\NotaIngressoGraduacaoMapping::class,
+    ],
+    'trancamentos_graduacao' => [
+        'model' => \App\Models\TrancamentoGraduacao::class,
+        'mapping' => \App\Mappings\TrancamentoGraduacaoMapping::class,
+    ],
 ];

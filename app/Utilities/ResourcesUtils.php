@@ -110,12 +110,13 @@ class ResourcesUtils
 
     private static function unsetRestrictedColumns(array &$record, array $unsetKeys)
     {
-        self::manipulateColumns($record, $unsetKeys, function (&$array, $keys) {
+        self::manipulateColumns($record, $unsetKeys, function ($array, $keys) {
             foreach ($keys as $v) {
                 if (array_key_exists($v, $array)) {
                     unset($array[$v]);
                 }
             }
+            return $array ?: null;
         });
     }
 
@@ -127,6 +128,7 @@ class ResourcesUtils
                     $array[$v] = CommonUtils::hashValue($array[$v]);
                 }
             }
+            return $array;
         });
     }
 
@@ -140,7 +142,7 @@ class ResourcesUtils
                 if (is_array($value)) {
                     $record[$key] = self::manipulateNestedColumns($record[$key] ?? null, $value, $manipulateFn);
                 } else {
-                    $manipulateFn($record, [$key]);
+                    $record = $manipulateFn($record, [$key]);
                 }
             }
         }
@@ -151,12 +153,16 @@ class ResourcesUtils
         array $keys,
         callable $manipulateFn
     ) {
-        if (CommonUtils::isMultidimensional($property)) {
-            foreach ($property as &$item) {
-                $manipulateFn($item, $keys);
+        if (!CommonUtils::isMultidimensional($property))
+            return $manipulateFn($property, $keys);
+
+        foreach ($property as $index => $item) {
+            $newItem = $manipulateFn($item, $keys);
+            if (is_null($newItem)) {
+                unset($property[$index]);
+            } else {
+                $property[$index] = $newItem;
             }
-        } else {
-            $manipulateFn($property, $keys);
         }
 
         return $property;

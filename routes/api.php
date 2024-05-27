@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DocentesController;
-use App\Http\Controllers\FuncionariosController;
 use App\Http\Controllers\EstagiariosController;
+use App\Http\Controllers\FuncionariosController;
+use App\Http\Controllers\GraduacoesController;
 use App\Http\Controllers\IcsController;
-use App\Http\Controllers\PosDocsController;
 use App\Http\Controllers\PesquisadoresColabController;
+use App\Http\Controllers\PosDocsController;
 use App\Http\Controllers\PosGraduacoesController;
 
 $controllers = [
@@ -17,6 +18,7 @@ $controllers = [
     'pesquisas-avancadas/posdocs' => PosDocsController::class,
     'pesquisas-avancadas/pesquisadores-colaboradores' => PesquisadoresColabController::class,
     'posgraduacoes' => PosGraduacoesController::class,
+    'graduacoes' => GraduacoesController::class,
 ];
 
 Route::prefix('v1')->group(function () use ($controllers) {
