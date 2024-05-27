@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         // important
-        App\Providers\excludeUnvalidatedArrayKeysProvider::class,
+        App\Providers\ExcludeUnvalidatedArrayKeysProvider::class,
     ],
 
     /*

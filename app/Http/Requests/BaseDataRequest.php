@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\PublicRequests\ApiBaseRequest;
 use App\Rules\ValidateAllowedColumns;
 use App\Rules\ValidateAllowedFilters;
 use App\Utilities\ValidationUtils;

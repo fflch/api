@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
-class excludeUnvalidatedArrayKeysProvider extends ServiceProvider
+class ExcludeUnvalidatedArrayKeysProvider extends ServiceProvider
 {
     /**
      * Register services.

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Services\AuthService;
-use App\Http\Requests\PublicRequests\AuthRequest;
+use App\Http\Requests\AuthRequest;
 use App\Utilities\ErrorUtils;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;

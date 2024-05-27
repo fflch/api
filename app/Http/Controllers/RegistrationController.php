@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Services\RegistrationService;
-use App\Http\Requests\PublicRequests\RegistrationRequest;
+use App\Http\Requests\RegistrationRequest;
 use App\Utilities\ErrorUtils;
 use Illuminate\Support\Carbon;
 

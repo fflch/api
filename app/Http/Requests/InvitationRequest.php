@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\PublicRequests;
+namespace App\Http\Requests;
 
 use App\Utilities\ValidationUtils;
 

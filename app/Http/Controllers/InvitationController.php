@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Http\Requests\PublicRequests\InvitationRequest;
+use App\Http\Requests\InvitationRequest;
 use App\Http\Services\InvitationService;
 use App\Utilities\ErrorUtils;
 use App\Utilities\ValidationUtils;
