@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CursosCCExRequest;
-use App\Http\Resources\CursoCCExCollection;
+use App\Http\Requests\CulturaExtensao\CursosCCExRequest;
+use App\Http\Resources\CulturaExtensao\CursoCCExCollection;
 use App\Http\Services\DataService;
 
 class CursosCCExController extends Controller

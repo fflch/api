@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FuncionariosRequest;
-use App\Http\Resources\FuncionarioCollection;
+use App\Http\Requests\Servidores\FuncionariosRequest;
+use App\Http\Resources\Servidores\FuncionarioCollection;
 use App\Http\Services\DataService;
 
 class FuncionariosController extends Controller

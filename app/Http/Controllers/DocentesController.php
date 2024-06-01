@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DocentesRequest;
-use App\Http\Resources\DocenteCollection;
+use App\Http\Requests\Servidores\DocentesRequest;
+use App\Http\Resources\Servidores\DocenteCollection;
 use App\Http\Services\DataService;
 
 class DocentesController extends Controller

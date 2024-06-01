@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SiicuspRequest;
-use App\Http\Resources\SiicuspCollection;
+use App\Http\Requests\IniciacaoCientifica\SiicuspRequest;
+use App\Http\Resources\IniciacaoCientifica\SiicuspCollection;
 use App\Http\Services\DataService;
 
 class SiicuspController extends Controller

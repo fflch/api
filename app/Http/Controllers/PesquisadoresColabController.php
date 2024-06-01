@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PesquisadoresColabRequest;
-use App\Http\Resources\PesquisadorColabCollection;
+use App\Http\Requests\PesquisasAvancadas\PesquisadoresColabRequest;
+use App\Http\Resources\PesquisasAvancadas\PesquisadorColabCollection;
 use App\Http\Services\DataService;
 
 class PesquisadoresColabController extends Controller

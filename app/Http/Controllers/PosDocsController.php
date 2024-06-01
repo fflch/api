@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PosDocsRequest;
-use App\Http\Resources\PosDocCollection;
+use App\Http\Requests\PesquisasAvancadas\PosDocsRequest;
+use App\Http\Resources\PesquisasAvancadas\PosDocCollection;
 use App\Http\Services\DataService;
 
 class PosDocsController extends Controller

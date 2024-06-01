@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\IcsRequest;
-use App\Http\Resources\IcCollection;
+use App\Http\Requests\IniciacaoCientifica\IcsRequest;
+use App\Http\Resources\IniciacaoCientifica\IcCollection;
 use App\Http\Services\DataService;
 
 class IcsController extends Controller

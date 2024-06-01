@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DisciplinasGraduacaoRequest;
-use App\Http\Resources\DisciplinaGraduacaoCollection;
+use App\Http\Requests\Graduacao\DisciplinasGraduacaoRequest;
+use App\Http\Resources\Graduacao\DisciplinaGraduacaoCollection;
 use App\Http\Services\DataService;
 
 class DisciplinasGraduacaoController extends Controller

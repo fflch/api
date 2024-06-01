@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\GraduacoesRequest;
-use App\Http\Resources\GraduacaoCollection;
+use App\Http\Requests\Graduacao\GraduacoesRequest;
+use App\Http\Resources\Graduacao\GraduacaoCollection;
 use App\Http\Services\DataService;
 
 class GraduacoesController extends Controller

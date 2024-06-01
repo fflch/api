@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EstagiariosRequest;
-use App\Http\Resources\EstagiarioCollection;
+use App\Http\Requests\Servidores\EstagiariosRequest;
+use App\Http\Resources\Servidores\EstagiarioCollection;
 use App\Http\Services\DataService;
 
 class EstagiariosController extends Controller

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PosGraduacoesRequest;
-use App\Http\Resources\PosGraduacaoCollection;
+use App\Http\Requests\PosGraduacao\PosGraduacoesRequest;
+use App\Http\Resources\PosGraduacao\PosGraduacaoCollection;
 use App\Http\Services\DataService;
 
 class PosGraduacoesController extends Controller
