@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CursosCCEXController;
+use App\Http\Controllers\DisciplinasGraduacaoController;
+use App\Http\Controllers\DisciplinasPosGraduacaoController;
 use App\Http\Controllers\DocentesController;
 use App\Http\Controllers\EstagiariosController;
 use App\Http\Controllers\FuncionariosController;
@@ -10,8 +13,6 @@ use App\Http\Controllers\PesquisadoresColabController;
 use App\Http\Controllers\PosDocsController;
 use App\Http\Controllers\PosGraduacoesController;
 use App\Http\Controllers\SiicuspController;
-use App\Http\Controllers\DisciplinasPosGraduacaoController;
-use App\Http\Controllers\DisciplinasGraduacaoController;
 
 $controllers = [
     'vinculos/docentes' => DocentesController::class,
@@ -25,6 +26,7 @@ $controllers = [
     'siicusp' => SiicuspController::class,
     'disciplinas-posgraduacao' => DisciplinasPosGraduacaoController::class,
     'disciplinas-graduacao' => DisciplinasGraduacaoController::class,
+    'cursos-ccex' => CursosCCEXController::class,
 ];
 
 Route::prefix('v1')->group(function () use ($controllers) {

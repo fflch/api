@@ -28,7 +28,6 @@ class DisciplinaGraduacaoResource extends JsonResource
 
     private function mapTurmas()
     {
-        // dd($this->turmas);
         return $this->turmas->map(function ($turma) {
             return [
                 'id_turma' => $turma->id_turma,

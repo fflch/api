@@ -26,7 +26,6 @@ class SiicuspResource extends JsonResource
 
     private function mapParticipantes()
     {
-
         return $this->participantes->map(function ($participante) {
             return [
                 'numero_usp' => $participante->numero_usp,

@@ -137,4 +137,28 @@ return [
         'model' => \App\Models\MinistrantePosGraduacao::class,
         'mapping' => \App\Mappings\MinistrantePosGraduacaoMapping::class,
     ],
+    'cursos_ccex' => [
+        'model' => \App\Models\CursoCCEx::class,
+        'mapping' => \App\Mappings\CursoCCExMapping::class,
+    ],
+    'oferecimentos_ccex' => [
+        'model' => \App\Models\OferecimentoCCEx::class,
+        'mapping' => \App\Mappings\OferecimentoCCExMapping::class,
+    ],
+    'coordenadores_ccex' => [
+        'model' => \App\Models\CoordenadorCCEx::class,
+        'mapping' => \App\Mappings\CoordenadorCCExMapping::class,
+    ],
+    'ministrantes_ccex' => [
+        'model' => \App\Models\MinistranteCCEx::class,
+        'mapping' => \App\Mappings\MinistranteCCExMapping::class,
+    ],
+    'inscricoes_ccex' => [
+        'model' => \App\Models\InscricaoCCEx::class,
+        'mapping' => \App\Mappings\InscricaoCCExMapping::class,
+    ],
+    'matriculas_ccex' => [
+        'model' => \App\Models\MatriculaCCEx::class,
+        'mapping' => \App\Mappings\MatriculaCCExMapping::class,
+    ],
 ];
