@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Servidores\EstagiariosRequest;
-use App\Http\Resources\Servidores\EstagiarioCollection;
+use App\Http\Resources\RecordsCollection;
+use App\Http\Resources\Servidores\EstagiarioResource;
 use App\Http\Services\DataService;
 
 class EstagiariosController extends Controller
@@ -20,6 +21,7 @@ class EstagiariosController extends Controller
             $validatedRequest
         );
 
-        return new EstagiarioCollection($results, $primary, $joined);
+        $resourceClass = EstagiarioResource::class;
+        return new RecordsCollection($results, $primary, $joined, $resourceClass);
     }
 }

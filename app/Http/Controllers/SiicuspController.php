@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\IniciacaoCientifica\SiicuspRequest;
-use App\Http\Resources\IniciacaoCientifica\SiicuspCollection;
+use App\Http\Resources\IniciacaoCientifica\SiicuspResource;
+use App\Http\Resources\RecordsCollection;
 use App\Http\Services\DataService;
 
 class SiicuspController extends Controller
@@ -23,6 +24,7 @@ class SiicuspController extends Controller
             $validatedRequest
         );
 
-        return new SiicuspCollection($results, $primary, $joined);
+        $resourceClass = SiicuspResource::class;
+        return new RecordsCollection($results, $primary, $joined, $resourceClass);
     }
 }

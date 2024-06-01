@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PesquisasAvancadas\PesquisadoresColabRequest;
-use App\Http\Resources\PesquisasAvancadas\PesquisadorColabCollection;
+use App\Http\Resources\PesquisasAvancadas\PesquisadorColabResource;
+use App\Http\Resources\RecordsCollection;
 use App\Http\Services\DataService;
 
 class PesquisadoresColabController extends Controller
@@ -26,6 +27,7 @@ class PesquisadoresColabController extends Controller
             $validatedRequest
         );
 
-        return new PesquisadorColabCollection($results, $primary, $joined);
+        $resourceClass = PesquisadorColabResource::class;
+        return new RecordsCollection($results, $primary, $joined, $resourceClass);
     }
 }

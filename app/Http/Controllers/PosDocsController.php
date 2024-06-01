@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PesquisasAvancadas\PosDocsRequest;
-use App\Http\Resources\PesquisasAvancadas\PosDocCollection;
+use App\Http\Resources\PesquisasAvancadas\PosDocResource;
+use App\Http\Resources\RecordsCollection;
 use App\Http\Services\DataService;
 
 class PosDocsController extends Controller
@@ -27,6 +28,7 @@ class PosDocsController extends Controller
             $validatedRequest
         );
 
-        return new PosDocCollection($results, $primary, $joined);
+        $resourceClass = PosDocResource::class;
+        return new RecordsCollection($results, $primary, $joined, $resourceClass);
     }
 }

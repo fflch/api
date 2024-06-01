@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Servidores\FuncionariosRequest;
-use App\Http\Resources\Servidores\FuncionarioCollection;
+use App\Http\Resources\RecordsCollection;
+use App\Http\Resources\Servidores\FuncionarioResource;
 use App\Http\Services\DataService;
 
 class FuncionariosController extends Controller
@@ -24,6 +25,7 @@ class FuncionariosController extends Controller
             $validatedRequest
         );
 
-        return new FuncionarioCollection($results, $primary, $joined);
+        $resourceClass = FuncionarioResource::class;
+        return new RecordsCollection($results, $primary, $joined, $resourceClass);
     }
 }

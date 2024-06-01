@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Servidores\DocentesRequest;
-use App\Http\Resources\Servidores\DocenteCollection;
+use App\Http\Resources\RecordsCollection;
+use App\Http\Resources\Servidores\DocenteResource;
 use App\Http\Services\DataService;
 
 class DocentesController extends Controller
@@ -23,6 +24,7 @@ class DocentesController extends Controller
             $validatedRequest
         );
 
-        return new DocenteCollection($results, $primary, $joined);
+        $resourceClass = DocenteResource::class;
+        return new RecordsCollection($results, $primary, $joined, $resourceClass);
     }
 }

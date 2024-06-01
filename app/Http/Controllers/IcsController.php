@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\IniciacaoCientifica\IcsRequest;
-use App\Http\Resources\IniciacaoCientifica\IcCollection;
+use App\Http\Resources\IniciacaoCientifica\IcResource;
+use App\Http\Resources\RecordsCollection;
 use App\Http\Services\DataService;
 
 class IcsController extends Controller
@@ -25,6 +26,7 @@ class IcsController extends Controller
             $validatedRequest
         );
 
-        return new IcCollection($results, $primary, $joined);
+        $resourceClass = IcResource::class;
+        return new RecordsCollection($results, $primary, $joined, $resourceClass);
     }
 }

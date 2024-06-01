@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Graduacao\DisciplinasGraduacaoRequest;
-use App\Http\Resources\Graduacao\DisciplinaGraduacaoCollection;
+use App\Http\Resources\Graduacao\DisciplinaGraduacaoResource;
+use App\Http\Resources\RecordsCollection;
 use App\Http\Services\DataService;
 
 class DisciplinasGraduacaoController extends Controller
@@ -23,6 +24,7 @@ class DisciplinasGraduacaoController extends Controller
             $validatedRequest
         );
 
-        return new DisciplinaGraduacaoCollection($results, $primary, $joined);
+        $resourceClass = DisciplinaGraduacaoResource::class;
+        return new RecordsCollection($results, $primary, $joined, $resourceClass);
     }
 }

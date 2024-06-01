@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PosGraduacao\PosGraduacoesRequest;
-use App\Http\Resources\PosGraduacao\PosGraduacaoCollection;
+use App\Http\Resources\PosGraduacao\PosGraduacaoResource;
+use App\Http\Resources\RecordsCollection;
 use App\Http\Services\DataService;
 
 class PosGraduacoesController extends Controller
@@ -29,6 +30,7 @@ class PosGraduacoesController extends Controller
             $validatedRequest
         );
 
-        return new PosGraduacaoCollection($results, $primary, $joined);
+        $resourceClass = PosGraduacaoResource::class;
+        return new RecordsCollection($results, $primary, $joined, $resourceClass);
     }
 }

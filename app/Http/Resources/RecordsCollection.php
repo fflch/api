@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Resources\PosGraduacao;
+namespace App\Http\Resources;
 
 use App\Utilities\ResourcesUtils;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class DisciplinaPosGraduacaoCollection extends ResourceCollection
+class RecordsCollection extends ResourceCollection
 {
     private $primary, $joined;
 
-    public function __construct($resource, $primary, $joined)
+    public function __construct($resource, $primary, $joined, $resourceClass)
     {
-        parent::__construct($resource);
-        $this->resource = $this->collectResource($resource);
+        $this->collection = $resource->mapInto($resourceClass);
+        $this->resource = $resource->setCollection($this->collection);
 
         $this->primary = $primary;
         $this->joined = $joined;

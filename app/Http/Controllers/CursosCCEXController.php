@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CulturaExtensao\CursosCCExRequest;
-use App\Http\Resources\CulturaExtensao\CursoCCExCollection;
+use App\Http\Resources\CulturaExtensao\CursoCCExResource;
+use App\Http\Resources\RecordsCollection;
 use App\Http\Services\DataService;
 
 class CursosCCExController extends Controller
@@ -23,6 +24,7 @@ class CursosCCExController extends Controller
             $validatedRequest
         );
 
-        return new CursoCCExCollection($results, $primary, $joined);
+        $resourceClass = CursoCCExResource::class;
+        return new RecordsCollection($results, $primary, $joined, $resourceClass);
     }
 }
