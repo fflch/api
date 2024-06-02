@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Sanctum::authenticateAccessTokensUsing(
             static function (PersonalAccessToken $accessToken, bool $is_valid) {
 
-                if ($accessToken->revoked == 1){
+                if ($accessToken->revoked == 1) {
                     return false;
                 }
 
