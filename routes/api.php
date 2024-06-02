@@ -1,36 +1,42 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CursosCCEXController;
-use App\Http\Controllers\DisciplinasGraduacaoController;
-use App\Http\Controllers\DisciplinasPosGraduacaoController;
-use App\Http\Controllers\DocentesController;
-use App\Http\Controllers\EstagiariosController;
-use App\Http\Controllers\FuncionariosController;
-use App\Http\Controllers\GraduacoesController;
-use App\Http\Controllers\IcsController;
-use App\Http\Controllers\PesquisadoresColabController;
-use App\Http\Controllers\PosDocsController;
-use App\Http\Controllers\PosGraduacoesController;
-use App\Http\Controllers\SiicuspController;
+use App\Http\Controllers\CCExController;
+use App\Http\Controllers\GraduacaoController;
+use App\Http\Controllers\IniciacaoCientificaController;
+use App\Http\Controllers\PesquisasAvancadasController;
+use App\Http\Controllers\PosGraduacaoController;
+use App\Http\Controllers\ServidoresController;
 
-$controllers = [
-    'vinculos/docentes' => DocentesController::class,
-    'vinculos/funcionarios' => FuncionariosController::class,
-    'vinculos/estagiarios' => EstagiariosController::class,
-    'ics' => IcsController::class,
-    'pesquisas-avancadas/posdocs' => PosDocsController::class,
-    'pesquisas-avancadas/pesquisadores-colaboradores' => PesquisadoresColabController::class,
-    'posgraduacoes' => PosGraduacoesController::class,
-    'graduacoes' => GraduacoesController::class,
-    'siicusp' => SiicuspController::class,
-    'disciplinas-posgraduacao' => DisciplinasPosGraduacaoController::class,
-    'disciplinas-graduacao' => DisciplinasGraduacaoController::class,
-    'cursos-ccex' => CursosCCEXController::class,
+$endpointMappings = [
+    // Graduação
+    'graduacao/graduacoes' => [GraduacaoController::class, 'getGraduacoes'],
+    'graduacao/disciplinas' => [GraduacaoController::class, 'getDisciplinas'],
+
+    // Iniciação Científica
+    'iniciacao-cientifica/projetos' => [IniciacaoCientificaController::class, 'getProjetos'],
+    'iniciacao-cientifica/siicusp-trabalhos' => [IniciacaoCientificaController::class, 'getTrabalhosSiicusp'],
+
+    // Pos-Graduação
+    'posgraduacao/posgraduacoes' => [PosGraduacaoController::class, 'getPosGraduacoes'],
+    'posgraduacao/disciplinas' => [PosGraduacaoController::class, 'getDisciplinas'],
+
+    // Pesquisas Avançadas
+    'pesquisas-avancadas/posdocs' => [PesquisasAvancadasController::class, 'getPosDocs'],
+    'pesquisas-avancadas/pesquisadores-colaboradores' => [PesquisasAvancadasController::class, 'getPesquisadoresColab'],
+
+    // Servidores
+    'servidores/docentes' => [ServidoresController::class, 'getDocentes'],
+    'servidores/funcionarios' => [ServidoresController::class, 'getFuncionarios'],
+    'servidores/estagiarios' => [ServidoresController::class, 'getEstagiarios'],
+
+    // Cultura e Extensão
+    'ccex/cursos' => [CCExController::class, 'getCursos'],
 ];
 
-Route::prefix('v1')->group(function () use ($controllers) {
-    foreach ($controllers as $route => $controller) {
-        Route::get($route, [$controller, 'index']);
+Route::prefix('v1')->group(function () use ($endpointMappings) {
+    foreach ($endpointMappings as $endpoint => $controllerAction) {
+        list($controller, $action) = $controllerAction;
+        Route::get($endpoint, [$controller, $action]);
     }
 });
