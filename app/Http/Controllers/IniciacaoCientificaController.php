@@ -2,34 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\IniciacaoCientifica\IcsRequest;
 use App\Http\Resources\IniciacaoCientifica\IcResource;
-use App\Http\Requests\IniciacaoCientifica\SiicuspRequest;
 use App\Http\Resources\IniciacaoCientifica\SiicuspResource;
+use App\Models\IniciacaoCientifica\BolsaIc;
+use App\Models\IniciacaoCientifica\Ic;
+use App\Models\IniciacaoCientifica\ParticipanteSiicusp;
+use App\Models\IniciacaoCientifica\TrabalhoSiicusp;
+use App\Models\Pessoas\Pessoa;
+use Illuminate\Http\Request;
 
-class IniciacaoCientificaController extends Controller
+class IniciacaoCientificaController extends RecordsController
 {
-    public function getProjetos(IcsRequest $request)
+    public function getProjetos(Request $request)
     {
-        $primary = 'ics';
-        $joined = [
-            'aluno' => 'pessoas',
-            'orientador' => 'pessoas',
-            'bolsas' => 'bolsas_ic'
+        $pathToModelMapping = [
+            'ic' => Ic::class,
+            'ic.aluno' => Pessoa::class,
+            'ic.orientador' => Pessoa::class,
+            'ic.bolsas' => BolsaIc::class,
         ];
 
         $resourceClass = IcResource::class;
-        return $this->getResourceCollection($request, $primary, $joined, $resourceClass);
+        return $this->getResourceCollection($request, $pathToModelMapping, $resourceClass);
     }
 
-    public function getTrabalhosSiicusp(SiicuspRequest $request)
+    public function getTrabalhosSiicusp(Request $request)
     {
-        $primary = 'trabalhos_siicusp';
-        $joined = [
-            'participantes' => 'participantes_siicusp',
+        $pathToModelMapping = [
+            'trabalho_siicusp' => TrabalhoSiicusp::class,
+            'trabalho_siicusp.participantes' => ParticipanteSiicusp::class,
         ];
 
         $resourceClass = SiicuspResource::class;
-        return $this->getResourceCollection($request, $primary, $joined, $resourceClass);
+        return $this->getResourceCollection($request, $pathToModelMapping, $resourceClass);
     }
 }

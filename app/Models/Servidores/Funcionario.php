@@ -2,11 +2,12 @@
 
 namespace App\Models\Servidores;
 
+use App\Traits\ModelAccessControlTrait;
 use App\Traits\ProcessFiltersTrait;
 
 class Funcionario extends VinculoServidor
 {
-    use ProcessFiltersTrait;
+    use ProcessFiltersTrait, ModelAccessControlTrait;
 
     protected $connection = 'etl';
 

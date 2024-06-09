@@ -55,35 +55,35 @@ class PosDocResource extends JsonResource
         return $this->supervisoes->map(function ($supervisao) {
             return [
                 "sequencia_supervisao" => $supervisao->sequencia_supervisao,
-                // "supervisor" => $this->mapSupervisor($supervisao->supervisor),
+                "supervisor" => $this->mapSupervisor($supervisao->supervisor),
                 "tipo_supervisao" => $supervisao->tipo_supervisao,
                 "data_inicio_supervisao" => $supervisao->data_inicio_supervisao,
                 "data_fim_supervisao" => $supervisao->data_fim_supervisao,
                 "ultimo_supervisor_resp" => $supervisao->ultimo_supervisor_resp,
             ];
-        });
+        })->toArray();
     }
 
-    // private function mapSupervisor($supervisor)
-    // {
-    //     return [
-    //         "numero_usp" => $supervisor->numero_usp,
-    //         "nome" => $supervisor->nome,
-    //         "data_nascimento" => $supervisor->data_nascimento,
-    //         "data_falecimento" => $supervisor->data_falecimento,
-    //         "email" => $supervisor->email,
-    //         "nacionalidade" => $supervisor->nacionalidade,
-    //         "cidade_nascimento" => $supervisor->cidade_nascimento,
-    //         "estado_nascimento" => $supervisor->estado_nascimento,
-    //         "pais_nascimento" => $supervisor->pais_nascimento,
-    //         "raca" => $supervisor->raca,
-    //         "sexo" => $supervisor->sexo,
-    //         "orientacao_sexual" => $supervisor->orientacao_sexual,
-    //         "identidade_genero" => $supervisor->identidade_genero,
-    //         "situacao_vacinal_covid" => $supervisor->situacao_vacinal_covid,
-    //         "cpf" => $supervisor->cpf,
-    //     ];
-    // }
+    private function mapSupervisor($supervisor)
+    {
+        return [
+            "numero_usp" => $supervisor->numero_usp,
+            "nome" => $supervisor->nome,
+            "data_nascimento" => $supervisor->data_nascimento,
+            "data_falecimento" => $supervisor->data_falecimento,
+            "email" => $supervisor->email,
+            "nacionalidade" => $supervisor->nacionalidade,
+            "cidade_nascimento" => $supervisor->cidade_nascimento,
+            "estado_nascimento" => $supervisor->estado_nascimento,
+            "pais_nascimento" => $supervisor->pais_nascimento,
+            "raca" => $supervisor->raca,
+            "sexo" => $supervisor->sexo,
+            "orientacao_sexual" => $supervisor->orientacao_sexual,
+            "identidade_genero" => $supervisor->identidade_genero,
+            "situacao_vacinal_covid" => $supervisor->situacao_vacinal_covid,
+            "cpf" => $supervisor->cpf,
+        ];
+    }
 
     private function mapPeriodos()
     {
@@ -96,7 +96,7 @@ class PosDocResource extends JsonResource
                 "fonte_recurso" => $periodo->fonte_recurso,
                 "horas_semanais" => $periodo->horas_semanais,
             ];
-        });
+        })->toArray();
     }
 
     private function mapBolsas()
@@ -111,7 +111,7 @@ class PosDocResource extends JsonResource
                 "data_fim_fomento" => $bolsa->data_fim_fomento,
                 "id_fomento" => $bolsa->id_fomento,
             ];
-        });
+        })->toArray();
     }
 
     private function mapAfastamentosEmpresa()
@@ -125,6 +125,6 @@ class PosDocResource extends JsonResource
                 "data_fim_afastamento" => $afastamento->data_fim_afastamento,
                 "tipo_vinculo" => $afastamento->tipo_vinculo,
             ];
-        });
+        })->toArray();
     }
 }

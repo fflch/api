@@ -60,7 +60,7 @@ class PesquisadorColabResource extends JsonResource
                 "fonte_recurso" => $periodo->fonte_recurso,
                 "horas_semanais" => $periodo->horas_semanais,
             ];
-        });
+        })->toArray();
     }
 
     private function mapBolsas()
@@ -75,7 +75,7 @@ class PesquisadorColabResource extends JsonResource
                 "data_fim_fomento" => $bolsa->data_fim_fomento,
                 "id_fomento" => $bolsa->id_fomento,
             ];
-        });
+        })->toArray();
     }
 
     private function mapAfastamentosEmpresa()
@@ -89,6 +89,6 @@ class PesquisadorColabResource extends JsonResource
                 "data_fim_afastamento" => $afastamento->data_fim_afastamento,
                 "tipo_vinculo" => $afastamento->tipo_vinculo,
             ];
-        });
+        })->toArray();
     }
 }

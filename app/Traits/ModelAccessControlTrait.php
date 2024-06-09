@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Mappings;
+namespace App\Traits;
 
-abstract class AbstractMapping
+trait ModelAccessControlTrait
 {
     protected $allowedColumnsAndFilters, $fullyAllowedColumnsAndFilters, $toHide, $toHash;
 
-    public function __construct()
+    public function initializeModelAccessControl()
     {
-        $userRole = auth('sanctum')->user()->role ?? 'public';
+        $userRole = self::getUserRole();
 
-        $accessLevels = $this->getAccessLevels();
-        $columnsAndFilters = $this->getColumnsAndFilters();
+        $accessLevels = self::getAccessLevels();
+        $columnsAndFilters = self::getColumnsAndFilters();
 
         $this->toHide = $accessLevels[$userRole]['HIDE'];
         $this->toHash = $accessLevels[$userRole]['HASH'];
@@ -32,10 +32,6 @@ abstract class AbstractMapping
 
         return $columnsAndFilters;
     }
-
-    abstract public static function getAccessLevels();
-
-    abstract public static function getColumnsAndFilters();
 
     public function getAllowedColumns()
     {
@@ -71,5 +67,10 @@ abstract class AbstractMapping
     public function getColumnsToBeHidden()
     {
         return $this->toHide;
+    }
+
+    private static function getUserRole()
+    {
+        return auth('sanctum')->user()->role ?? 'public';
     }
 }

@@ -39,20 +39,20 @@ class PosGraduacaoResource extends JsonResource
 
         return [
             'numero_usp' => $aluno->numero_usp,
-            "nome" => $aluno->nome,
-            "data_nascimento" => $aluno->data_nascimento,
-            "data_falecimento" => $aluno->data_falecimento,
-            "email" => $aluno->email,
-            "nacionalidade" => $aluno->nacionalidade,
-            "cidade_nascimento" => $aluno->cidade_nascimento,
-            "estado_nascimento" => $aluno->estado_nascimento,
-            "pais_nascimento" => $aluno->pais_nascimento,
-            "raca" => $aluno->raca,
-            "sexo" => $aluno->sexo,
-            "orientacao_sexual" => $aluno->orientacao_sexual,
-            "identidade_genero" => $aluno->identidade_genero,
-            "situacao_vacinal_covid" => $aluno->situacao_vacinal_covid,
-            "cpf" => $aluno->cpf,
+            'nome' => $aluno->nome,
+            'data_nascimento' => $aluno->data_nascimento,
+            'data_falecimento' => $aluno->data_falecimento,
+            'email' => $aluno->email,
+            'nacionalidade' => $aluno->nacionalidade,
+            'cidade_nascimento' => $aluno->cidade_nascimento,
+            'estado_nascimento' => $aluno->estado_nascimento,
+            'pais_nascimento' => $aluno->pais_nascimento,
+            'raca' => $aluno->raca,
+            'sexo' => $aluno->sexo,
+            'orientacao_sexual' => $aluno->orientacao_sexual,
+            'identidade_genero' => $aluno->identidade_genero,
+            'situacao_vacinal_covid' => $aluno->situacao_vacinal_covid,
+            'cpf' => $aluno->cpf,
         ];
     }
 
@@ -61,7 +61,7 @@ class PosGraduacaoResource extends JsonResource
         return $this->orientacoes->map(function ($orientacao) {
             return [
                 'sequencia_orientacao' => $orientacao->sequencia_orientacao,
-                // "orientador" => $this->mapOrientador($orientaaco->orientador),
+                'orientador' => $this->mapOrientador($orientacao->orientador),
                 'tipo_orientacao' => $orientacao->tipo_orientacao,
                 'data_inicio_orientacao' => $orientacao->data_inicio_orientacao,
                 'data_fim_orientacao' => $orientacao->data_fim_orientacao,
@@ -70,28 +70,29 @@ class PosGraduacaoResource extends JsonResource
                 'data_conversao_para_plena' => $orientacao->data_conversao_para_plena,
                 'data_conversao_para_especifica' => $orientacao->data_conversao_para_especifica,
             ];
-        });
+        })->toArray();
     }
 
-    // private function mapOrientador($orientador)
-    // {
-    //     return [
-    //         "nome" => $orientador->nome,
-    //         "data_nascimento" => $orientador->data_nascimento,
-    //         "data_falecimento" => $orientador->data_falecimento,
-    //         "email" => $orientador->email,
-    //         "nacionalidade" => $orientador->nacionalidade,
-    //         "cidade_nascimento" => $orientador->cidade_nascimento,
-    //         "estado_nascimento" => $orientador->estado_nascimento,
-    //         "pais_nascimento" => $orientador->pais_nascimento,
-    //         "raca" => $orientador->raca,
-    //         "sexo" => $orientador->sexo,
-    //         "orientacao_sexual" => $orientador->orientacao_sexual,
-    //         "identidade_genero" => $orientador->identidade_genero,
-    //         "situacao_vacinal_covid" => $orientador->situacao_vacinal_covid,
-    //         "cpf" => $orientador->cpf,
-    //     ];
-    // }
+    private function mapOrientador($orientador)
+    {
+        return [
+            'numero_usp' => $orientador->numero_usp,
+            'nome' => $orientador->nome,
+            'data_nascimento' => $orientador->data_nascimento,
+            'data_falecimento' => $orientador->data_falecimento,
+            'email' => $orientador->email,
+            'nacionalidade' => $orientador->nacionalidade,
+            'cidade_nascimento' => $orientador->cidade_nascimento,
+            'estado_nascimento' => $orientador->estado_nascimento,
+            'pais_nascimento' => $orientador->pais_nascimento,
+            'raca' => $orientador->raca,
+            'sexo' => $orientador->sexo,
+            'orientacao_sexual' => $orientador->orientacao_sexual,
+            'identidade_genero' => $orientador->identidade_genero,
+            'situacao_vacinal_covid' => $orientador->situacao_vacinal_covid,
+            'cpf' => $orientador->cpf,
+        ];
+    }
 
     private function mapConvenios()
     {
@@ -101,7 +102,7 @@ class PosGraduacaoResource extends JsonResource
                 'sigla_convenio' => $convenio->sigla_convenio,
                 'nome_convenio' => $convenio->nome_convenio,
             ];
-        });
+        })->toArray();
     }
 
     private function mapBolsas()
@@ -118,7 +119,7 @@ class PosGraduacaoResource extends JsonResource
                 'codigo_programa_fomento' => $bolsa->codigo_programa_fomento,
                 'nome_programa_fomento' => $bolsa->nome_programa_fomento,
             ];
-        });
+        })->toArray();
     }
 
     private function mapOcorrencias()
@@ -135,7 +136,7 @@ class PosGraduacaoResource extends JsonResource
                 'prorrogacao_def_solicitada_dias' => $ocorrencia->prorrogacao_def_solicitada_dias,
                 'prorrogacao_def_obtida_dias' => $ocorrencia->prorrogacao_def_obtida_dias,
             ];
-        });
+        })->toArray();
     }
 
     private function mapProficiencias()
@@ -145,7 +146,7 @@ class PosGraduacaoResource extends JsonResource
                 'data_exame' => $proficiencia->data_exame,
                 'idioma' => $proficiencia->idioma,
             ];
-        });
+        })->toArray();
     }
 
     private function mapDefesa()

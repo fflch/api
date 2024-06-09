@@ -7,31 +7,25 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class RecordsCollection extends ResourceCollection
 {
-    private $primary, $joined;
+    private $pathToModelMapping, $validatedRequest;
 
-    public function __construct($resource, $primary, $joined, $resourceClass)
+    public function __construct($resource, $validatedRequest, $pathToModelMapping, $resourceClass)
     {
         $this->collection = $resource->mapInto($resourceClass);
         $this->resource = $resource->setCollection($this->collection);
-
-        $this->primary = $primary;
-        $this->joined = $joined;
+        $this->validatedRequest = $validatedRequest;
+        $this->pathToModelMapping = $pathToModelMapping;
     }
 
     public function toArray($request)
     {
         $responseData = $this->collection->map->toArray([])->all();
 
-        $restrictedColumns = ResourcesUtils::getRestrictedColumns(
-            $this->primary,
-            $this->joined
-        );
-
         $filteredResponseData =
-            ResourcesUtils::filterColumnsByRequestAndPermission(
+            (new ResourcesUtils())->filterColumnsByRequestAndPermission(
+                $this->pathToModelMapping,
                 $responseData,
-                $restrictedColumns,
-                $request,
+                $this->validatedRequest,
             );
 
         return [

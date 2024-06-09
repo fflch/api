@@ -69,7 +69,7 @@ class GraduacaoResource extends JsonResource
                 'data_colacao_grau' => $habilitacao->data_colacao_grau,
                 'data_expedicao_diploma' => $habilitacao->data_expedicao_diploma,
             ];
-        });
+        })->toArray();
     }
 
     private function mapNotasIngresso()
@@ -81,7 +81,7 @@ class GraduacaoResource extends JsonResource
                 'pontos_obtidos' => $nota->pontos_obtidos,
                 'pontos_maximo' => $nota->pontos_maximo,
             ];
-        });
+        })->toArray();
     }
 
     private function mapTrancamentos()
@@ -95,6 +95,6 @@ class GraduacaoResource extends JsonResource
                 'semestres_trancados' => $trancamento->semestres_trancados,
                 'sequencia_trancamento' => $trancamento->sequencia_trancamento,
             ];
-        });
+        })->toArray();
     }
 }

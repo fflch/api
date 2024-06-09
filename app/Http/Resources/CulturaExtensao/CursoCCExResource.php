@@ -48,6 +48,6 @@ class CursoCCExResource  extends JsonResource
                 'data_fim_inscricoes' => $oferecimento->data_fim_inscricoes,
                 'permite_inscricao_online' => $oferecimento->permite_inscricao_online,
             ];
-        });
+        })->toArray();
     }
 }

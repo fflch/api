@@ -117,4 +117,19 @@ class CommonUtils
             return false;
         }
     }
+
+    public static function validateNestedArrayKey(
+        array $nestedKeysSequence,
+        array $targetArray
+    ) {
+        $currentArray = $targetArray;
+        foreach ($nestedKeysSequence as $nestedKey) {
+            if (!isset($currentArray[$nestedKey])) {
+                return false;
+            }
+            $currentArray = $currentArray[$nestedKey];
+        }
+
+        return true;
+    }
 }

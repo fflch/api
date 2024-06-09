@@ -37,6 +37,6 @@ class SiicuspResource extends JsonResource
                 'nome_departamento' => $participante->nome_departamento,
                 'participante_apresentador' => $participante->participante_apresentador,
             ];
-        });
+        })->toArray();
     }
 }

@@ -67,6 +67,6 @@ class DisciplinaPosGraduacaoResource extends JsonResource
                 'lingua_turma' => $turma->lingua_turma,
                 'formato_oferecimento' => $turma->formato_oferecimento,
             ];
-        });
+        })->toArray();
     }
 }

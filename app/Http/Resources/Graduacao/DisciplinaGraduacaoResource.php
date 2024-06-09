@@ -53,6 +53,6 @@ class DisciplinaGraduacaoResource extends JsonResource
                 'frequencia_media' => $turma->frequencia_media,
                 'nota_media' => $turma->nota_media,
             ];
-        });
+        })->toArray();
     }
 }

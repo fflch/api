@@ -2,35 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Graduacao\DisciplinasGraduacaoRequest;
 use App\Http\Resources\Graduacao\DisciplinaGraduacaoResource;
-use App\Http\Requests\Graduacao\GraduacoesRequest;
 use App\Http\Resources\Graduacao\GraduacaoResource;
+use App\Models\Graduacao\DisciplinaGraduacao;
+use App\Models\Graduacao\Graduacao;
+use App\Models\Graduacao\Habilitacao;
+use App\Models\Graduacao\NotaIngressoGraduacao;
+use App\Models\Graduacao\TrancamentoGraduacao;
+use App\Models\Graduacao\TurmaGraduacao;
+use App\Models\Pessoas\Pessoa;
+use Illuminate\Http\Request;
 
-class GraduacaoController extends Controller
+class GraduacaoController extends RecordsController
 {
-    public function getGraduacoes(GraduacoesRequest $request)
+    public function getGraduacoes(Request $request)
     {
-        $primary = 'graduacoes';
-        $joined = [
-            'aluno' => 'pessoas',
-            'habilitacoes' => 'habilitacoes',
-            'trancamentos' => 'trancamentos_graduacao',
-            'notas_ingresso' => 'notas_ingresso_graduacao',
+        $pathToModelMapping = [
+            'graduacao' => Graduacao::class,
+            'graduacao.aluno' => Pessoa::class,
+            'graduacao.habilitacoes' => Habilitacao::class,
+            'graduacao.trancamentos' => TrancamentoGraduacao::class,
+            'graduacao.notas_ingresso' => NotaIngressoGraduacao::class,
         ];
 
         $resourceClass = GraduacaoResource::class;
-        return $this->getResourceCollection($request, $primary, $joined, $resourceClass);
+        return $this->getResourceCollection($request, $pathToModelMapping, $resourceClass);
     }
 
-    public function getDisciplinas(DisciplinasGraduacaoRequest $request)
+    public function getDisciplinas(Request $request)
     {
-        $primary = 'disciplinas_graduacao';
-        $joined = [
-            'turmas' => 'turmas_graduacao',
+        $pathToModelMapping = [
+            'disciplina_gr' => DisciplinaGraduacao::class,
+            'disciplina_gr.turmas' => TurmaGraduacao::class,
         ];
 
         $resourceClass = DisciplinaGraduacaoResource::class;
-        return $this->getResourceCollection($request, $primary, $joined, $resourceClass);
+        return $this->getResourceCollection($request, $pathToModelMapping, $resourceClass);
     }
 }

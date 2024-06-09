@@ -2,69 +2,109 @@
 
 namespace App\Traits;
 
+use App\Utilities\CommonUtils;
+use Illuminate\Database\Eloquent\Builder;
+
 trait ProcessFiltersTrait
 {
-    public function scopeProcessPrimaryTableFilters(
-        $query,
-        $mappingClass,
-        $requestedFilters
+    public function scopeProcessRequestFilters(
+        Builder $query,
+        string $model,
+        array $requestedFilters,
+        string $path
     ) {
-        $this->processFilters(
-            $query,
-            $mappingClass,
-            $requestedFilters
-        );
+        $pathParts = explode('.', $path);
+
+        $modelRequestedFilters =
+            $this->getModelRequestedFilters($requestedFilters, $pathParts);
+
+        $query->where(function ($query) use ($model, $modelRequestedFilters, $pathParts) {
+            $this->buildNestedWhere(
+                $query,
+                $model,
+                $modelRequestedFilters,
+                $pathParts
+            );
+        });
     }
 
-    public function scopeProcessJoinedTableFilters(
-        $query,
-        $mappingClass,
-        $requestedFilters,
-        $prefix
+    private static function getModelRequestedFilters(
+        array $requestedFilters,
+        array $pathParts
     ) {
-        if (empty($requestedFilters)) return;
+        if (count($pathParts) === 1) {
+            return array_filter(
+                $requestedFilters,
+                fn ($value) => !CommonUtils::isMultidimensional($value)
+            );
+        }
 
-        $query->whereHas(
-            $prefix,
-            function ($query)
-            use ($prefix, $mappingClass, $requestedFilters) {
-                $this->processFilters(
-                    $query,
-                    $mappingClass,
-                    $requestedFilters,
-                    $prefix
-                );
+        $pathParts = array_slice($pathParts, 1);
+        $current = &$requestedFilters;
+
+        foreach ($pathParts as $part) {
+            if (!isset($current[$part])) {
+                $current[$part] = [];
             }
-        );
+            $current = &$current[$part];
+        }
+
+        return $current;
+    }
+
+    private function buildNestedWhere(
+        Builder $query,
+        string $model,
+        array $modelRequestedFilters,
+        array $pathParts
+    ) {
+        if (count($pathParts) === 1) {
+            return $this->processFilters(
+                $query,
+                $model,
+                $modelRequestedFilters
+            );
+        }
+
+        if (count($pathParts) > 1) {
+            $newPath = array_slice($pathParts, 1);
+            return $query->whereHas(
+                $pathParts[1],
+                function ($query)
+                use ($model, $modelRequestedFilters, $newPath) {
+                    $this->buildNestedWhere(
+                        $query,
+                        $model,
+                        $modelRequestedFilters,
+                        $newPath
+                    );
+                }
+            );
+        }
     }
 
     private function processFilters(
-        $query,
-        $mappingClass,
-        $requestedFilters,
-        $prefix = null
+        Builder $query,
+        string $model,
+        array $modelRequestedFilters
     ) {
-        $modelRequestedFilters =
-            self::getModelFilters($requestedFilters, $prefix);
-
         if (!is_null($modelRequestedFilters)) {
-            $mapping = new $mappingClass;
+            $modelInstance = new $model;
+            $modelInstance->initializeModelAccessControl();
 
             self::applyFilters(
                 $query,
-                $mapping->getAllowedFilters(),
+                $modelInstance->getAllowedFilters(),
                 $modelRequestedFilters
             );
         }
     }
 
-    private static function getModelFilters($array, $prefix = null)
-    {
-        return is_null($prefix) ? $array : ($array[$prefix] ?? []);
-    }
-
-    private static function applyFilters($query, $filterMap, $userFilters)
-    {
+    private static function applyFilters(
+        Builder $query,
+        $filterMap,
+        $userFilters
+    ) {
         $filters = self::getFiltersByType($userFilters, $filterMap);
 
         foreach ($filters as $type => $columns) {
@@ -78,8 +118,11 @@ trait ProcessFiltersTrait
         }
     }
 
-    private static function applyNormalFilters($query, $column, $values)
-    {
+    private static function applyNormalFilters(
+        Builder $query,
+        $column,
+        $values
+    ) {
         $query->whereIn($column, $values);
 
         if (in_array("", $values, true)) {
@@ -87,8 +130,11 @@ trait ProcessFiltersTrait
         }
     }
 
-    private static function applyYearFilters($query, $column, $values)
-    {
+    private static function applyYearFilters(
+        Builder $query,
+        $column,
+        $values
+    ) {
         $query->where(function ($query) use ($column, $values) {
             foreach ($values as $value) {
                 $query->orWhereYear(

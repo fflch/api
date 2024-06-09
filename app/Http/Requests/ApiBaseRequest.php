@@ -15,10 +15,4 @@ class ApiBaseRequest extends FormRequest
             'pagination.limit' => ['sometimes', 'integer'],
         ];
     }
-
-    protected function failedValidation(Validator $validator)
-    {
-        $details = $validator->errors()->first();
-        ErrorUtils::generateJsonErrorResponse(400, "Bad Request", $details);
-    }
 }

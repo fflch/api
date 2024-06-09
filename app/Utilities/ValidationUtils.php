@@ -14,27 +14,6 @@ class ValidationUtils
         );
     }
 
-    public static function assembleFiltersValidationRules($filters, $prefix = null)
-    {
-        $filtersRules = [];
-
-        foreach ($filters as $filterName => $filterInfo) {
-            $validationRule = $filterInfo['validation'];
-
-            $prefixedFilterName = is_null($prefix)
-                ? "filters.$filterName"
-                : "filters.$prefix.$filterName";
-
-            $filtersRules["$prefixedFilterName.*"] =
-                ['sometimes', ...(is_array($validationRule)
-                    ? $validationRule
-                    : [$validationRule]
-                )];
-        }
-
-        return $filtersRules;
-    }
-
     public static function hashValidation($hashLength)
     {
         return "regex:/^[0-9a-fA-F]{{$hashLength}}$/";

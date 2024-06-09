@@ -2,11 +2,12 @@
 
 namespace App\Models\PesquisasAvancadas;
 
+use App\Traits\ModelAccessControlTrait;
 use App\Traits\ProcessFiltersTrait;
 
 class PosDoc extends PesquisaAvancada
 {
-    use ProcessFiltersTrait;
+    use ProcessFiltersTrait, ModelAccessControlTrait;
 
     protected $connection = 'etl';
 

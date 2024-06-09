@@ -2,45 +2,50 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Servidores\DocentesRequest;
 use App\Http\Resources\Servidores\DocenteResource;
-use App\Http\Requests\Servidores\EstagiariosRequest;
 use App\Http\Resources\Servidores\EstagiarioResource;
-use App\Http\Requests\Servidores\FuncionariosRequest;
 use App\Http\Resources\Servidores\FuncionarioResource;
+use App\Models\Pessoas\Pessoa;
+use App\Models\Servidores\DesignacaoServidor;
+use App\Models\Servidores\Docente;
+use App\Models\Servidores\Estagiario;
+use App\Models\Servidores\Funcionario;
+use Illuminate\Http\Request;
 
-class ServidoresController extends Controller
+class ServidoresController extends RecordsController
 {
-    public function getFuncionarios(FuncionariosRequest $request)
+    public function getFuncionarios(Request $request)
     {
-        $primary = 'funcionarios';
-        $joined = [
-            'pessoa' => 'pessoas',
-            'designacoes' => 'designacoes_servidores'
+        $pathToModelMapping = [
+            'funcionario' => Funcionario::class,
+            'funcionario.pessoa' => Pessoa::class,
+            'funcionario.designacoes' => DesignacaoServidor::class,
         ];
 
         $resourceClass = FuncionarioResource::class;
-        return $this->getResourceCollection($request, $primary, $joined, $resourceClass);
+        return $this->getResourceCollection($request, $pathToModelMapping, $resourceClass);
     }
 
-    public function getEstagiarios(EstagiariosRequest $request)
+    public function getEstagiarios(Request $request)
     {
-        $primary = 'estagiarios';
-        $joined = ['pessoa' => 'pessoas'];
+        $pathToModelMapping = [
+            'estagiario' => Estagiario::class,
+            'estagiario.pessoa' => Pessoa::class
+        ];
 
         $resourceClass = EstagiarioResource::class;
-        return $this->getResourceCollection($request, $primary, $joined, $resourceClass);
+        return $this->getResourceCollection($request, $pathToModelMapping, $resourceClass);
     }
 
-    public function getDocentes(DocentesRequest $request)
+    public function getDocentes(Request $request)
     {
-        $primary = 'docentes';
-        $joined = [
-            'pessoa' => 'pessoas',
-            'designacoes' => 'designacoes_servidores'
+        $pathToModelMapping = [
+            'docente' => Docente::class,
+            'docente.pessoa' => Pessoa::class,
+            'docente.designacoes' => DesignacaoServidor::class,
         ];
 
         $resourceClass = DocenteResource::class;
-        return $this->getResourceCollection($request, $primary, $joined, $resourceClass);
+        return $this->getResourceCollection($request, $pathToModelMapping, $resourceClass);
     }
 }

@@ -60,6 +60,6 @@ class DocenteResource extends JsonResource
                 'nome_funcao' => $designacao->nome_funcao,
                 'tipo_designacao' => $designacao->tipo_designacao,
             ];
-        });
+        })->toArray();
     }
 }
