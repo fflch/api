@@ -14,6 +14,9 @@ yarn-error.log
 /.idea
 /.vscode
 
+docs/.vitepress/dist
+docs/.vitepress/cache
+
 admin_creator.php
 z.php
 /xpto

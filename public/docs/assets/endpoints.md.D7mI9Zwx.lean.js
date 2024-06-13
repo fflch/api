@@ -1,0 +1,1 @@
+import{_ as a,c as s,o as i,a2 as o}from"./chunks/framework.C78FHrVW.js";const h=JSON.parse('{"title":"Endpoints","description":"","frontmatter":{},"headers":[],"relativePath":"endpoints.md","filePath":"endpoints.md"}'),e={name:"endpoints.md"},n=o("",2),r=[n];function t(l,d,c,p,u,_){return i(),s("div",null,r)}const g=a(e,[["render",t]]);export{h as __pageData,g as default};

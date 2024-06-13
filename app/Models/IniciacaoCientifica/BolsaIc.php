@@ -23,9 +23,7 @@ class BolsaIc extends AbstractEtlTableModel
     {
         return [
             'public' => [
-                'HIDE' => [
-                    'fomento_edital'
-                ],
+                'HIDE' => [],
                 'HASH' => [],
             ],
 
