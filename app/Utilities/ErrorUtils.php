@@ -2,10 +2,30 @@
 
 namespace App\Utilities;
 
+use Illuminate\Http\Exceptions\HttpResponseException;
+
 class ErrorUtils
 {
+    public static function generateJsonErrorResponse($code, $message, $details = null)
+    {
+        throw new HttpResponseException(
+            response()->json(
+                [
+                    "error" => [
+                        "code" => $code,
+                        "message" => $message,
+                        "details" => $details
+                    ]
+                ],
+                $code,
+                [],
+                JSON_UNESCAPED_UNICODE
+            )
+        );
+    }
+
     const invitationPermission =
-    "Desculpe, parece que você não tem" .
+    "Desculpe, parece que você não tem " .
         "permissão para criar um convite.";
 
     const invitationCredentials =

@@ -5,12 +5,10 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Illuminate\Auth\AuthenticationException;
-use App\Traits\HttpResponses;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class Handler extends ExceptionHandler
 {
-    use HttpResponses;
-
     /**
      * A list of the exception types that are not reported.
      *
@@ -45,11 +43,19 @@ class Handler extends ExceptionHandler
 
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        return $this->error(
-            'Unauthorized',
-            401,
-            "Access requires a valid API token.",
-            [],
+        throw new HttpResponseException(
+            response()->json(
+                [
+                    "error" => [
+                        "code" => 401,
+                        "message" => "Unauthorized",
+                        "details" => "Access requires a valid API token.",
+                    ]
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            )
         );
     }
 }

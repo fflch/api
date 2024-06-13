@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Services\RegistrationService;
-use App\Http\Requests\PublicRequests\RegistrationRequest;
+use App\Http\Requests\RegistrationRequest;
 use App\Utilities\ErrorUtils;
 use Illuminate\Support\Carbon;
 
@@ -89,9 +89,12 @@ class RegistrationController extends Controller
 
         $deactivation_date = date("d/m/Y \à\s H\hm", strtotime($newUser->deactivation_date));
 
+        $tokenParts = explode('|', $token->plainTextToken);
+        $cleanPlainTextToken = end($tokenParts);
+
         return view(
             'account_created',
-            ['info' => [$token->plainTextToken, $deactivation_date]]
+            ['info' => [$cleanPlainTextToken, $deactivation_date]]
         );
     }
 }

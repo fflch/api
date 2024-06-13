@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Services\AuthService;
-use App\Http\Requests\PublicRequests\AuthRequest;
-use App\Traits\HttpResponses;
+use App\Http\Requests\AuthRequest;
 use App\Utilities\ErrorUtils;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 
 class AuthController extends Controller
 {
-    use HttpResponses;
-
     private $service;
 
     public function __construct()

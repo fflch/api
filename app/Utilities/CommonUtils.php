@@ -11,18 +11,40 @@ class CommonUtils
         $lowercasedArray = [];
 
         foreach ($array as $key => $value) {
-            if ($value === null) {
-                $lowercasedArray[mb_strtolower($key, 'UTF-8')] = null;
+            $lowercasedKey = mb_strtolower($key);
+
+            if (is_array($value)) {
+                $lowercasedValue = self::arrayToLower($value);
+            } else {
+                $lowercasedValue = mb_strtolower($value);
             }
-            else {
-                $lowercasedArray[mb_strtolower($key, 'UTF-8')] = mb_strtolower($value, 'UTF-8');
-            }
+
+            $lowercasedArray[$lowercasedKey] = $lowercasedValue;
         }
 
         return $lowercasedArray;
     }
 
     public static function removeArrayDiacritics($array)
+    {
+        $cleanArray = [];
+
+        foreach ($array as $key => $value) {
+            $cleanKey = self::removeStringDiacritics($key);
+
+            if (is_array($value)) {
+                $cleanValue = self::removeArrayDiacritics($value);
+            } else {
+                $cleanValue = self::removeStringDiacritics($value);
+            }
+
+            $cleanArray[$cleanKey] = $cleanValue;
+        }
+
+        return $cleanArray;
+    }
+
+    private static function removeStringDiacritics($value)
     {
         $diacritics = [
             'á' => 'a',
@@ -40,22 +62,8 @@ class CommonUtils
             'ç' => 'c',
         ];
 
-        $cleanedArray = [];
-
-        foreach ($array as $key => $value) {
-            $cleanedKey = strtr($key, $diacritics);
-            if ($value === null) {
-                $cleanedArray[$cleanedKey] = null;
-            } 
-            else {
-                $cleanedValue = strtr($value, $diacritics);
-                $cleanedArray[$cleanedKey] = $cleanedValue;
-            }
-        }
-
-        return $cleanedArray;
+        return strtr($value, $diacritics);
     }
-
     public static function generateRandomToken(int $size = 32)
     {
         $combinedString = Str::random(32) . now()->timestamp;
@@ -64,7 +72,7 @@ class CommonUtils
         return substr($token, 0, $size);
     }
 
-    public static function hashValue($value, $len)
+    public static function hashValue($value, int $len = 24)
     {
         $pepper = strrev($_ENV['API_HASH_PEPPER']);
         $stringValue = strrev((string)$value);
@@ -75,7 +83,7 @@ class CommonUtils
 
         $combinedString = "";
 
-        for($i = 0; $i < $maxLen; $i++) {
+        for ($i = 0; $i < $maxLen; $i++) {
             if ($i < $valueLen) {
                 $combinedString .= $stringValue[$i] . "-";
             }
@@ -84,8 +92,44 @@ class CommonUtils
             }
         }
 
-        $hash = (hash('sha256', $combinedString));
+        $hash = hash('sha256', $combinedString);
 
         return strtoupper(substr($hash, 0, $len));
+    }
+
+    public static function isArrayOrObject($input)
+    {
+        return is_array($input) || is_object($input);
+    }
+
+    public static function isMultidimensional($input)
+    {
+        if (is_array($input)) {
+            return count($input) !== count($input, COUNT_RECURSIVE);
+        } elseif (is_object($input)) {
+            foreach ($input as $property) {
+                if (is_array($property) || is_object($property)) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    public static function validateNestedArrayKey(
+        array $nestedKeysSequence,
+        array $targetArray
+    ) {
+        $currentArray = $targetArray;
+        foreach ($nestedKeysSequence as $nestedKey) {
+            if (!isset($currentArray[$nestedKey])) {
+                return false;
+            }
+            $currentArray = $currentArray[$nestedKey];
+        }
+
+        return true;
     }
 }
