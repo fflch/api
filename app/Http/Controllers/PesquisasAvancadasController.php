@@ -17,6 +17,10 @@ class PesquisasAvancadasController extends RecordsController
 {
     public function getPosDocs(Request $request)
     {
+        // Opção de filtrar dados, se necessário  
+        //$request->merge(['filters' => ['departamento' => 'Sociologia']]);  
+        
+        // Defina o mapeamento de modelos conforme necessário  
         $pathToModelMapping = [
             'posdoc' => PosDoc::class,
             'posdoc.pesquisador' => Pessoa::class,
@@ -27,8 +31,13 @@ class PesquisasAvancadasController extends RecordsController
             'posdoc.afastamentosEmpresa' => AfastamentoEmpresaPesquisaAvancada::class,
         ];
 
-        $resourceClass = PosDocResource::class;
-        return $this->getResourceCollection($request, $pathToModelMapping, $resourceClass);
+        // Obtenha os dados, por exemplo, usando Eloquent  
+        $posDocs = PosDoc::with($pathToModelMapping)->paginate(); // ou qualquer outro método de busca  
+
+        // Retorne a view e passe os dados para a mesma  
+        return view('posdocs.index', [
+            'posDocs' => $posDocs,
+        ]);
     }
 
     public function getPesquisadoresColab(Request $request)
